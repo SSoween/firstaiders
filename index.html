@@ -2382,40 +2382,6 @@ function renderAllEmergencies() {
   });
 }
 
-
-
-/*
-// Affiche toutes les urgences (nom uniquement) par défaut
-function renderAllEmergencies() {
-  const list = document.getElementById("emergency-list");
-  list.innerHTML = "";
-
-  emergencies.forEach(em => {
-    const item = document.createElement("div");
-    item.className = "card my-2";
-
-    const cardBody = document.createElement("div");
-    cardBody.className = "card-body d-flex justify-content-between align-items-center";
-
-    const title = document.createElement("h5");
-    title.className = "card-title mb-0";
-    title.textContent = em.name;
-
-    const btn = document.createElement("button");
-    btn.className = "btn btn-primary";
-    btn.textContent = "Details";
-
-    btn.onclick = () => displayEmergencyObject(em);
-
-    cardBody.appendChild(title);
-    cardBody.appendChild(btn);
-    item.appendChild(cardBody);
-    list.appendChild(item);
-    
-  });
-}
-*/
-
   // Recherche filtrée
 function filterEmergencies() {
   const query = document.getElementById("search-bar-emergencies").value.toLowerCase();
@@ -2460,32 +2426,6 @@ function filterEmergencies() {
     document.getElementById("page-emergencies").classList.remove("hidden");
     renderAllEmergencies(); // Affiche toutes les urgences
   }
-/*
-function renderEmergencies(list) {
-  const container = document.getElementById('emergency-list');
-  container.innerHTML = '';
-
-  list.forEach(emergency => {
-    const div = document.createElement('div');
-    div.className = 'item-box';
-
-    // Titre de l'urgence
-    const title = document.createElement('h5');
-    title.textContent = emergency.name;
-
-    // Bouton "Details"
-    const btn = document.createElement('button');
-    btn.className = 'btn btn-primary btn-sm mt-2';
-    btn.textContent = 'Details';
-    btn.onclick = () => displayEmergencyObject(emergency);
-
-    // Ajout au container
-    div.appendChild(title);
-    div.appendChild(btn);
-    container.appendChild(div);
-  });
-}
-  */
 
 function renderEmergencies(list) {
   const container = document.getElementById('emergency-list');
@@ -2509,8 +2449,6 @@ function renderEmergencies(list) {
     container.appendChild(card);
   });
 }
-
-
 
 function displaySymptomsGroup(groupId) {
   navigate('group');
@@ -2594,7 +2532,7 @@ function unselectSymptom(symptoms) {
     majSymptoms();
   }
 }
-
+/*
 function findBestMatchingEmergency(selectedSymptoms) {
   if (selectedSymptoms.length === 0) return null;
 
@@ -2627,6 +2565,41 @@ function findBestMatchingEmergency(selectedSymptoms) {
   }
   return bestMatch;
 }
+  */
+
+  function findBestMatchingEmergency(selectedSymptoms) {
+  if (!selectedSymptoms.length) return null;
+
+  const selectedIds = symptoms
+    .filter(sym => selectedSymptoms.includes(sym.name))
+    .map(sym => Number(sym.id));
+
+  for (const em of emergencies) {
+    if (!Array.isArray(em.symptoms)) continue;
+
+    const emSymptomIds = em.symptoms.map(Number);
+
+    const isExactMatch = emSymptomIds.length === selectedIds.length &&
+                         emSymptomIds.every(id => selectedIds.includes(id));
+    if (isExactMatch) return em; // Règle 1 : match exact prioritaire
+  }
+
+  // Pas de match exact → tester les match partiels
+  for (const em of emergencies) {
+    if (!Array.isArray(em.symptoms)) continue;
+
+    const emSymptomIds = em.symptoms.map(Number);
+
+    const allEmergencySymptomsInSelection = emSymptomIds.every(id => selectedIds.includes(id));
+    const selectionHasOnlyEmergencySymptoms = selectedIds.every(id => emSymptomIds.includes(id));
+
+    const isPartialMatch = allEmergencySymptomsInSelection && selectionHasOnlyEmergencySymptoms;
+    if (isPartialMatch) return em; // Règle 2 : match partiel conditionnel
+  }
+
+  return null; // Règle 3 : aucun match
+}
+
 
 // ...
 function displayEmergencyObject(urgency) {
