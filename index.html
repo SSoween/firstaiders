@@ -1,0 +1,3213 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIRST AID FIELD GUIDE</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="manifest" href="manifest.json">
+  <!-- Pour les navigateurs Android (Chrome) -->
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Pour Safari iOS (même si déprécié, encore utile pour compatibilité) -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="First Aid">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <style>
+  :root {
+    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-title: 'Rubik', sans-serif;
+  /* --color-bg-light: #fdfdfd; */
+    --color-bg-light: rgba(255, 0, 0, 0.3); /* rouge très pâle */
+    --color-text-dark: #212529;
+    --color-accent: #0d6efd;
+    --color-accent-bg: #e9f5ff;
+    --color-accent-border: #b6e0fe;
+    --color-muted-border: #ced4da;
+    --color-muted-bg: #f8f9fa;
+    --color-shadow: rgba(0, 0, 0, 0.1);
+    --color-danger: #dc3545;
+    --color-danger-hover: #b02a37;
+    --color-warning-bg: #fff3cd;
+    --color-warning-border: #ffeeba;
+    --color-warning-text: #5c4300;
+    --radius-pill: 2rem;
+    --radius-card: 0.5rem;
+    --radius-section: 6px;
+    --shadow-light: 0 4px 8px var(--color-shadow);
+    --font-size-title: 1.8rem;
+    --font-size-subtitle: 1.25rem;
+    --font-size-small: 0.9rem;
+  }
+
+  body {
+    font-family: var(--font-main);
+    background: var(--color-bg-light);
+    color: var(--color-text-dark);
+  }
+
+  .menu {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1050;
+  }
+
+  .hidden { display: none !important; }
+
+  section { animation: fadeIn 0.5s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  #selected-symptoms div, #selected-symptoms-group div {
+    background: var(--color-accent-bg);
+    border: 1px solid var(--color-accent-border);
+    color: var(--color-accent);
+    margin: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    display: inline-block;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+  }
+  #selected-symptoms div:hover,
+  #selected-symptoms-group div:hover {
+    background-color: #d0eaff;
+  }
+
+  .dropdown-menu a { font-weight: 500; }
+
+  h1.display-1, h2.display-5 { font-family: var(--font-title); }
+
+  footer { font-size: var(--font-size-small); }
+
+  .alert-warning { border-radius: 1rem; }
+
+  .btn-outline-primary i,
+  .btn-outline-secondary i {
+    color: var(--color-accent);
+  }
+
+  #search-bar, #search-bar-emergencies, #searchInput {
+    background: #fff;
+    border: 2px solid var(--color-muted-border);
+    padding: 0.75rem 1.25rem;
+    font-size: 1.1rem;
+    border-radius: 25px;
+    box-shadow: var(--shadow-light);
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  #selectedSymptomsTitle {
+    margin: 1rem 0 0.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #495057;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.25rem;
+  }
+
+  .suggested-emergency {
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
+    border: 1px solid var(--color-warning-border);
+    padding: 0.6rem 1rem;
+    margin: 1rem 0 1.2rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .group-button {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    border-radius: 12px;
+    border: 2px solid var(--color-accent);
+    background: var(--color-muted-bg);
+    color: var(--color-accent);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease-in-out;
+  }
+  .group-button:hover { background: #e7f1ff; }
+
+  .group-button i, .emergency-icon {
+    margin-right: 0.6rem;
+    font-size: 1.2em;
+  }
+
+  .emergency-card {
+    background: #fff;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-light);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: box-shadow 0.3s ease;
+  }
+  .emergency-card:hover {
+    box-shadow: 0 8px 16px rgb(0 0 0 / 0.15);
+  }
+
+  #page-emergency h2#emergency-title {
+    font-size: var(--font-size-title);
+    color: var(--color-danger);
+    border: 2px solid var(--color-danger);
+    padding: 0.5rem 1rem;
+    margin: 1.5rem 0;
+    font-weight: 600;
+    border-radius: var(--radius-section);
+    display: inline-block;
+  }
+
+  #page-emergency h3 {
+    font-size: var(--font-size-subtitle);
+    color: var(--color-danger);
+    border-bottom: 2px solid var(--color-danger);
+    padding-bottom: 0.3rem;
+    margin: 1.5rem 0 0.75rem;
+    font-weight: 600;
+  }
+
+  section h2 {
+    font-size: var(--font-size-title);
+    color: #343a40;
+    border: 2px solid #6c757d;
+    padding: 0.4rem 1rem;
+    margin: 1.5rem 0;
+    font-weight: 600;
+    border-radius: var(--radius-section);
+    background: var(--color-muted-bg);
+    box-shadow: 0 2px 4px var(--color-shadow);
+    display: inline-block;
+  }
+
+  #emergency-type span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+  }
+
+  #emergency-details, #emergency-care {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    color: var(--color-text-dark);
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  #call-911 {
+    width: 100%;
+    font-size: 1.25rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
+    background: var(--color-danger);
+    color: white;
+    transition: background-color 0.2s ease;
+  }
+  #call-911:hover, #call-911:focus {
+    background: var(--color-danger-hover);
+    box-shadow: 0 6px 12px rgba(176, 42, 55, 0.6);
+    outline: none;
+  }
+
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    align-items: stretch;
+  }
+
+  /* ========== BOUTONS PERSONNALISÉS ========== */
+  .custom-btn {
+    padding: 0.5rem 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    min-width: 150px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .custom-btn:active { transform: scale(0.97); }
+
+  .custom-btn.primary {
+    background-color: #007bff;
+    color: white;
+  }
+  .custom-btn.primary:hover {
+    background-color: #0056b3;
+  }
+
+  .custom-btn.danger {
+    background-color: #dc3545;
+    color: white;
+  }
+  .custom-btn.danger:hover {
+    background-color: #a71d2a;
+  }
+
+  .button-stack .custom-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto rem auto;
+  }
+
+  /* Titres & Footer */
+  .main-title {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+  .sub-title {
+    font-size: 1.5rem;
+    color: #6c757d;
+    margin-bottom: 0.1rem;
+  }
+  .footer-note {
+    margin-top: 3rem;
+    color: #33665d;
+    font-size: 0.75rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 767px) {
+    #selected-symptoms-box {
+      position: sticky;
+      top: 0;
+      z-index: 1050;
+      background: white;
+      border-bottom: 1px solid #ccc;
+      padding: 1rem;
+    }
+  }
+  @media (min-width: 768px) {
+    #page-emergency > div {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    #page-emergency > div > div {
+      flex: 1 1 45%;
+      min-width: 300px;
+    }
+  }
+
+  /* Dark mode */
+  body.dark-mode {
+    background: #121212;
+    color: #f8f9fa;
+  }
+  body.dark-mode section {
+    background: #1e1e1e;
+  }
+  body.dark-mode .emergency-card {
+    background: #1f1f1f;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.05);
+  }
+  body.dark-mode h1, body.dark-mode h2,
+  body.dark-mode h3, body.dark-mode h4 {
+    color: #f8f9fa;
+  }
+  body.dark-mode #emergency-details li,
+  body.dark-mode #emergency-care li {
+    color: #f8f9fa;
+  }
+  body.dark-mode .suggested-emergency {
+    background: #3c2f00;
+    color: #fff3cd;
+    border-color: #ffeeba;
+  }
+  body.dark-mode .group-button {
+    background: #2c2c2c;
+    color: #90caf9;
+    border-color: #90caf9;
+  }
+  body.dark-mode #searchInput {
+    background: #2c2c2c;
+    color: #fff;
+    border-color: #444;
+  }
+  body.dark-mode section h2 {
+    background: #2a2a2a !important;
+    color: #f8f9fa !important;
+    border-color: #6c757d;
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+  }
+
+  .button-group-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* centre horizontalement les boutons */
+    gap: 0.5rem; /* espace vertical entre boutons */
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .button-group-row .custom-btn {
+    width: 100%;
+    max-width: 300px;
+    margin: 0; /* pas de marge individuelle, le gap suffit */
+  }
+  .sub-title:last-of-type {
+    margin-bottom: 2rem; /* espace plus grand après le dernier h2 */
+  }
+
+  #emergency-care {
+    white-space: pre-line;
+  }
+  .technic-type {
+    display: inline-block;
+    margin-right: 0.8rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 0.3rem;
+    color: white;
+    font-weight: 600;
+    user-select: none;
+  }
+  .technic-type.minor { background-color: #ffb347; }     /* orange clair */
+  .technic-type.major { background-color: #ff6f61; }     /* rouge clair */
+  .technic-type.critical { background-color: #d72631; }  /* rouge foncé */
+
+  /*CSS pour la partie technic */
+  #page-technic h2#technic-title {
+    font-size: var(--font-size-title);
+    color: var(--color-danger);
+    border: 2px solid var(--color-danger);
+    padding: 0.5rem 1rem;
+    margin: 1.5rem 0;
+    font-weight: 600;
+    border-radius: var(--radius-section);
+    display: inline-block;
+  }
+
+  #page-technic h3 {
+    font-size: var(--font-size-subtitle);
+    color: var(--color-danger);
+    border-bottom: 2px solid var(--color-danger);
+    padding-bottom: 0.3rem;
+    margin: 1.5rem 0 0.75rem;
+    font-weight: 600;
+  }
+
+  .technic-card {
+    background: #fff;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-light);
+    padding: 1rem 1.5rem;
+    transition: box-shadow 0.3s ease;
+  }
+  .technic-card:hover {
+    box-shadow: 0 8px 16px rgb(0 0 0 / 0.15);
+  }
+
+  #technic-steps,
+  #technic-truc,
+  #technic-related-emergencies {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    color: var(--color-text-dark);
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-bottom: 0;
+  }
+
+  @media (min-width: 768px) {
+    #page-technic > div {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    #page-technic > div > div {
+      flex: 1 1 45%;
+      min-width: 300px;
+    }
+  }
+
+  body.dark-mode .technic-card {
+    background: #1f1f1f;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.05);
+  }
+
+  body.dark-mode #technic-steps li,
+  body.dark-mode #technic-truc li,
+  body.dark-mode #technic-related-emergencies li {
+    color: #f8f9fa;
+  }
+
+  /*Nouveaux boutons de ABC */
+  .custom-btn.success {
+    background-color: #28a745;
+    color: white;
+  }
+  .custom-btn.success:hover {
+    background-color: #1e7e34;
+  }
+
+  .custom-btn.warning {
+    background-color: #ffc107;
+    color: black;
+  }
+  .custom-btn.warning:hover {
+    background-color: #d39e00;
+  }
+
+  .custom-btn.info {
+    background-color: #17a2b8;
+    color: white;
+  }
+  .custom-btn.info:hover {
+    background-color: #117a8b;
+  }
+
+  .custom-btn.secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+  .custom-btn.secondary:hover {
+    background-color: #5a6268;
+  }
+
+  @media (max-width: 600px) {
+    .button-center {
+      flex-direction: column;
+      align-items: center; /* pour centrer les boutons */
+    }
+
+    .button-center .custom-btn {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+
+  .group-item {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .group-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+
+.card-list-item {
+  background: #fff;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-light);
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+}
+.card-list-item:hover {
+  box-shadow: 0 8px 16px rgb(0 0 0 / 0.15);
+}
+
+
+  </style>
+
+  <script>
+    const emergencyTypeInfo = {
+      M: {
+        name: 'Major',
+        description: 'Potential life-threatening situation.',
+        iconHtml: '<span class="emergency-icon major">🔶</span>'
+      },
+      m: {
+        name: 'Minor',
+        description: 'Non life-threatening situation.',
+        iconHtml: '<span class="emergency-icon minor" style="color: green;">🟢</span>'
+      },
+      C: {
+        name: 'Critical',
+        description: 'Life-threatening situation.',
+        iconHtml: '<span class="emergency-icon critical">🛑</span>'
+      }
+    };
+
+    //Mise a jour de navigate pour integrer la page ABC
+    function navigate(page, push = true) {
+    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+    const target = document.getElementById('page-' + page);
+    if (target) {
+      target.classList.remove('hidden');
+    }
+
+    if (push) history.pushState({ page: page }, '', '#' + page);
+
+    // Affiche dynamiquement le bon contenu selon la page demandée
+    switch (page) {
+      case 'signs':
+        displayGroups();
+        break;
+      case 'emergencies':
+        renderAllEmergencies();
+        break;
+      case 'technic':
+        displayTechnicsList(technics);
+        break;
+      // tu peux ajouter d'autres pages ici si besoin
+      default:
+        break;
+      }
+    }
+
+    function call911() {
+      window.location.href = 'tel:911';
+    }
+
+  </script>
+</head>
+
+<body>
+
+  <!-- Bouton de navigation haut / droit, le menu -->
+  <nav class="menu" aria-label="Principal Menu">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Navigation Menu">
+        ☰
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="#" onclick="navigate('index'); return false;">Welcome Screen</a></li>
+        <li><a class="dropdown-item" href="#" onclick="navigate('safe'); return false;">1st Assessment</a></li>
+        <li><a class="dropdown-item" href="#" onclick="navigate('soap'); return false;">SOAP Note</a></li>         
+        <li><a class="dropdown-item" href="#" onclick="navigate('signs'); return false;">2nd Assessment</a></li>
+        <li><a class="dropdown-item" href="#" onclick="navigate('emergencies'); return false;">List of Emergencies</a></li>
+        <li><a class="dropdown-item" href="#" onclick="navigate('technics'); return false;">List of Technics</a></li>
+        <li><a class="dropdown-item" href="#" onclick="navigate('legal'); return false;">Legal</a></li>
+        <li><hr class="dropdown-divider"></li> <!-- Optionnel : séparation -->
+        <!-- <li><a class="dropdown-item text-primary fw-bold" href="game.html">🧠 Training Game (TBI)</a></li> -->
+        <li><a class="dropdown-item" href="#" onclick="navigate('bpm'); return false;">💓 BPM 110</a></li>
+        <button id="darkModeToggle" class="dropdown-item d-flex align-items-center" type="button"> 🌙 Toggle Dark Mode </button>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page index, donc le index.html -->
+  <section id="page-index" class="container text-center py-5">
+    <h1 class="main-title">FIRST AIDers</h1>
+    <h2 class="sub-title">Wilderness & Remote</h2>
+    <h2 class="sub-title">Field Guide</h2>
+    <div class="button-group-row">
+      <button class="custom-btn primary" onclick="navigate('safe')">🩺 First Assessment (ABC)</button>    
+      <button class="custom-btn primary" onclick="navigate('signs')">📋 Second Assessment (SOAP)</button>
+      <button class="custom-btn danger" onclick="call911()">🚨 9-1-1</button>
+      <div class="mb-4"></div>
+      <button onclick="showSOAPList()" class="custom-btn primary">📝 View SOAP Notes</button>
+    </div>
+    <footer class="footer-note">
+      <span>🧰 Built with care by Gaëtan H. — <a href="mailto:1stAid@soween.com">1stAid@soween.com</a></span>
+    </footer>
+  </section>
+
+
+  <!-- Page pour Safe & Secure -->
+  <section id="page-safe" class="hidden container py-4">
+    <h2>Safe & Secure</h2>
+    <div class="my-4">
+      <img src="icons/safe-icon.png" alt="Safe Icon" style="display: block; margin: 0 auto 1rem auto; width: 250px;">
+    </div>  
+    <div class="alert alert-secondary">
+      <p>
+        Your safety comes first — Is the area safe and secure?<br>
+        ✅ Yes = you can act safely<br>
+        ❌ No = get more info about safety
+      </p>
+    </div>
+    <div class="button-group-row">
+      <button class="custom-btn primary" onclick="navigate('responsive')">✅ Yes</button>    
+      <button class="custom-btn primary" onclick="navigate('unsafe')">❌ No</button>
+      <button class="custom-btn danger" onclick="call911()">🚨 9-1-1</button>
+    </div>  
+  </section>
+
+  <!-- Page pour unsafe -->
+  <section id="page-unsafe" class="hidden container py-4">
+    <h2>Unsafe</h2>
+    <div class="alert alert-secondary">
+      <p>When you recognize an emergency, your first step is to assess the scene. Ask yourself:</p>
+      <ul>
+        <li>Is the scene safe?</li>
+        <li>Are there any hazards?</li>
+        <li>What happened?</li>
+        <li>How did it happen?</li>
+      </ul>
+      <p>Only proceed if the scene is safe. If it's not possible to secure it, do not intervene -> call 9-1-1 immediately.</p>
+    </div>
+    <div class="button-group-row">
+      <button class="custom-btn primary" onclick="navigate('safe')">✅ Area is Safe & Secure</button>    
+      <button class="custom-btn danger" onclick="call911()">🚨 9-1-1</button>
+    </div>  
+  </section>
+
+  <!-- Page pour (un)responsive -->
+  <section id="page-responsive" class="hidden container py-4">
+    <h2>Responsiveness</h2>
+    <div class="my-4">
+      <img src="icons/responsive-icon.png" alt="Responsive Icon" style="display: block; margin: 0 auto 1rem auto; width: 250px;">
+    </div>  
+    <div class="alert alert-secondary">
+      <p>
+        Check if the person is responsive.<br>
+        ✅ Yes = responsive<br>
+        ❌ No = unresponsive
+      </p>
+    </div>
+    <div class="button-group-row">
+      <button class="custom-btn primary" onclick="navigate('breathing')">✅ Yes</button>    
+      <button class="custom-btn primary" onclick="navigate('abc')">❌ No</button>
+      <button class="custom-btn danger" onclick="call911()">🚨 9-1-1</button>
+    </div>  
+  </section>
+
+  <!-- Page pour (un)breathing -->
+  <section id="page-breathing" class="hidden container py-4">
+    <h2>Breathing</h2>
+    <div class="my-4">
+      <img src="icons/breathing-icon.png" alt="Breathing Icon" style="display: block; margin: 0 auto 1rem auto; width: 250px;">
+    </div>  
+    <div class="alert alert-secondary">
+      <p>
+        Check if the person is breathing.<br>
+        ✅ Yes = breathing<br>
+        ❌ No = not breathing
+      </p>
+    </div>
+    <div class="button-group-row">
+      <button class="custom-btn primary" onclick="navigate('signs')">✅ Yes</button>    
+      <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CHOCKING'))">❌ No</button>      
+      <button class="custom-btn danger" onclick="call911()">🚨 9-1-1</button>
+    </div>  
+  </section>
+
+  <!-- Page Technic Detail -->
+  <section id="page-technic" class="hidden container py-4">
+    <h2 id="technic-title">Detail of the Technic</h2>
+    <div class="technic-card mb-3" id="technic-description"></div>
+    <div>
+      <div class="technic-card mb-3">
+        <h3>Technic Steps</h3>
+        <ul id="technic-steps"></ul>
+      </div>
+      <div class="technic-card mb-3">
+        <h3>Technic Truc</h3>
+        <ul id="technic-truc"></ul>
+      </div>
+      <div class="technic-card mb-3">
+        <h3>Related Emergencies</h3>
+        <ul id="technic-related-emergencies"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Page pour appel 911 -->
+  <section id="page-call" class="hidden container py-4">
+    <h2>Call 9-1-1</h2>
+  </section>
+
+  <!-- Page for ABC -->
+  <section id="page-abc" class="page hidden">
+    <h2>ABC - Airway, Breathing, Circulation</h2>
+    <div class="emergency-card mb-3">
+      <h3>A - Airway</h3>
+      <p>Verify that the airway is not obstructed (check mouth and throat).</p>
+      <div class="button-group-row">   
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CHECKING ABC'))">How to do it?</button>           
+        <button class="custom-btn primary" onclick="goToBreathing()">Airway is clear</button>
+      </div>
+    </div>
+    <div id="abc-b" class="emergency-card mb-3 d-none">
+      <h3>B - Breathing</h3>
+      <p>Is the person breathing normally?</p>
+      <div class="button-group-row">         
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('RECOVERY POSITION'))">Yes → Place in recovery position</button>
+        <button class="custom-btn danger" onclick="goToCirculation()">No → Check circulation</button>
+      </div>
+    </div>
+    <div id="abc-c" class="emergency-card mb-3 d-none">
+      <h3>C - Circulation</h3>
+      <p>Are there any signs of circulation: intense bleeding? If yes, it has to be stopped before CPR.</p>
+      <div class="button-group-row">   
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CPR'))">No → Begin chest compressions</button>
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('AED'))">AED available</button>
+      </div>
+    </div>    
+  </section>
+
+  <!-- Page for BPM buttons -->
+  <section id="page-bpm" class="hidden container py-4">
+    <h2>BPM rythm (110)</h2>
+    <div class="emergency-card mb-3">
+      <div class="button-group-row">
+        <button class="custom-btn primary" onclick="startCPRBeep(110)">💓 Start 110 BPM</button>
+        <button class="custom-btn primary" onclick="stopCPRBeep()">Stop</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Page for signs & Symptoms-->
+  <section id="page-signs" class="hidden container py-4">
+    <h2>Signs & Symptoms</h2>
+    <input id="search-bar" class="form-control" type="text" placeholder="Search symptoms..." oninput="filterGroups()" aria-label="Search symptoms">
+    <!-- Sticky container -->
+    <div class="sticky-selected-symptoms">
+      <h5>Selected Symptoms</h5>
+      <div id="selected-symptoms"></div>
+    </div>
+    <footer class="mt-3">
+      <div class="alert alert-warning text-center" id="emergency-suggestion"></div>
+    </footer>
+    <div>
+      <div id="group-list"></div>
+    </div>
+  </section>
+
+  <!-- Page for Groups of symptoms -->
+  <section id="page-group" class="hidden container py-4">
+    <h2 id="group-title"></h2>
+    <!-- Sticky container -->
+    <div class="sticky-selected-symptoms">
+      <h5>Selected Symptoms</h5>
+      <div id="selected-symptoms-group"></div>
+    </div>
+    <footer class="mt-3">
+      <div class="alert alert-warning text-center" id="emergency-suggestion-group"></div>
+    </footer>
+    <div id="page-group-content">
+      <div id="subgroup-list"></div>
+    </div>
+  </section>
+
+  <!-- Page pour liste Technics -->
+  <section id="page-technics" class="hidden container py-4">
+    <h2>List of Technics</h2>
+    <input id="search-bar-technics" class="form-control mb-3" type="text" placeholder="Search technics..." oninput="filterTechnics()" aria-label="Search technics"/>
+    <div>
+      <div id="technics-list"></div>
+    </div>
+  </section>
+
+  <!-- List of Emergencies -->
+  <section id="page-emergencies" class="hidden container py-4">
+    <h2>List of Emergencies</h2>
+    <input id="search-bar-emergencies" class="form-control" type="text" placeholder="Search emergencies..." oninput="filterEmergencies()" aria-label="Search emergencies">
+    <div>
+      <div id="emergency-list"></div>
+    </div>
+  </section>
+
+  <!-- Detail of one Emergency -->
+  <section id="page-emergency" class="hidden container py-4">
+    <h2 id="emergency-title"></h2>
+    <div class="emergency-card mb-3" id="emergency-description"></div>
+    <div>
+      <div class="emergency-card mb-3">
+        <h3>Emergency Symptoms</h3>
+        <ul id="emergency-details"></ul>
+      </div>
+      <div class="emergency-card mb-3">
+        <h3>Emergency Care</h3>
+        <ul id="emergency-care"></ul>
+      </div>
+    </div>
+    <div class="emergency-card mb-3">
+      <h3>Emergency Type</h3>
+      <div id="emergency-type">
+        <span class="emergency-type minor">
+          <i class="bi bi-triangle-fill"></i> Minor
+        </span>
+        <span class="emergency-type major">
+          <i class="bi bi-diamond-fill"></i> Major
+        </span>
+        <span class="emergency-type critical">
+          <i class="bi bi-hexagon-fill"></i> Critical
+        </span>
+      </div>
+    </div>
+    <div class="emergency-card mb-3">
+      <h3>Emergency Medicaments</h3>
+      <p id="emergency-meds">—</p>
+    </div>
+    <div class="emergency-card mb-3">
+      <h3>Emergency Technics</h3>
+      <p id="emergency-technic">—</p>
+    </div>
+    <button class="btn btn-danger" id="call-911" onclick="call911()">9-1-1</button>
+  </section>
+
+  <!-- Page legal -->
+  <section id="page-legal" class="hidden container py-4" aria-labelledby="legal-title">
+    <h2 id="legal-title">Legalities of First Aid</h2>
+    <div class="alert alert-secondary">
+      <h3>First aiders must:</h3>
+      <ul>
+        <li>Get permission, if possible, before providing care.</li>
+        <li>Only provide the care they were trained to give.</li>
+        <li>Continue providing care until another trained person takes over, they are too exhausted to continue, the scene becomes unsafe, or the person's condition improves and care is no longer needed.</li>
+      </ul>
+      <h3>Getting Permission to Help:</h3>
+      <p>You must get permission (consent) before providing care.</p>
+      <ul>
+        <li>For an unresponsive person, the law assumes you have permission.</li>
+        <li>For a young child without a caregiver, provide care.</li>
+        <li>If a person refuses care, call EMS/9-1-1.</li>
+        <li>If you are unable to call, first ensure your own safety and then offer to provide care.</li>
+      </ul>
+    </div>
+  </section>
+
+<!--Partie SOAP -->
+<section id="page-soap" class="hidden container py-4">
+  <h2>SOAP Assessment</h2>
+  <div class="emergency-card mb-3">
+    <h3>Victim Information</h3>
+    <div class="mb-2">
+      <label for="soap-name">Name</label>
+      <input type="text" class="form-control" id="soap-name" placeholder="Full name">
+    </div>
+    <div class="mb-2">
+      <label for="soap-age">Age</label>
+      <input type="number" class="form-control" id="soap-age" placeholder="Age">
+    </div>
+    <div class="mb-2">
+      <label for="soap-gender">Gender</label>
+      <select class="form-control" id="soap-gender">
+        <option value="">—</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="mb-2">
+      <label for="soap-date">Date & Time</label>
+      <input type="datetime-local" class="form-control" id="soap-date">
+    </div>
+  </div>
+  <form id="soap-form">
+    <div class="emergency-card mb-3">
+      <h3>Subjective</h3>
+      <textarea class="form-control" name="subjective" rows="4" placeholder="What does the patient report? Symptoms, feelings..."></textarea>
+    </div>
+    <div class="emergency-card mb-3">
+      <h3>Pain Assessment (OPQRST)</h3>
+      <div class="mb-2">
+        <label for="opqrst-onset">🕒 Onset - When did the pain start?</label>
+        <input class="form-control" name="opqrst_onset" id="opqrst-onset" placeholder="e.g., 10 minutes ago">
+      </div>
+      <div class="mb-2">
+        <label for="opqrst-provocation">🧪 Provocation - What triggers or worsens it?</label>
+        <input class="form-control" name="opqrst_provocation" id="opqrst-provocation" placeholder="e.g., movement">
+      </div>
+      <div class="mb-2">
+        <label for="opqrst-quality">🔍 Quality - What type of pain is it?</label>
+        <input class="form-control" name="opqrst_quality" id="opqrst-quality" placeholder="e.g., burning, stabbing">
+      </div>
+      <div class="mb-2">
+        <label for="opqrst-region">📍 Region / Radiation - Where is it? Does it spread?</label>
+        <input class="form-control" name="opqrst_region" id="opqrst-region" placeholder="e.g., chest, radiating to left arm">
+      </div>
+      <div class="mb-2">
+        <label for="opqrst-severity">📊 Severity - Intensity out of 10?</label>
+        <input class="form-control" name="opqrst_severity" id="opqrst-severity" type="number" min="0" max="10" placeholder="e.g., 7/10">
+      </div>
+      <div class="mb-2">
+        <label for="opqrst-time">⏱️ Time - How does it change over time?</label>
+        <input class="form-control" name="opqrst_time" id="opqrst-time" placeholder="e.g., stable, increasing">
+      </div>
+    </div>
+    <div class="emergency-card mb-3">
+      <h3>Objective</h3>
+      <textarea class="form-control" name="objective" rows="4" placeholder="What do you observe? Vitals, injuries..."></textarea>
+    </div>
+    <div class="emergency-card mb-3">
+      <h3>Assessment</h3>
+      <textarea class="form-control" name="assessment" rows="4" placeholder="Your evaluation of the situation..."></textarea>
+    </div>
+    <div class="emergency-card mb-3">
+      <h3>Plan</h3>
+      <textarea class="form-control" name="plan" rows="4" placeholder="Care provided, next steps..."></textarea>
+    </div>
+    <div class="emergency-card mb-3">
+      <h3>Rescuer Signature</h3>
+      <input class="form-control" name="rescuer" placeholder="Your full name or Red Cross ID">
+    </div>
+    <button type="button" class="custom-btn primary" onclick="saveSOAP()">Save SOAP</button>
+    <button type="button" class="custom-btn secondary" onclick="showSOAPSummary()">Show Summary</button>
+  </form>
+  <div id="soap-summary" class="mt-4 emergency-card d-none">
+    <h3>SOAP Summary</h3>
+    <div id="soap-output"></div>
+  </div>
+</section>
+
+<!-- conteneur caché pour afficher un rapport HTML -->
+<section id="soap-report-section" class="hidden container py-4">
+  <h2>Saved SOAP Note</h2>
+  <div id="soap-report-content"></div>
+  <button class="btn btn-primary" onclick="saveSOAPasPDF()">Save to PDF</button>
+  <button class="btn btn-primary" onclick="closeSOAPReport()">Close</button>
+</section>
+
+<!--Voir la liste des rapports SOAP dans un container cache -->
+<section id="soap-list-section" class="hidden container py-4">
+  <h2>Saved SOAP Notes</h2>
+  <ul id="soap-list" class="list-group mb-4"></ul>
+  <button class="btn btn-primary" onclick="saveSOAPasPDF()">Save to PDF</button>
+  <button class="btn btn-secondary" onclick="closeSOAPList()">Close</button>
+</section>
+
+<script>
+
+  // Groups constantes
+  const groups = [
+    { "id": 1, "name": "Respiratory", iconUrl: "icons/lungs.png" },
+    { "id": 2, "name": "Skin & Joints", iconUrl: "icons/hand.png" },
+    { "id": 3, "name": "Circulatory", iconUrl: "icons/heart.png" },
+    { "id": 4, "name": "Digestive", iconUrl: "icons/stomach.png" },
+    { "id": 5, "name": "Head & Senses", iconUrl: "icons/head.png" },
+    { "id": 6, "name": "Neurological & Mental", iconUrl: "icons/brain.png" },
+    { "id": 7, "name": "General", iconUrl: "icons/person.png" }
+  ];
+
+//Symptoms constantes
+const symptoms = [
+  { "id": 69, "name": "Anxiety", "groupId": 6 },
+  { "id": 70, "name": "Confusion", "groupId": 6 },
+  { "id": 71, "name": "Bleeding", "groupId": 3 },
+  { "id": 72, "name": "Blood in saliva or vomit", "groupId": 4 },
+  { "id": 73, "name": "Bleeding or fluid from the ear", "groupId": 5 },
+  { "id": 74, "name": "Coughing blood", "groupId": 1 },
+  { "id": 75, "name": "Bleeding or fluid from ear or nose", "groupId": 5 },
+  { "id": 76, "name": "Drowsiness", "groupId": 6 },
+  { "id": 77, "name": "Nail bed slow to refill", "groupId": 3 },
+  { "id": 78, "name": "Bluish nail beds, mouth", "groupId": 3 },
+  { "id": 79, "name": "Blood pressure increased", "groupId": 3 },
+  { "id": 80, "name": "Heart rate decreased", "groupId": 3 },
+  { "id": 81, "name": "Cardiac arrest", "groupId": 3 },
+  { "id": 82, "name": "Thirst", "groupId": 4 },
+  { "id": 83, "name": "Nausea (vomitting)", "groupId": 4 },
+  { "id": 84, "name": "Loss bladder, bowel control", "groupId": 4 },
+  { "id": 85, "name": "Pain abdominal", "groupId": 4 },
+  { "id": 86, "name": "Diarrhea", "groupId": 4 },
+  { "id": 87, "name": "Constipation", "groupId": 4 },
+  { "id": 88, "name": "Drooling", "groupId": 4 },
+  { "id": 89, "name": "Foaming at the mouth", "groupId": 4 },
+  { "id": 90, "name": "Need bowel movement", "groupId": 4 },
+  { "id": 91, "name": "Loss of appetite", "groupId": 4 },
+  { "id": 92, "name": "Reduced bladder output", "groupId": 4 },
+  { "id": 93, "name": "Frothy, bloody sputum", "groupId": 1 },
+  { "id": 94, "name": "Abnormal saliva (colored or excessive)", "groupId": 4 },
+  { "id": 95, "name": "Abdominal cramps", "groupId": 4 },
+  { "id": 96, "name": "Burning sensation mouth, throat, stomach", "groupId": 4 },
+  { "id": 97, "name": "Weakness", "groupId": 7 },
+  { "id": 98, "name": "Loss Responsiveness", "groupId": 6 },
+  { "id": 99, "name": "Dizziness", "groupId": 6 },
+  { "id": 100, "name": "Unresponsiveness", "groupId": 6 },
+  { "id": 101, "name": "Chest pain 10mn or -", "groupId": 3 },
+  { "id": 102, "name": "Tightness chest", "groupId": 1 },
+  { "id": 103, "name": "Fainting", "groupId": 6 },
+  { "id": 104, "name": "Seizures", "groupId": 6 },
+  { "id": 105, "name": "Loss movement partial, complete", "groupId": 6 },
+  { "id": 106, "name": "Changes in sleep patterns", "groupId": 7 },
+  { "id": 107, "name": "Limited, no use body part", "groupId": 7 },
+  { "id": 108, "name": "Grating, crackling sounds", "groupId": 5 },
+  { "id": 109, "name": "Fever", "groupId": 7 },
+  { "id": 110, "name": "Muscle movement uncontrollable", "groupId": 6 },
+  { "id": 111, "name": "Motions repetitive uncontrollable", "groupId": 6 },
+  { "id": 112, "name": "Contractions 2mn apart", "groupId": 7 },
+  { "id": 113, "name": "Baby is coming", "groupId": 7 },
+  { "id": 114, "name": "Urge to push", "groupId": 7 },
+  { "id": 115, "name": "Baby crowning", "groupId": 7 },
+  { "id": 116, "name": "Muscle contractions, legs, abdomen", "groupId": 7 },
+  { "id": 117, "name": "Coma", "groupId": 7 },
+  { "id": 118, "name": "Unsteady gait", "groupId": 6 },
+  { "id": 119, "name": "Fatigue", "groupId": 7 },
+  { "id": 120, "name": "Insomnia", "groupId": 6 },
+  { "id": 121, "name": "Lethargy severe", "groupId": 7 },
+  { "id": 122, "name": "Convulsions", "groupId": 6 },
+  { "id": 123, "name": "Paralysis", "groupId": 6 },
+  { "id": 124, "name": "Weakness extreme", "groupId": 7 },
+  { "id": 125, "name": "Joint pain severe", "groupId": 2 },
+  { "id": 126, "name": "Altered responsiveness", "groupId": 6 },
+  { "id": 127, "name": "Altered awareness", "groupId": 6 },
+  { "id": 128, "name": "Altered behavior", "groupId": 6 },
+  { "id": 129, "name": "Tremors", "groupId": 6 },
+  { "id": 130, "name": "Fractures", "groupId": 2 },
+  { "id": 131, "name": "Loss balance", "groupId": 6 },
+  { "id": 132, "name": "Mindset clouded, foggy", "groupId": 6 },
+  { "id": 133, "name": "Stunned, dazed", "groupId": 6 },
+  { "id": 134, "name": "Memory loss temp.", "groupId": 6 },
+  { "id": 135, "name": "Reaction times slowed", "groupId": 6 },
+  { "id": 136, "name": "Smell in air", "groupId": 5 },
+  { "id": 137, "name": "Unresponsive", "groupId": 6 },
+  { "id": 138, "name": "Irritability", "groupId": 6 },
+  { "id": 139, "name": "Emotions ++", "groupId": 6 },
+  { "id": 140, "name": "Change in personality", "groupId": 6 },
+  { "id": 141, "name": "Altered playing/sleeping/eating in baby", "groupId": 6 },
+  { "id": 142, "name": "Crying more (baby)", "groupId": 6 },
+  { "id": 143, "name": "Lack interest activity, toys (baby)", "groupId": 6 },
+  { "id": 144, "name": "Joint pain 72h after", "groupId": 2 },
+  { "id": 145, "name": "Cramps thighs, shoulders, back, abdominal", "groupId": 7 },
+  { "id": 146, "name": "Headache sudden, severe", "groupId": 5 },
+  { "id": 147, "name": "Headache", "groupId": 5 },
+  { "id": 148, "name": "Difficulty hearing", "groupId": 5 },
+  { "id": 149, "name": "Severe pain, pressure head, neck, back", "groupId": 5 },
+  { "id": 150, "name": "Impared vision", "groupId": 5 },
+  { "id": 151, "name": "Pupill different size", "groupId": 5 },
+  { "id": 152, "name": "Sensitivity light, noise", "groupId": 5 },
+  { "id": 153, "name": "Headache severe", "groupId": 5 }, 
+  { "id": 154, "name": "Agression", "groupId": 6 },
+  { "id": 155, "name": "Painful eyes", "groupId": 5 },
+  { "id": 156, "name": "Watery eyes", "groupId": 5 },
+  { "id": 157, "name": "Swollen lids", "groupId": 5 },
+  { "id": 158, "name": "Itchiness eyes", "groupId": 5 },
+  { "id": 159, "name": "Inability think clearly, focus", "groupId": 6 },
+  { "id": 160, "name": "Hallucinations", "groupId": 6 },
+  { "id": 161, "name": "Delusions", "groupId": 6 },
+  { "id": 162, "name": "Depression", "groupId": 6 },
+  { "id": 163, "name": "Lack of motivation", "groupId": 6 },
+  { "id": 164, "name": "Difficulty seeing", "groupId": 5 },
+  { "id": 165, "name": "Rapid", "groupId": 1 },
+  { "id": 166, "name": "Shortness", "groupId": 1 },
+  { "id": 167, "name": "Abnormal", "groupId": 1 },
+  { "id": 168, "name": "Gasping for air", "groupId": 1 },
+  { "id": 169, "name": "Wheezing", "groupId": 1 },
+  { "id": 170, "name": "Persistent coughing", "groupId": 1 },
+  { "id": 172, "name": "Shallow", "groupId": 1 },
+  { "id": 173, "name": "Unable to speak more than a few words", "groupId": 1 },
+  { "id": 174, "name": "High-pitched noise", "groupId": 1 },
+  { "id": 175, "name": "Bizarre", "groupId": 6 },
+  { "id": 176, "name": "Difficulty", "groupId": 1 },
+  { "id": 177, "name": "Sucking sound when breathing", "groupId": 1 },
+  { "id": 178, "name": "Impaired", "groupId": 1 },
+  { "id": 179, "name": "Difficulty at rest", "groupId": 1 },
+  { "id": 180, "name": "Coughing spasms", "groupId": 1 },
+  { "id": 181, "name": "Arrest", "groupId": 3 },
+  { "id": 182, "name": "Frothy bloody airways", "groupId": 1 },
+  { "id": 183, "name": "Cool", "groupId": 2 },
+  { "id": 184, "name": "Pale", "groupId": 2 }, 
+  { "id": 185, "name": "Dizzy", "groupId": 6 },
+  { "id": 186, "name": "Eyes rolling", "groupId": 6 },
+  { "id": 187, "name": "Hot", "groupId": 7 },
+  { "id": 188, "name": "Hot skin", "groupId": 2 },
+  { "id": 189, "name": "Moist skin", "groupId": 2 },
+  { "id": 190, "name": "Cold skin", "groupId": 2 },
+  { "id": 191, "name": "Flushed skin", "groupId": 2 },
+  { "id": 192, "name": "Skin blotches", "groupId": 2 },
+  { "id": 193, "name": "Skin pale", "groupId": 2 }, 
+  { "id": 194, "name": "Skin cold, clammy", "groupId": 2 },
+  { "id": 195, "name": "Skin dry", "groupId": 2 },
+  { "id": 196, "name": "Rash", "groupId": 2 },
+  { "id": 197, "name": "Swelling", "groupId": 2 },
+  { "id": 198, "name": "Bruising", "groupId": 2 },
+  { "id": 199, "name": "Pallor", "groupId": 2 },
+  { "id": 200, "name": "Sweating", "groupId": 2 },
+  { "id": 201, "name": "Cyanosis", "groupId": 2 },
+  { "id": 202, "name": "Bites, stings", "groupId": 2 },
+  { "id": 203, "name": "Difficult movement", "groupId": 7 },
+  { "id": 204, "name": "Vomiting", "groupId": 4 },
+  { "id": 205, "name": "Swelling lips, face, tongue", "groupId": 5 },
+  { "id": 206, "name": "Sudden inability to move", "groupId": 6 },
+  { "id": 207, "name": "Eye injury", "groupId": 5 },
+  { "id": 208, "name": "Blurring vision", "groupId": 5 },
+  { "id": 209, "name": "Protrusion eyeball", "groupId": 5 },
+  { "id": 210, "name": "Eye pain", "groupId": 5 },
+  { "id": 211, "name": "Sudden dizziness, vertigo", "groupId": 6 },
+  { "id": 212, "name": "Speech problems", "groupId": 6 },
+  { "id": 213, "name": "Speech difficult", "groupId": 6 },
+  { "id": 214, "name": "Facial paralysis", "groupId": 5 },
+  { "id": 215, "name": "Severe headache", "groupId": 5 },  
+  { "id": 216, "name": "Difficulty swallowing", "groupId": 4 },
+  { "id": 217, "name": "Dysphagia", "groupId": 4 },
+  { "id": 218, "name": "Excessive saliva", "groupId": 4 },
+  { "id": 219, "name": "Excessive thirst", "groupId": 4 },
+  { "id": 220, "name": "Excessive urination", "groupId": 4 },
+  { "id": 221, "name": "Persistent dry mouth", "groupId": 4 },
+  { "id": 222, "name": "Urinary retention", "groupId": 4 },
+  { "id": 223, "name": "Urinary urgency", "groupId": 4 },
+  { "id": 224, "name": "Loss bowel control", "groupId": 4 },
+  { "id": 225, "name": "Incontinence", "groupId": 4 },
+  { "id": 226, "name": "Inability to swallow", "groupId": 4 },
+  { "id": 227, "name": "Excessive hunger", "groupId": 4 },
+  { "id": 228, "name": "Excessive sweating", "groupId": 2 },
+  { "id": 229, "name": "Loss balance standing, walking", "groupId": 6 }
+];
+
+//Emergencies constantes
+const emergencies = [
+  {
+    "id": 8,
+    "name": "SHOCK",
+    "detail": "Be on the look-out for shock when providing care for any injury or sudden illness or whenever someone has been involved in a serious incident. Shock is a life-threatening condition.",
+    "care": "While you are waiting for EMS personnel to arrive:\n - Care for the suspected cause of the Shock.\n - Have the person rest and provide continual care.",
+    "type": ["M", "C"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [69, 70, 183, 184, 97, 82, 165, 98, 83]
+  },
+  {
+    "id": 9,
+    "name": "HEART ATTACK",
+    "detail": "Classic signs of a heart attack are pain, pressure, tightness or heaviness in the chest, or pain radiating from the chest to the arm(s), shoulder(s), back, jaw and/or neck.",
+    "care": " - Have the person rest quietly\n - Have the person chew either 1 regular-strength or 2 low-dose acetylsalicylic (ASA) tablets.",
+    "type": ["M", "C"],
+    "meds": "Acetylsalicylic (ASA)",
+    "technic": null,
+    "symptoms": [166, 99, 83, 100, 183, 184, 185]
+  },
+  {
+    "id": 10,
+    "name": "ANGINA",
+    "detail": "Classic signs of a heart attack are pain, pressure, tightness or heaviness in the chest, or pain radiating from the chest to the arm(s), shoulder(s), back, jaw and/or neck.",
+    "care": " - Have the person rest quietly\n - Have the person chew either 1 regular-strength or 2 low-dose acetylsalicylic (ASA) tablets.",
+    "type": ["M", "C"],
+    "meds": "Acetylsalicylic (ASA)",
+    "technic": null,
+    "symptoms": [101]
+  },
+  {
+    "id": 11,
+    "name": "STROKE",
+    "detail": "A Stroke occurs when blood flow to part of the brain is interrupted. A person of any age can have stroke.",
+    "care": " - Have the person rest in a comfortable position.\n - Note when the signs and symptoms first started (or the last time the person was known to be well).",
+    "type": ["C"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [146, 99, 70, 100, 84]
+  },
+  {
+    "id": 12,
+    "name": "EXTERNAL BLEEDING",
+    "detail": "Life-threatening external bleeding is bleeding that is difficult to stop or control.",
+    "care": "",
+    "type": ["C"],
+    "meds": null,
+    "technic": "Tourniquet",
+    "symptoms": [71]
+  },
+  {
+    "id": 13,
+    "name": "INTERNAL BLEEDING",
+    "detail": "You should suspect internal bleeding in any injury that involves a forceful blow to the body.",
+    "care": " - Have the person rest comfortably and treat for shock.\n - Seek medical attention.",
+    "type": ["C"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [186, 187, 197, 72, 83, 69]
+  },
+  {
+    "id": 14,
+    "name": "RESPIRATORY DISTRESS",
+    "detail": "Respiratory distress is when a person's breathing is abnormal (i.e., slower or faster), upsetting the body's balance of oxygen and carbon dioxide.",
+    "care": "Help the person to rest comfortably and to breathe slowly.",
+    "type": ["M"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [165, 166]
+  },
+  {
+    "id": 15,
+    "name": "ASTHMA ATTACK",
+    "detail": "Many people have asthma, a condition that can make breathing difficult. Asthma is normally caused by an internal or external trigger such as dust, stress or exercise.",
+    "care": " - If you think something in the environment is triggering the attack, move the person away from the trigger.\n - Help the person to take his or her quick relief asthma medication.\n\nIf an inhaler is unavailable:\n - Calm the person down and help him or her into a comfortable position.\n - Ask the person if he or she has any strategies for managing an asthma attack and assist if necessary.\n - If the person does not have a strategy, have the person breathe in steam from boiling water or hot beverage (be careful to avoid scalding). Drinking a caffeinated beverage can also be helpful.",
+    "type": ["M", "C"],
+    "meds": "Inhaler, inhaler + spacer",
+    "technic": null,
+    "symptoms": [176, 168, 169, 170, 172, 165, 173, 102]
+  },
+  {
+    "id": 16,
+    "name": "ANAPHYLAXIS",
+    "detail": "Severe allergic reaction that can be life-threatening.",
+    "care": "If the person has an epinephrine autoinjector, help him/her use it.",
+    "type": ["M", "C"],
+    "meds": "Epipen",
+    "technic": "Epipen",
+    "symptoms": [99, 174, 83]
+  },
+  {
+    "id": 17,
+    "name": "SMOKE INHALATION",
+    "detail": "",
+    "care": " - If it is safe to do so, move the person to a location with clean air.\n - Monitor the person and seek immediate medical attention if his/her condition gets worse.",
+    "type": ["M", "C"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [176, 188, 189, 184, 147, 70]
+  },
+  {
+    "id": 18,
+    "name": "INFECTION",
+    "detail": "Risk whenever a person's skin is broken. Keep all wounds clean and protected but do not completely close them. If a wound gets infected, it is much easier to treat if the wound is still open. Monitor any open wound for redness, swelling, or discharge in the days following the injury. Seek medical attention if any signs of infection appear.",
+    "care": "If you notice signs of infection while checking a wound:\n - Thoroughly clean the wound with a syringe or improvised tool (fill a reusable bag with water and cut a small hole in one corner).\n - Apply antibiotic ointment or cream.\n - Re-apply a fresh dressing and bandage the wound.\n\nFever and/or red streaks moving away from the wound indicate the infection is spreading. Outline the infection site (note the time) and seek immediate medical attention.",
+    "type": ["M", "C"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [190, 191, 195, 192, 193, 194, 83]
+  },
+  {
+    "id": 19,
+    "name": "BRUISES",
+    "detail": "Skin discoloration with no other sign.",
+    "care": "Apply a cold pack, wrapped in cloth (towel or item of clothing) for up to 20 minutes, and then remove it for 20 to 30 minutes. Repeat until the pain is reduced.",
+    "type": ["M"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [195, 186]
+  },
+  {
+    "id": 20,
+    "name": "CUT & SCRAPES",
+    "detail": "Various types: Cut, Scrape (like multiple laceration), Skin Flap (skin is displaced) and Puncture (like nail into skin).",
+    "care": " - If the wound is bleeding significantly, apply direct pressure until it stops.\n - Clean the wound thoroughly with clean water.\n - Apply an antibiotic ointment or cream and bandage the wound.\n - Change dressings at least once a day, or more often if required.",
+    "type": ["M"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [195]
+  },
+  {
+    "id": 21,
+    "name": "SCALP",
+    "detail": "This is a Cut or Scrape on the \"hairy\" part of the head.",
+    "care": " - Apply dressings and have the person apply direct pressure.\n\nIf you feel a dip, a soft area, or pieces of bone:\n - If the bleeding is life-threatening, apply direct pressure. If it is not life-threatening, apply pressure to the area around the wound.\n - Secure the dressing with a bandage.",
+    "type": ["m", "M", "C"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [71, 199]
+  },
+  {
+    "id": 22,
+    "name": "BLISTERS",
+    "detail": "Occurs when friction irritates the skin and creates a swollen area filled with fluid. Clean the blister, apply an adhesive pad, and bandage the padding in place.",
+    "care": "If you are on a multi-day hike:\n - Drain any fluid from the swollen area using a sterilized needle.\n - Carefully remove any loose skin.\n - Wash the area with water.\n - If available, apply a hydrogel dressing and bandage in place.",
+    "type": ["m", "M", "C"],
+    "meds": null,
+    "technic": "Improvised Sterilization Techniques",
+    "symptoms": [195, 211, 193, 197]
+  },
+  {
+    "id": 23,
+    "name": "IMPALEMENT",
+    "detail": "Perforation of the body with any object.",
+    "care": " - Leave the object in place.\n - Stabilize the object without putting direct pressure on it.\n\nIf you need to shorten the impaled object so you can move the person, cut the object after it has been stabilized.\nRemove the impaled object only if it is necessary to treat life-threatening injuries or to move the injured person.\n\nIf there are signs of infection, remove the object and then treat as a puncture wound. Check that the object is not close to a major artery or organ.",
+    "type": ["M", "C"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [71]
+  },
+  {
+    "id": 24,
+    "name": "SPLINTERS",
+    "detail": "Small object going through skin.",
+    "care": "Gently grab the exposed end of the splinter with tweezers and carefully pull it out. Treat the wound as a cut.",
+    "type": ["m"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [195]
+  },
+  {
+    "id": 25,
+    "name": "FISH HOOKS",
+    "detail": "Fish hook through the skin.",
+    "care": "If it is safe to do so, use one of the 2 techniques below:\n\n1. Method One\n - Press the back of the hook shank flat against the skin.\n - Quickly jerk out the hook. Treat the wound as a cut.\n\n2. Method Two\n - Gently manoeuvre the hook so the barbed tip exits through the skin and cut off the tip (with a multi-tool).\n - Pull the rest of the hook out and treat the wound as a cut.",
+    "type": ["m"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [195]
+  },
+  {
+    "id": 26,
+    "name": "NOSEBLEEDS",
+    "detail": "Bleeding from nose.",
+    "care": " - Have the person sit with the head slightly forward. Tell the person to spit rather than swallow any blood that gets into the mouth.\n - Pinch the person's nostrils for 10 to 15 minutes.\n - If due to a severe head injury and the person becomes unresponsive, place him/her in the recovery position to allow the blood to drain from the nose.\n\nIf not stopped after 15 minutes, consider it a life-threatening bleeding. If person is spitting up blood, use a container to monitor the amount.\n\nFor any object, either you can remove it easily, without entering your finger, or if hard or impossible, seek medical attention.",
+    "type": ["m", "M"],
+    "meds": null,
+    "technic": "Recovery Position",
+    "symptoms": [71]
+  },
+  {
+    "id": 27,
+    "name": "TEETH KO",
+    "detail": "One or many teeth removed from their place.",
+    "care": " - Have the person bite down on a clean dressing.\n - Carefully pick up the tooth by the crown (white top part) and keep it protected.\n - Get the person and the tooth to a dentist as soon as possible.\n\nKeep tooth in coconut water or whole milk. Or wrap in gauze with some of person's saliva.",
+    "type": ["M"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [71]
+  },
+  {
+    "id": 28,
+    "name": "EYE INJURY",
+    "detail": "Any type of injury to the eye.",
+    "care": "Avoid touching the eye or putting pressure on or around it.\n\nIf there is something in the eye but it is not impaled:\n - Have the person blink several times.\n - Gently flush the eye with running water.\n - If these steps do not work, seek medical attention.\n\nIf the eye is impaled:\n - Leave the object in place.\n - Stabilize the object without putting pressure on it.",
+    "type": ["m", "M", "C"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [198]
+  },
+  {
+    "id": 29,
+    "name": "EAR INJURY",
+    "detail": "Any injury to the ear.",
+    "care": "Apply a clean dressing and have the person apply direct pressure.\n\nIf you feel a dip, a soft area, or pieces of bone:\n - If the bleeding is life-threatening, apply direct pressure. If it is not life-threatening, apply pressure to the area around the wound.\n - Secure the dressing with a bandage.",
+    "type": ["m", "M", "C"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [198]
+  },
+  {
+    "id": 30,
+    "name": "AMPUTATION",
+    "detail": "Partial or complete loss of a limb or extremity.",
+    "care": " - Control bleeding by applying direct pressure.\n - Wrap the amputated part in a clean, moist cloth and place it in a sealed plastic bag.\n - Keep the amputated part cool by placing the sealed bag on ice.\n - Seek immediate medical attention.",
+    "type": ["M", "C"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [71]
+  },
+  {
+    "id": 31,
+    "name": "EVISCERATION",
+    "detail": "Occurs when an internal organ protrudes out of the body through a wound.",
+    "care": " - Use clean water to keep the organ moist.\n - Put a layer of plastic over the organs and cover with a thick dressing.\n - Keep the organs warm.\n\nHigh risk of hypothermia.",
+    "type": ["C"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [71]
+  },
+  {
+    "id": 32,
+    "name": "CHEST",
+    "detail": "Injury to the chest.",
+    "care": " - Have the person rest in a comfortable position, keeping as still as possible.\n - If the wound is bleeding profusely, apply direct pressure or use a non-occlusive dressing. Monitor the dressing closely and replace saturated dressings immediately.\n - If bleeding is minor, do not apply pressure or dressing.\n - If there is no penetrating injury, give the person something bulky (such as a towel) to hold against the chest.\n\nEnsure dressing is not saturated with blood to prevent air from escaping the chest. It must be changed before.",
+    "type": ["M", "C"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [198, 194, 172, 186, 74]
+  },
+  {
+    "id": 33,
+    "name": "BURNS",
+    "detail": "Burn priority level: use palm to estimate % of body burned. \nFull thickness is Critical from 1%.\nPartial thickness is Critical from >10%\nSuperficial is Major from >10%",
+    "care": " - Cool the affected area with water or a clean cool (but not freezing) compress for at least 10 minutes.\n - Clean the affected area as able (remove jewellery and clothing from the burn site, but do not attempt to move anything that is stuck to the skin)\n - Cover the burn loosely with a dry, sterile dressing.\n\nIf burn is superficial:\n - monitor the burn site for infection.\n\nIf the burn is partial thickness:\n - cool a small area at a time as cooling too quickly could cause a shock.\n - Seek medical attention.\n - monitor person and manage signs of dehydration and/or pain.\n\nIf burn is full thickness:\n - cool a small area at a time as cooling too quickly could cause a shock.\n - treat for shock while waiting for medical attention.\n - monitor the person and manage signs of dehydration and/or pain.\n\nChemical burns: put on PPE before treating. Brush off any chemical off person's skin and flush with lot of water for 15 minutes.\n\nElectrical burns: monitor person's ABC closely. Current must be off, person still, should be 2 burns (entry/exit points).",
+    "type": ["m", "M", "C"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [187]
+  },
+  {
+    "id": 34,
+    "name": "HEAD, NECK, SPINAL INJURY",
+    "detail": "A person who has a suspected head, neck or spinal injury may also have a pelvic injury. Do not put pressure on the pelvis, and treat as a head, neck and spinal injury.",
+    "care": "Keep the person as still as possible. Move the person only if he/she is in immediate danger or has life-threatening injuries.",
+    "type": ["C"],
+    "meds": null,
+    "technic": null,
+    "notes": ["Removing a helmet", "Move a person with head, neck, spinal injury"],
+    "symptoms": [149, 75, 199, 188, 200, 104, 150, 178, 83, 151, 105, 84, 126, 127, 128, 97, 201, 202, 99, 131]
+  },
+  {
+    "id": 35,
+    "name": "CONCUSSION",
+    "detail": "Concussions are a common subset of traumatic brain injuries that can have catastrophic, lifelong consequences. Anyone who has had a concussion must follow the treatment plan recommended by a healthcare provider.\n\nSeek immediate medical attention if the person has any of the following:\n - Repeated or projectile vomiting.\n - Loss of responsiveness of any duration.\n - Lack of physical coordination.\n - Confusion, disorientation or memory loss.\n - Changes to normal speech.\n - Seizures.\n - Vision and ocular changes (double vision or unequal pupill size).\n - Persistent dizziness or loss of balance.\n - Weakness or tingling in the arms or legs.\n - Severe or increasing headache.",
+    "care": " - Advise the person to immediately stop all activity and monitor him/her for a minimum of 24 hours. Wake the person every 2-3 hours to ensure that the condition has not worsened.\n - If the person does not respond when you attempt to wake him/her, seek immediate medical attention.",
+    "type": ["m", "M", "C"],
+    "meds": null,
+    "technic": null,
+    "notes": ["Head splint (SMR).", "Tarp lift."],
+    "symptoms": [132, 133, 134, 135, 147, 98, 99, 131, 150, 106, 83, 152, 104, 138, 139, 140, 141, 142, 143]
+  },
+  {
+    "id": 36,
+    "name": "OPEN FRACTURE",
+    "detail": "Treat as open wound.",
+    "care": "Check the section for Open Wound.",
+    "type": ["C"],
+    "meds": null,
+    "technic": null,
+    "symptoms": [71, 207]
+  },
+  {
+    "id": 37,
+    "name": "STRAIN",
+    "detail": "Stretching or tearing of muscles or tendons.",
+    "care": "Treat the injury using the RICE method:\n - Rest: have the person rest comfortable.\n - Immobilize: keep the injured area as still as possible.\n - Cool: cool the injured area for 20 minutes of every hour.\n - Elevate: raise the injury if it is practical to do so, as long as this does not increase the pain.",
+    "type": ["m", "M", "C"],
+    "meds": null,
+    "technic": null,
+    "notes": ["Boot removal.", "Splint.", "Slings."],
+    "symptoms": [203, 194, 186, 105, 205]
+  },
+  {
+    "id": 38,
+    "name": "SPRAIN",
+    "detail": "Stretching or tearing of ligaments at a joint.",
+    "care": "Treat the injury using the RICE method:\n - Rest: have the person rest comfortable.\n - Immobilize: keep the injured area as still as possible.\n - Cool: cool the injured area for 20 minutes of every hour.\n - Elevate: raise the injury if it is practical to do so, as long as this does not increase the pain.",
+    "type": ["m", "M", "C"],
+    "meds": null,
+    "technic": null,
+    "notes": ["Boot removal.", "Splint.", "Slings."],
+    "symptoms": [203, 194, 186, 105, 205]
+  },
+  {
+    "id": 39,
+    "name": "DISLOCATION",
+    "detail": "Movement of a bone out of its normal position at a joint.",
+    "care": "Treat the injury using the RICE method:\n - Rest: have the person rest comfortable.\n - Immobilize: keep the injured area as still as possible.\n - Cool: cool the injured area for 20 minutes of every hour.\n - Elevate: raise the injury if it is practical to do so, as long as this does not increase the pain.",
+    "type": ["m", "M", "C"],
+    "meds": null,
+    "technic": null,
+    "notes": ["Boot removal.", "Splint.", "Slings.", "Put back dislocation."],
+    "symptoms": [203, 194, 186, 105, 205]
+  },
+  {
+    "id": 40,
+    "name": "FRACTURE",
+    "detail": "Chip, crack or break in a bone.",
+    "care": "Treat the injury using the RICE method:\n - Rest: have the person rest comfortable.\n - Immobilize: keep the injured area as still as possible.\n - Cool: cool the injured area for 20 minutes of every hour.\n - Elevate: raise the injury if it is practical to do so, as long as this does not increase the pain.",
+    "type": ["m", "M", "C"],
+    "meds": null,
+    "technic": null,
+    "notes": ["Boot removal.", "Splint.", "Slings.", "Realigning fracture."],
+    "symptoms": [203, 194, 186, 105, 205]
+  },
+{
+  "id": 41,
+  "name": "PELVIC INJURIES",
+  "detail": "Injury to the pelvic area.",
+  "care": " - If possible, have the person lay flat on his/her back.\n - Apply a pelvic binding. If a commercial binding device is unavailable, you may use a modified method.\n - See moving a person with a head, neck or spinal injury for how to transport a person with minimal movement.",
+  "type": ["M", "C"],
+  "meds": null,
+  "technic": null,
+  "symptoms": [186, 71, 84, 108, 202]
+},
+{
+  "id": 42,
+  "name": "DIGESTIVE PROBLEM",
+  "detail": "Occurs when the gastrointestinal tract becomes irritated or infected.",
+  "care": " - Keep the person hydrated.\n - If the symptoms do not resolve within 24 hours, seek medical attention.\n\nCritical emergency: if the person experiences a constant, localized pain in his/her abdomen and the abdomen feels hard, hurts if pressed and is showing signs of internal bleeding.",
+  "type": ["m", "M", "C"],
+  "meds": null,
+  "technic": null,
+  "symptoms": [83, 85, 86, 87, 147, 109]
+},
+{
+  "id": 43,
+  "name": "DIABETIC",
+  "detail": "Happens when blood sugar levels fluctuate outside the normal range.",
+  "care": "Responsive person (minor, Major):\n - If the person is able to swallow safely, have the person ingest sugar.\n - If the person's condition does not improve, seek medical attention and administer more sugar if it is safe to do so.\n - Suggest the person eat a full meal in order to balance their sugar.\n\nUnresponsive person (Critical):\n - Place the person in the recovery position.\n - Use a gloved finger to rub glucose on the inside of the person's cheek. Do not use other forms of sugar, including liquids, as they could block the airway.\n - Seek medical attention.",
+  "type": ["m", "M", "C"],
+  "meds": null,
+  "technic": null,
+  "symptoms": [126, 128, 154, 70, 165, 183, 184, 185, 104]
+},
+{
+  "id": 44,
+  "name": "SEIZURES",
+  "detail": "Episode of abnormal brain function.",
+  "care": " - Protect the person from injury by: moving objects that could cause injury and protecting the person's head with a soft object.\n - Do not try to hold the person down.\n - Roll the person into the recovery position. The person may be drowsy and disoriented for up to 20 minutes.\n - If the person has more than one seizure, is pregnant, has diabetes or the seizure happened in water or you do not know the cause of the seizure, seek immediate medical attention.",
+  "type": ["m", "M", "C"],
+  "meds": null,
+  "technic": null,
+  "symptoms": [110, 88, 89, 111, 126]
+},
+{
+  "id": 45,
+  "name": "MENTAL CRISIS",
+  "detail": "1st aid is given to a person in a mental health crisis.",
+  "care": "In case of risk or something happened of hurting someone (person included) call 911.\n - Provide reassurance and support (reduce distractions, sit down, keep calm, listen, and acknowledge the person's feeling without judgment).\n - Offer self-help strategies such as breathing exercises.\n\nMost immediate threat is suicide. Potential signs:\n - Expressing negative thoughts and comments about him/herself.\n - Expressing intent to die, especially if he/she has a plan.\n - Expressing final wishes to someone close by.",
+  "type": ["m", "M", "C"],
+  "meds": null,
+  "technic": null,
+  "symptoms": [159, 160, 161, 162, 163]
+},
+{
+  "id": 46,
+  "name": "CHILDBIRTH",
+  "detail": "Occurs when giving birth to a (more) child. Not an injury, but still an emergency.",
+  "care": [
+    "Create a birthing area by placing clean blankets and/or towels under the mother.",
+    "Have the mother remove any clothing that may get in the way of delivery.",
+    "Time the mother's contractions.",
+    "Birth:",
+    "As the baby is being birthed, support the head.",
+    "Wipe any fluids or mucus away from the baby's mouth and nose.",
+    "Actively dry the baby with a clean cloth to stimulate crying and breathing.",
+    "Place the baby directly onto the mother's chest and cover with a blanket or towel.",
+    "Let the placenta and cord drop onto a clean towel.",
+    "Tightly tie one strip of sterile cloth around the cord, 10cm from the baby. Push any fluid on the cord away from the cloth and tie a second sterile cloth at 15cm from the baby.",
+    "Cut the umbilical cord between the 2 strips of cloth with clean scissors. In urban setting, do not cut the cord.",
+    "Record the time of birth.",
+    "If the mother has any bleeding tears, apply gentle pressure to them.",
+    "Complications:",
+    "Ensure cord is not wrapped around baby's neck.",
+    "If not breathing within 30s of delivery, gently massage the back. If doesn't work snap your fingers against the sole of the feet. And worst case, CPR."
+  ],
+  "type": ["M", "C"],
+  "meds": null,
+  "technic": null,
+  "symptoms": [112, 113, 114, 115, 90]
+},
+{
+  "id": 47,
+  "name": "HEAT CRAMPS",
+  "detail": "Occur when the skeletal muscles spasm, likely due to fluid and salt loss from heavy sweating.",
+  "care": [
+    "Have the person rest in a cool area and drink fluids.",
+    "Gently stretch and massage the crampled muscles.",
+    "Have the person avoid activity."
+  ],
+  "meds": null,
+  "type": ["m"],
+  "technic": null,
+  "symptoms": [116, 209]
+},
+{
+  "id": 48,
+  "name": "HEAT EXHAUSTION, STROKE",
+  "detail": "Emergency that can be minor to critical.",
+  "care": [
+    "Heat Exhaustion",
+    "Remove from heat.",
+    "Loosen tight clothing, remove padding from torso.",
+    "Do not dry skin.",
+    "Active Cooling:",
+    "Pour water on torso.",
+    "Fan skin.",
+    "Heat Stroke",
+    "Remove from heat.",
+    "Loosen tight clothing, remove padding from torso.",
+    "Do not dry skin.",
+    "Aggressive cooling:",
+    "Immerse body in cool water.",
+    "Immerse forearms in cool water.",
+    "Pour water on torso.",
+    "Fan skin.",
+    "Wrap ice packs in cloth in person's armpit, groin area and back of the neck."
+  ],
+  "meds": null,
+  "type": ["m", "C"],
+  "technic": null,
+  "symptoms": [210, 211, 104, 117, 153, 138, 154, 175, 165, 172, 83, 103, 69, 99, 97]
+},
+{
+  "id": 49,
+  "name": "FROSTBITE",
+  "detail": "Frost nip is a superficial injury that occurs when skin freezes. Frostbite is a more serious injury that occurs when the tissue underneath the skin freezes as well.",
+  "care": [
+    "Remove anything that may restrict blood flow to the affected area.",
+    "Warm the area using body heat or warm water.",
+    "Rehydrate the person, preferably with warm, sugary drinks.",
+    "Provide ibuprofen if it is safe to do so.",
+    "Once the area is thawed, protect skin with loose, dry dressings. Place gauze between the fingers or toes if they are affected. Leave any blisters intact.",
+    "Elevate any thawed extremities above the level of the heart."
+  ],
+  "meds": "Ibuprofen",
+  "type": ["m", "M"],
+  "technic": null,
+  "symptoms": [212, 213, 184, 195, 190, 208, 215]
+},
+{
+  "id": 50,
+  "name": "NON-FREEZING COLD INJURY",
+  "detail": "An NFCI occurs when tissue is exposed to cold, wet conditions for longer than 12 hours. The most common form is called immersion foot or trench foot.",
+  "care": [
+    "In case of an NFCI, the tissue is not frozen so rewarming is not the primary concern.",
+    "Remove the person from cold exposure.",
+    "Elevate the affected area and keep it cool (exposed to cool air). Do not rub the affected area."
+  ],
+  "meds": null,
+  "type": ["M"],
+  "technic": null,
+  "symptoms": [216, 217, 218, 219, 213, 118, 77, 208, 194, 211, 195, 190, 194]
+},
+{
+  "id": 51,
+  "name": "HYPOTHERMIA",
+  "detail": "Occurs when the body's core temperature lowers to 35°C or below. It can occur at any time of the year.",
+  "care": [
+    "Starting with the outside ring of the diagram, assess the person's responsiveness, movement, shivering and alertness. Decide whether each one is normal or impaired/absent.",
+    "Provide the care that matches the person's condition.",
+    "Cold stressed, not hypothermic. Responsive, Movement normal, Shivering, alert.",
+    "Reduce heat loss (add dry clothing).",
+    "Provide high-calorie food or drink.",
+    "Move around/exercise to warm up.",
+    "Mild hypothermia. Responsive, Impaired movement, Shivering, Alert.",
+    "Handle gently.",
+    "Have patient sit or lie down for at least 30mn.",
+    "Insulate/vapour barrier.",
+    "Give heat to upper trunk.",
+    "Provide high-calorie food/drink.",
+    "Monitor for at least 30mn.",
+    "Evacuate if no improvement.",
+    "Moderate hypothermia. Responsive, Impaired movement, Not shivering, Not alert.",
+    "Handle gently.",
+    "Keep horizontal.",
+    "No standing/walking.",
+    "No drink or food.",
+    "Insulate/vapour barrier.",
+    "Give heat to upper trunk.",
+    "Evacuate carefully.",
+    "Severe hypothermia. Cold and Unresponsive.",
+    "Treat as moderate hypothermia, and",
+    "60-second breathing/pulse check.",
+    "No -> start CPR.",
+    "Evacuate carefully ASAP."
+  ],
+  "meds": null,
+  "type": ["m", "M", "C"],
+  "technic": "Hypothermia wrap",
+  "symptoms": [208]
+},
+{
+  "id": 52,
+  "name": "FROZEN CORNEA",
+  "detail": "Occur if the eye gets too cold.",
+  "care": [
+    "Can take up to 4h to appear.",
+    "Place a warm compress or your hand over the affected eye.",
+    "After warming, cover the eye for 24-48h."
+  ],
+  "meds": null,
+  "type": ["M"],
+  "technic": null,
+  "symptoms": [155, 156, 157]
+},
+{
+  "id": 53,
+  "name": "SNOW BLINDNESS",
+  "detail": "Occurs when bright, snowy conditions reflect the sun's ultraviolet (UV) rays into a person's eyes.",
+  "care": [
+    "Place the person in a darker environment. If one is unavailable, cover the eyes with a blindfold.",
+    "Apply cool, damp cloths to the eyes."
+  ],
+  "meds": null,
+  "type": ["M"],
+  "technic": null,
+  "symptoms": [188, 155, 150]
+},
+{
+  "id": 54,
+  "name": "SKIN FROZEN to METAL",
+  "detail": "Dumb and dumber situation ;-)",
+  "care": [
+    "Pour warm water on the surface of the object and/or the skin.",
+    "Gently pull the skin from the object.",
+    "If the skin is torn, treat it as an open wound."
+  ],
+  "meds": null,
+  "type": ["m"],
+  "technic": null,
+  "symptoms": [167]
+},
+{
+  "id": 56,
+  "name": "ACUTE MOUNTAIN SICKNESS",
+  "detail": "Occurs when a person ascends too quickly. The higher the elevation, the lower the atmospheric pressure, which makes it harder for oxygen to enter the bloodstream. AMS is not a specific disease but a group of signs and symptoms caused by high-altitude. In most cases, more critical high-altitude illnesses start as AMS.",
+  "care": [
+    "Descend in a lower altitude (500m or less).",
+    "If signs and symptoms don't disappear after descending, seek medical attention.",
+    "Rest or engage in only light activity for two days."
+  ],
+  "meds": null,
+  "type": ["m"],
+  "technic": null,
+  "symptoms": [147, 83, 97, 99, 106, 91, 170, 102, 166, 92, 194, 78]
+},
+{
+  "id": 57,
+  "name": "HIGH-ALTITUDE CEREBRAL EDEMA",
+  "detail": "HACE occurs when AMS is left untreated. HACE is a life-threatening condition in which fluid accumulates between the brain and skull. The symptoms usually develop 2-3 days after arriving at a high altitude.",
+  "care": [
+    "Immediately descend to a significantly lower altitude.",
+    "If a portable hyperbaric bag is available and the person's condition remains poor, place the person in the bag if you are trained to do so.",
+    "Check and record vital signs regularly."
+  ],
+  "meds": null,
+  "type": ["C"],
+  "technic": null,
+  "symptoms": [147, 83, 119, 99, 106, 91, 170, 102, 166, 92, 194, 78, 131, 124, 122, 100, 164, 123, 104, 160, 189, 79, 80]
+},
+{
+  "id": 58,
+  "name": "HIGH-ALTITUDE PULMONARY EDEMA",
+  "detail": "HAPE occurs when AMS is left untreated. HAPE is a life-threatening condition in which fluid accumulates in the lungs. The symptoms usually develop 1-4 days after arriving at a high altitude.",
+  "care": [
+    "Have the person stop doing any activity and keep warm.",
+    "Immediately descend to a significantly lower altitude.",
+    "If a portable hyperbaric bag is available and the person's condition remains poor, place the person in the bag if you are trained to do so.",
+    "Check and record vital signs regularly."
+  ],
+  "meds": null,
+  "type": ["C"],
+  "technic": null,
+  "symptoms": [147, 179, 169, 106, 180, 91, 189, 124, 131, 93, 70, 204, 128]
+},
+{
+  "id": 59,
+  "name": "DECOMPRESSION SICKNESS",
+  "detail": "Occurs in scuba diving cases. Symptoms of decompression sickness appear 15mn to 12h after surfacing.",
+  "care": [
+    "Call (919)684-9111 for a consultation.",
+    "If trained to do so, provide the following care before and during transport:",
+    "Keep the person horizontal, on his/her back.",
+    "Provide 100% oxygen at high flow (10L/min) administered by tight-fitting oronasal mask.",
+    "Start an intravenous infusion of isotonic solution at a flow rate sufficient to maintain urine output of 1-2mL/kg/hr."
+  ],
+  "meds": null,
+  "type": ["m", "M", "C"],
+  "technic": null,
+  "symptoms": [100, 220, 99, 206, 180, 97, 140, 125, 213, 201, 119, 164, 84, 123, 129]
+},
+{
+  "id": 60,
+  "name": "ARTERIAL GAS EMBOLISMS",
+  "detail": "Symptoms of decompression sickness appear 15mn to 12h after surfacing.",
+  "care": [
+    "Call (919)684-9111 for a consultation.",
+    "If trained to do so, provide the following care before and during transport:",
+    "Keep the person horizontal, on his/her back.",
+    "Provide 100% oxygen at high flow (10L/min) administered by tight-fitting oronasal mask.",
+    "Start an intravenous infusion of isotonic solution at a flow rate sufficient to maintain urine output of 1-2mL/kg/hr."
+  ],
+  "meds": null,
+  "type": ["m", "M", "C"],
+  "technic": null,
+  "symptoms": [104, 100, 70, 147, 150, 181, 182, 123, 97]
+},
+  {
+    "id": 61,
+    "name": "LIGHTNING",
+    "detail": "During a storm:\n - use the 30/30 rule: if 30s between light/noise, seek shelter for 30mn.\n - If no shelter, crouch down in a ravine. Crouch with your feet facing downhill and grab your knees.\n - Avoid elevation, metal objects and tall objects.\n - In a group, space out several meters apart while keeping in sight.\n - Insulate yourself from the ground using non-conductive materials.",
+    "care": [
+      "Check ABCs and aggressively begin CPR if necessary.",
+      "Take spinal precautions while treating any injuries.",
+      "Look for entry and exit wounds and follow the steps for electrical burns."
+    ],
+    "meds": [],
+    "type": ["C"],
+    "symptoms": [81, 186, 187, 197, 72, 83, 69, 130, 104, 148, 164, 70, 99, 147, 83, 221]
+  },
+  {
+    "id": 62,
+    "name": "POISONS INHALED",
+    "detail": "Poison through the nose.",
+    "care": [
+      "Move the person into fresh air, but do not enter the hazardous atmosphere yourself to do so."
+    ],
+    "meds": [],
+    "type": ["M", "C"],
+    "symptoms": [168, 155, 78, 136]
+  },
+  {
+    "id": 63,
+    "name": "POISONS SWALLOWED",
+    "detail": "Poison through the mouth.",
+    "care": [
+      "Check the packaging of the poison.",
+      "Induce vomiting only if told to do so by the EMS dispatcher or the Poison Control Center.",
+      "If you cannot reach EMS dispatcher or Poison Control Center, dilute the poison by having the person drink water.",
+      "If the person needs to go to the hospital, bring a sample of the poison (or container)."
+    ],
+    "meds": [],
+    "type": ["C"],
+    "symptoms": [223, 94, 83, 86, 95, 96]
+  },
+  {
+    "id": 64,
+    "name": "POISONS ABSORBED",
+    "detail": "Poison through the skin.",
+    "care": [
+      "If the poison is a dry powder, brush it off the person's skin, being careful to avoid touching it.",
+      "Remove any clothing covered in the poison.",
+      "Flush the skin with clean water for at least 15 minutes. Make sure the water flushes away from any unaffected areas of the body.",
+      "Apply a dressing and bandage the area.",
+      "If a rash or weeping lesion develops, apply a paste of baking soda and water to the area several times a day."
+    ],
+    "meds": [],
+    "type": ["M", "C"],
+    "symptoms": [224, 190]
+  },
+  {
+    "id": 65,
+    "name": "ANIMAL BITES, STING",
+    "detail": "Bites or Stings, change camp site.",
+    "care": [
+      "Bites:",
+      " - Get away from the animal.",
+      " - Allow the wound to seep (the body's way of getting rid of infection) and treat the bite as an open wound.",
+      " - Watch for signs or symptoms of infection.",
+      "Marine life stings:",
+      " - Flush the injured area with vinegar for at least 30 seconds. If vinegar unavailable, apply a paste of baking soda and water and leave on the area for 20 minutes.",
+      " - While wearing gloves or using a towel, remove any pieces of the animal.",
+      " - Immerse affected area in hot water for at least 20 minutes or until pain goes away.",
+      " - Scrape the area with a sharp edge.",
+      " - Cool the area.",
+      " - If not allergic, apply an ointment or cream (Benadryl) once the area has dried.",
+      " - Watch for signs and symptoms of infection.",
+      "Insect stings:",
+      " - If stinger still embedded, scrape it away from the skin.",
+      " - Wash the area with soap and water.",
+      " - Cool the area to reduce swelling.",
+      " - Continue to watch for signs of anaphylaxis.",
+      "Leeches:",
+      " - Slide a thin edge (credit card) between the skin and the leech. Leeches have suckers at both ends, so detach both if needed.",
+      " - Treat as a cut."
+    ],
+    "meds": ["Benadryl"],
+    "type": ["M"],
+    "symptoms": [225, 224, 194, 195, 154, 187, 226, 227, 228]
+  },
+  {
+    "id": 66,
+    "name": "VENOMOUS ANIMAL",
+    "detail": "Bite from snake or spider that are venomous.",
+    "care": [
+      "Snakes:",
+      "- Get away from the snake.Remember what it looks like to describe it if contacting EMS.",
+      "- Keep the person still, with the bite level with the heart.",
+      "- Check temperature and color of the limb beyond the bite site.",
+      "- Wash the wound with water and cover with clean, dry dressing.",
+      "Record this on SOAP notes.",
+      "Spider:",
+      "- Have the person rest quietly and keep the bite elevated.",
+      "- Cool the area with a cold pack."
+    ],
+    "meds": [],
+    "type": ["C"],
+    "symptoms": [97, 168, 226, 227, 83, 144, 228, 229, 97]
+  },
+  {
+    "id": 67,
+    "name": "TICK BITES",
+    "detail": "Bloodsucker insects (arachnids) living in wooded or grassy areas. Small as a pinhead. Can attach to skin when brushing past.",
+    "care": [
+      "If not yet dug into flesh, brush it off.",
+      "If biting:",
+      " - Use tweezers to grasp tick's head as close to skin as possible.",
+      " - Pull upward without twisting until tick releases hold.",
+      " - If unable to remove tick or mouthparts remain, seek medical attention.",
+      " - If tick removed, wash area with soap and water.",
+      " - If infection or fever/rash develops, seek medical attention.",
+      " - Save tick in a bag to analyze for Lyme disease."
+    ],
+    "meds": [],
+    "type": ["M"],
+    "symptoms": [196]
+  },
+  {
+    "id": 68,
+    "name": "PNEUMONIA",
+    "detail": "Inflammation of lungs caused by infection, leading to breathing difficulty.",
+    "care": [
+      "Sit up and take deep breaths, supporting chest with arms.",
+      "Cough forcefully.",
+      "Repeat every 2 hours while awake. If condition doesn’t improve, continue 2h intervals overnight.",
+      "If person immobile for long, help prevent pressure sores by rotating every 2 hours if possible."
+    ],
+    "meds": [],
+    "type": ["M", "C"],
+    "symptoms": [97]
+  }
+];
+
+//List of Technics
+const technics = [
+  {
+    "id": 300,
+    "name": "CHECKING ABC",
+    "detail": "When checking ABCs, idea is to check Airways, then Breathing to finish with Circulation. When more than one person requires care, you may have to triage. This means caring for different illnesses and injuries according to their degree of urgency.",
+    "steps": [
+      "A = Airways: Make sure the person has an open airway. If the person is speaking, moaning or crying, the person's airway is open, if the person is unresponsive, perform a head-tilt/chin-lift by gently tilting the head back until the chin is pointing up.",
+      "B = Vreathing: Check for normal breathing for 5 to 10 seconds. A person is breathing normally if air is moving into and out of the lungs and the chest is rising and falling in a normal, regular pattern. Someone who can speak or cry is breathing.",
+      "C = Circulation: Quickly look at the person from head to toe for signs of life-threatening bleeding.",
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+  {
+    "id": 301,
+    "name": "RECOVERY POSITION",
+    "detail": "A person who is unresponsive or has an Altered level of responsiveness should be rolled into the recovery position, When placing a person in the recovery position, remember: - Support and protect the head while rolling the person, - Try to roll the person as one unit (head, back and legs at the same time), - Roll the person into a position where the body will stay safely on its side, - Check the ABCs after you complete the roll.",
+    "steps": [
+      "If a person is face down and you need to check for breathing, roll him/her over. If you suspect a head, neck or spinal injury, have someone assisst you.",
+      "1. Support and protect the person's head.",
+      "2. Have an assistant kneel beside the eprson at trunk level. Other assistants may position themselves at the eprson's hips and feet.",
+      "3. Move the arm closest to you above the person's head.",
+      "4. Roll the person as one unit onto the back, keeping the head in line with the body."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },  
+  {
+    "id": 302,
+    "name": "FOCUSED EXAMINATION",
+    "detail": "Once you are confident that all life-threatening conditions have been addressed, perform a secondary assessment to check for conditions that may not be as obvious.",
+    "steps": [
+      "If the person is responsive and able to answer questions, do a focused examination. if the person's condition deteriorates, respond immediately.",
+      "1. Explain that the purpose of the examination is to identify injuries.",
+      "2. Ask the person if anything hurts or feels uncomfortable.",
+      "3. If the person indicates an area of pain or concern, look at the area for signs of injury.",
+      "4. Ask focused questions about how the person feels."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },  
+  {
+    "id": 303,
+    "name": "HANDS-ON CHECK",
+    "detail": "If a person is breathing but unresponsive or unable to communicate, you may need to do a hands-on check. Begin by checking the head for injuries, and then work downward, focusing on the chest, abdomen, and legs before checking the arms.",
+    "steps": [],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },  
+  {
+    "id": 304,
+    "name": "ACTION PLAN",
+    "detail": "Base your plan on the three priority levels of an emergency.",
+    "steps": [
+      "Minor emergency: not life-threatening. Perform first aid, and decide whether to continue on or return home. Provide extended care for the person (see EXTENDED CARE) if necessary.",
+      "Major emergency: likely not life-threateningbut serious enough to end the activity. Perform first aid and then go home or seek medical attention (see EVACUATION: TRANSPORTING THE ILL OR INJURED PERSON.",
+      "Critical emergency: any condition or situation that is life-threatening or beyond the group's abilities or resources. Get medical attention as quickly as possible and prepare the person for evacuation (see ACTIVATE PROFESSIONAL RESCUE and EVACUATION: TRANSPORTING THE ILL OR INJURED PERSON)."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },  
+  {
+    "id": 305,
+    "name": "DEATH",
+    "detail": "Rescue refers to an emergency where the ill or injured person is in critical condition but alive, A recovery is no longer an emergency but a deliberate and carefully planned return to recover a body after death. Unfortunately, you may experience an emergency that involves death. Do not declare the person dead, as this is a legal action. If you encounter this situation, follow these steps:",
+    "steps": [
+      "1. Other than covering up the body, do not touch it or the scene. it is now a crime scene.",
+      "2. Write down everything that happened up until the time of death.",
+      "3. If you have a camera, photograph the scene.",      
+      "4. Send messengers to contact the authorities (see ACTIVATE PROFESSIONAL RESCUE).",
+      "5. Care for the emotional needs of your group."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },  
+  {
+    "id": 306,
+    "name": "CHOCKING",
+    "detail": "If the person is able to cough or speak, the airway is not completely blocked. Encourage the person to cough and be prepared to provide care if the person stops coughing. If the person's airway is completely blocked, you must begin first aid immediately.",
+    "steps": [
+      "Back Blows: - Place your arm accross the person's chest, - Bend the eprson forward and deliver up to 5 firm blows between the shoulder blades.",
+      "Abdominal Thrusts: - Place your fist just above the belly button, - Give up to 5 quick, inward and upward thrusts.",
+      "Chest Thrusts: - Place your fist in the middle of the person's chest with your thumb facing inward, and place your other hand over your fist.",      
+      "By yourself and chocking: - If there are people nearby, move to a place where you can be noticed, - Attempt to dislodge the object by performing abdominal thrusts against a safe object.",
+      "For a baby: - Sit or kneel with the baby face down along your forearm, holding the jaw in your hand but keeping the mouth clear, - Deliver 5 firm back blows, - If the object does not come out, flip the baby face up, ensuring you support the head, - Place 2 fingers in the middle of the chest and deliver 5 firm chest compressions, - Repeat the back blows and chest compressions until the object comes out or the baby begins to breathe normally or cry, - If the baby becomes unresponsive, immediately begin CPR, starting with chest compressions."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },  
+  {
+    "id": 307,
+    "name": "TOURNIQUETS",
+    "detail": "The following situations may require a tourniquet: - The bleeding cannot be controlled using direct pressure, - You are unable to access the wound, - You must move the person and are unable to maintain direct pressure.",
+    "steps": [
+      "If you have a commercial tourniquet, follow the manufacturer's directions. If you must improvise:",
+      "1. Apply a wide, thick bandage: it should be one hand's above the injury and at least two finger's width above any joint.",
+      "2. Wrap the bandage once around the limb and tie a knot.",      
+      "3. Use a stick (or any object like pen...) to secure the tourniquet in place.",
+      "4, Tie the ends of the bandage to keep it from unravelling.",
+      "5. Document the time the tourniquet was tightened. Best place for that is on the forehead."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },  
+  {
+    "id": 308,
+    "name": "CPR",
+    "detail": "Cardiac arrest occurs when the heart stops beating. Respiratory arrest occurs when breathing stops. When both the heart and breathing stop, it's referred to as cardiac and respiratory arrest. All forms of cardiac and respiratory arrests are critical emergencies. Perform CPR when a person is unresponsive and not breathing. Also check AED technic. Also check the CPR COMPRESSION DEPTH AND DURATION. Compression depth, Adults = 5-6cm, Child & Baby = 1/3 chest's depth.",
+    "steps": [
+      "Adult or child:",
+      "1. Do 30 chest compressions: - Put 2 hands in the centre of the person's chest, - Push deeply and steadily, allowing the chest to recoil between compressions.",
+      "2. Give 2 breaths: - Open the airway, - Place your barrier device over the person's mouth and nose, and if using a flat plastic shield, pinch the person's nostrils, - Give just enough air to make the chest start to rise.",
+      "3. If both breaths go in, repeat the cycle of 30 compressions and 2 breaths.",
+      "You should do compressions at a rate of 100 to 120 per minute. This works out to 30 compressions in about 15 to 18 seconds.",
+      "Baby (less than 1 year):",
+      "1. Do 30 chest compressions: - Put 2 fingers in the centre of the baby's chest, just below the nipple line, - Push deeply and steadily, allowing the chest to recoil between compressions.",
+      "2. Give 2 breaths: - Open the airway, - Place your barrier device over the baby's mouth and nose, - Give just enough air to make the chest start to rise.",
+      "3. If both breaths go in, repeat the cycle of 30 compressions and 2 breaths.",
+      "If you are unwilling or unable to give rescue breaths for any reason, compression-only CPR is acceptable."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+  {
+    "id": 309,
+    "name": "AED",
+    "detail": "An AED (Automatic External Defivrillator) is a medical device used to deliver a shock to a person in  cardiac arrest to help the heart re-establish an effective rythm.",
+    "steps": [
+      "Using an AED:",
+      "1. Open and turn on the AED.",
+      "2. Apply the AED pads: - Remove any clothing, jewellery, and medical patches that could interfere with pad placement, - If the chest is wet, dry the skin, - Place the pads at least 2.5cm away from the pacemaker.",
+      "3. Follow the AED's automated prompts.",
+      "4. If the AED prompts you to do so, ensure that no one is touching the person and deliver a shock.",
+      "5. Continue CPR, starting with compressions.",
+      "If possible, use the appropriate size of pads: adults, child, or baby. Pads must be placed at least 2.5cm apart. If there is not enough space on the chest, place one of the pad on the chest and one on the back.",
+      "You must remove a person from water before using an AED. It is safe to use an AED on ice or snow."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+    {
+    "id": 310,
+    "name": "BANDAGING GUIDELINES",
+    "detail": "..",
+    "steps": [
+      "Use clean, sterile dressings.",
+      "Check circulation below the injury before and after applying a bandage. If circulation is reduced, loosen the bandage.",
+      "If blood soaks through, leave the bandage and apply another on top.",
+      "Apply antibiotic ointment or cream on dressing then place on the wound.",
+      "Reserve several sterile bandages."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+      {
+    "id": 311,
+    "name": "REMOVING A HELMET",
+    "detail": "If possible, find someone to help support the person's head (by holding the jaw and back of the head) while you remove the helmet.",
+    "steps": [
+      "1. Push the sides of the helmet away from the person's ears and remove the helmet. If the person is wearing a full-face helmet, rotate it slightly to avoid catching on the nose.",
+      "2. Support the person's head in the position found."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+      {
+    "id": 312,
+    "name": "TARP LIFT",
+    "detail": "You can use a tarp lift to move the person a short distance provided you have enough help.",
+    "steps": [
+      "1. Tightly roll the tarp to half its width.",
+      "2. Gently roll the person to his/her side and place the rolled edge of the tarp against the person's back.",
+      "3. Roll the person onto the tarp.",
+      "4. Improvise a handle on both sides of the tarp by rolling it.",
+      "5. As one unit, lift the eprson. Keep the tarp as taut as possible."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+        {
+    "id": 313,
+    "name": "BOOT REMOVAL",
+    "detail": "Consider removing the person's boots if:",
+    "steps": [
+      "The foot is swollen and the boot will cause further problems.",
+      "You need to check for circulation.",
+      "You can't control bleeding.",
+      "The environment is safe to do so (i.e., will not compromise the limb or complicate evacuation).",
+      "To remove a boot, have an assistant stabilize the leg while you undo any laces or straps. Spread the sides of the boot, pull the tongue away, and slowly slip the boot off the foot."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+        {
+    "id": 314,
+    "name": "SPLINTS & SLINGS",
+    "detail": "There are four types of splints: - Anatomical (to keep the injured part tight against another body part), - Rigid (to provide support), - Soft (to provide comfort/warmth), - Slings (to provide support).",
+    "steps": [
+      "General application of a Splint or Sling.",
+      "- Check for normal temperature and skin colour below the injured area before and after immobilizing the limb. If the area is cold after immobilizing, loosen the splint gently.",
+      "- Remove jewellry below the size of the injury.",
+      "- Immobilize the injured part in the position in which it was found.",
+      "- Make sure s plint is long enough to extend above and below injury.",
+      "- Pad slings and splints.",
+      "- Monitor the splint during evacuation. If it becomes loose, be sure to readjust the splint.",
+      "Application of a Femur Splint.",
+      "- Splint both legs together wwith padding, holding the splint in place with bandages in at least five different places between the hips and the feet. Be sure to pad behind the eprson's knee to allow it ot bend comfortably.",
+      "There are many materials you can use to improvise a splint, such as jackets, blankets, tape, paddles, sleeping pads, packs or pieces of wood."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+    {
+    "id": 315,
+    "name": "ACTIVATE PROFESSIONAL RESCUE",
+    "detail": "If you must send messengers, try to send at least two people with enough provisions to survive overnight. Necessary information messengers should know:",
+    "steps": [
+      "- The date, time and exact location (map referrences) of the emergency.",
+      "- Where the rescuers should meet up with your group.",
+      "- The number of ill or injured people, their names, and a description of their injuries.",
+      "- A description of the first aid you have given.",
+      "- Names, addresses, and/or phone numbers, for everyone in the group.",
+      "- A list of existing supplies and equipment.",
+      "- A list of the specific equipment and help you need.",
+      "- Where a helicopter can land.",
+      "In short, you need all the information from a SOAP Note."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+      {
+    "id": 316,
+    "name": "GETTING HELP",
+    "detail": "Even if a person is stable, evacuating someone with a femur fracture, a pelvic injury, severe hypothermia, or a head, neck, or spinal injury may further endanger ther person. It may be best to stay where you are and signal and/or send for help.",
+    "steps": [
+      "Signalling: to signal for help, you can use a fire, flares, or electronic devices. remeber that three is the universal sign of distress (e.g. three whistle blasts, three fires, three rock formations, three riffle shots). Think big and use a variety.",
+      "Fire:",
+      "- During the day: Create a lot of smoke by putting green branches and leaves on the fire.",
+      "- After dark: Create high, bright flames by putting extra-dry wood on the fire and fanning it.",
+      "Flares:",
+      "Use a flare only when you see or hear an aircraft. Read the manufacturer's instructions carefully before use.",
+      "Electronic Devices:",
+      "When using an electronic device, try to signal in a way that stands out as urgent. If you have a GPS, give the rescuers your coordinates."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+        {
+    "id": 317,
+    "name": "CARRIES",
+    "detail": "You can use a carry or a stretcher to move a person who does not have a head, neck, or spinal injury. Use carries only for short distances.",
+    "steps": [
+      "Clothes drag: use available clothes to drag the person.",
+      "Two-person seat carry: with an assistant, cross arms, grab opposite assistant's arm. Making a seat out of it.",
+      "Walking assistant: help the person rest on you while walking, with an arm around your shoulders if possible."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+          {
+    "id": 318,
+    "name": "STRETCHERS",
+    "detail": "You can use a carry or a stretcher to move a person who does not have a head, neck, or spinal injury. Use carries only for short distances.",
+    "steps": [
+      "Stretchers types:",
+      "- Rope stretcher: use a rope to attache 2 long pieces together to build the stretcher.",
+      "- Coat stretcher: instead of rope, use clothes as available to build the stretcher.",
+      "- Simple fold: fold a tarp around your long pieces of wood (or any material) to build your stretcher.",
+      "Stretcher tips:",
+      "- Examine the materials before constructing a stretcher.",
+      "- Test the stretcher before putting the person on it, Ensure it is safe and comfortable for the injured person as well as the people carrying it.",
+      "- If on difficult terrain, have three people hold each side of the stretcher, On particularly steep slopes, you may need two or more people to use ropes to control the descent or ascent.",
+      "- Appoint a leader to oversee the transportation.",
+      "Body mechanics: to reduce the risk of personal injury, as well as injury to another team member, everyone involved in a lift or carry should use proper body mechanics. The basic principles of body mechanis that can be used for all lifts and moves include the following:",
+      "- Use your legs, not your back, to lift-use the muscles of your legs, hips, and buttocks, as well as your abdomen, Never use the muscles of your back to move or lift a heavy object.",
+      "- Keep the weight of the object as close to you as possible-reduce the distance you have to reach.",
+      "- Keep your body aligned-imagine a straight line from your shoulders through your hips down to your feet, and always move them as a unit. This will reduce twisting forces.",
+      "- Reduce the height or distance you need to move an object-lift in stages, if necessary.",
+      "- Keep a normalinward curve in your back, and keep your wrists and knees in normal alignment."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+            {
+    "id": 319,
+    "name": "EVACUATION: TRANSPORTING THE ILL OR INJURED PERSON",
+    "detail": "If you must move a person, consider the safety and needs of everyone in the groups. ask yourself the following questions:",
+    "steps": [
+      "- What is the condition and experience level of the group?",
+      "- How far must you travel and how long will it take? Or, if you decide against transporting, how long will it take help to arrive?",
+      "- What equipment do you have?",
+      "- What is the weather like?",
+      "- What is the terrain like?",
+      "- Which position is safest and most comfortable for the person (e.g., on teh back, on the side or sitting)?",
+      "Sleds: Ensure that the person controlling the sled can see the ill or injured person at all times.",
+      "Boats:",
+      "- If possible, put a PFD/lifejacket on the person.",
+      "- Monitor the person's temperature (cold from the bottom of the boat can aggravate shock).",
+      "- Do not tie the stretcher to the boat in case the boat capsizes.",
+      "Helicopter rescue: Follow these steps to prepare for the arrival of a helicopter.",
+      "- Find or create a large, flat, clear area for the helicopter to land.",
+      "- Set up an improvised windsock so the pilot can read the wind direction and speed.",
+      "- Ensure everyone is a safe distance from the landing area.",
+      "- Approach the helicopter only when the pilot signals that it is safe to do so."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  }
+];
+
+displayTechnicsList(technics);
+
+function getTechnicByName(name) {
+  return technics.find(t => t.name === name);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  displayGroups();
+  if (location.hash) navigate(location.hash.slice(1), false);
+  else navigate('index', false);
+});
+
+// Function to display Groups of symptoms
+function displayGroups(filter = '') {
+  const container = document.getElementById('group-list');
+  container.innerHTML = '';
+
+  groups
+    .filter(g => g.name.toLowerCase().includes(filter.toLowerCase()))
+    .forEach(group => {
+      const col = document.createElement('div');
+      col.className = 'col-12 col-md-6 col-lg-4 mb-3';
+
+      const btn = document.createElement('button');
+      btn.className = 'btn btn-outline-primary w-100 d-flex align-items-center justify-content-start gap-2';
+
+      // Remplacer l'emoji par une image PNG
+      const iconImg = document.createElement('img');
+      iconImg.src = group.iconUrl; // utilise le champ iconUrl (ex: "icons/heart.png")
+      iconImg.alt = group.name;
+      iconImg.style.width = '24px';
+      iconImg.style.height = '24px';
+      iconImg.style.objectFit = 'contain';
+      iconImg.setAttribute('aria-hidden', 'true');
+
+      btn.appendChild(iconImg);
+
+      const textSpan = document.createElement('span');
+      textSpan.textContent = ' ' + group.name;
+      btn.appendChild(textSpan);
+
+      btn.onclick = () => displaySymptomsGroup(group.id);
+
+      col.appendChild(btn);
+      container.appendChild(col);
+    });
+}
+
+
+function filterGroups() {
+  const term = document.getElementById('search-bar').value.trim().toLowerCase();
+  const container = document.getElementById('group-list');
+  container.innerHTML = '';
+
+  if (term === '') {
+    displayGroups();
+    return;
+  }
+
+  const matchedSymptoms = symptoms.filter(symptom =>
+    symptom.name.toLowerCase().includes(term)
+  );
+
+  if (matchedSymptoms.length === 0) {
+    container.innerHTML = '<div class="text-muted">No symptom found.</div>';
+    return;
+  }
+
+  matchedSymptoms.forEach(symptom => {
+    const group = groups.find(g => g.id === symptom.groupId);
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-outline-secondary m-2 d-flex align-items-center';
+
+    // Remplacement du span emoji par une image PNG
+    if (group?.iconUrl) {
+      const iconImg = document.createElement('img');
+      iconImg.src = group.iconUrl;
+      iconImg.alt = group.name;
+      iconImg.style.width = '20px';
+      iconImg.style.height = '20px';
+      iconImg.style.objectFit = 'contain';
+      iconImg.style.marginRight = '6px';
+      btn.appendChild(iconImg);
+    } else {
+      // fallback si pas d'icône (optionnel)
+      const fallbackSpan = document.createElement('span');
+      fallbackSpan.textContent = group?.icon || '';
+      fallbackSpan.style.fontSize = '1.3rem';
+      fallbackSpan.style.marginRight = '6px';
+      btn.appendChild(fallbackSpan);
+    }
+
+    const label = document.createElement('span');
+    label.textContent = symptom.name;
+
+    btn.appendChild(label);
+
+    btn.onclick = () => addSymptom(symptom.name);
+    container.appendChild(btn);
+  });
+}
+
+function renderAllEmergencies() {
+  const container = document.getElementById('emergency-list');
+  container.innerHTML = '';
+  emergencies.forEach(emergency => {
+    const div = document.createElement('div');
+    div.className = 'card-list-item';
+    div.innerHTML = `<strong>${emergency.name}</strong>`;
+    div.onclick = () => displayEmergencyObject(emergency);
+    container.appendChild(div);
+  });
+}
+
+
+
+/*
+// Affiche toutes les urgences (nom uniquement) par défaut
+function renderAllEmergencies() {
+  const list = document.getElementById("emergency-list");
+  list.innerHTML = "";
+
+  emergencies.forEach(em => {
+    const item = document.createElement("div");
+    item.className = "card my-2";
+
+    const cardBody = document.createElement("div");
+    cardBody.className = "card-body d-flex justify-content-between align-items-center";
+
+    const title = document.createElement("h5");
+    title.className = "card-title mb-0";
+    title.textContent = em.name;
+
+    const btn = document.createElement("button");
+    btn.className = "btn btn-primary";
+    btn.textContent = "Details";
+
+    btn.onclick = () => displayEmergencyObject(em);
+
+    cardBody.appendChild(title);
+    cardBody.appendChild(btn);
+    item.appendChild(cardBody);
+    list.appendChild(item);
+    
+  });
+}
+*/
+
+  // Recherche filtrée
+function filterEmergencies() {
+  const query = document.getElementById("search-bar-emergencies").value.toLowerCase();
+  const list = document.getElementById("emergency-list");
+  list.innerHTML = "";
+
+  emergencies
+    .filter(em => em.name.toLowerCase().includes(query))
+    .forEach(em => {
+      const item = document.createElement("div");
+      //item.className = "card my-2";
+      item.className = "technic-card mb-3 p-3 border rounded";
+
+      const cardBody = document.createElement("div");
+      cardBody.className = "card-body d-flex justify-content-between align-items-center";
+
+      const title = document.createElement("h5");
+      title.className = "card-title mb-0";
+      title.textContent = em.name;
+
+      const btn = document.createElement("button");
+      btn.className = "btn btn-primary";
+      btn.textContent = "Details";
+
+      btn.onclick = () => displayEmergencyObject(em);
+
+      cardBody.appendChild(title);
+      cardBody.appendChild(btn);
+      item.appendChild(cardBody);
+      list.appendChild(item);
+    });
+
+  if (query === "") {
+    renderAllEmergencies();
+  }
+}
+
+
+  // Appelle cette fonction quand la page "emergencies" est affichée
+  function showEmergencyPage() {
+    document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
+    document.getElementById("page-emergencies").classList.remove("hidden");
+    renderAllEmergencies(); // Affiche toutes les urgences
+  }
+/*
+function renderEmergencies(list) {
+  const container = document.getElementById('emergency-list');
+  container.innerHTML = '';
+
+  list.forEach(emergency => {
+    const div = document.createElement('div');
+    div.className = 'item-box';
+
+    // Titre de l'urgence
+    const title = document.createElement('h5');
+    title.textContent = emergency.name;
+
+    // Bouton "Details"
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-primary btn-sm mt-2';
+    btn.textContent = 'Details';
+    btn.onclick = () => displayEmergencyObject(emergency);
+
+    // Ajout au container
+    div.appendChild(title);
+    div.appendChild(btn);
+    container.appendChild(div);
+  });
+}
+  */
+
+function renderEmergencies(list) {
+  const container = document.getElementById('emergency-list');
+  container.innerHTML = '';
+
+  if (!list.length) {
+    container.innerHTML = '<p>No emergencies found.</p>';
+    return;
+  }
+
+  list.forEach(emergency => {
+    const card = document.createElement('div');
+    card.className = 'technic-card mb-3 p-3 border rounded';
+
+    // Titre cliquable
+    const title = document.createElement('h3');
+    title.textContent = emergency.name;
+    title.style.cursor = 'pointer';
+    title.onclick = () => displayEmergencyObject(emergency);
+    card.appendChild(title);
+    container.appendChild(card);
+  });
+}
+
+
+
+function displaySymptomsGroup(groupId) {
+  navigate('group');
+  const group = groups.find(g => g.id === groupId);
+  document.getElementById('group-title').textContent = group.name;
+
+  const container = document.getElementById('subgroup-list');
+  container.innerHTML = '';
+
+  const relevantSymptoms = symptoms.filter(s => s.groupId === groupId);
+
+  if (relevantSymptoms.length === 0) {
+    container.textContent = 'No symptom selected for this group.';
+    return;
+  }
+
+  relevantSymptoms.forEach(symptom => {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-outline-secondary m-2';
+    btn.textContent = symptom.name;
+    btn.onclick = () => addSymptom(symptom.name);
+    container.appendChild(btn);
+  });
+}
+
+const symptomsSelected = [];
+
+// Add symptom
+function addSymptom(symptoms) {
+  if (!symptomsSelected.includes(symptoms)) {
+    symptomsSelected.push(symptoms);
+    majSymptoms();
+  }
+}
+
+// ????
+function majSymptoms() {
+  const conteneurs = [document.getElementById('selected-symptoms'), document.getElementById('selected-symptoms-group')];
+  conteneurs.forEach(c => c.innerHTML = '');
+  symptomsSelected.forEach(s => {
+    conteneurs.forEach(c => {
+      const div = document.createElement('div');
+      div.textContent = s;
+      div.title = "Clic to unselect";
+      div.onclick = () => unselectSymptom(s);
+      c.appendChild(div);
+    });
+  });
+
+  const urg = findBestMatchingEmergency(symptomsSelected);
+  const urgBoxes = [document.getElementById('emergency-suggestion'), document.getElementById('emergency-suggestion-group')];
+
+  urgBoxes.forEach(box => {
+    if (urg) {
+      box.textContent = urg.name;
+      box.style.cursor = 'pointer';
+      box.setAttribute('role', 'button');
+      box.setAttribute('tabindex', '0');
+      box.onclick = () => displayEmergencyObject(urg);
+      box.onkeypress = e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          displayEmergencyObject(urg);
+        }
+      };
+    } else {
+      box.textContent = '';
+      box.style.cursor = 'default';
+      box.removeAttribute('role');
+      box.setAttribute('tabindex', '-1');
+      box.onclick = null;
+      box.onkeypress = null;
+    }
+  });
+}
+
+// Unselect symptom
+function unselectSymptom(symptoms) {
+  const idx = symptomsSelected.indexOf(symptoms);
+  if (idx !== -1) {
+    symptomsSelected.splice(idx, 1);
+    majSymptoms();
+  }
+}
+
+function findBestMatchingEmergency(selectedSymptoms) {
+  if (selectedSymptoms.length === 0) return null;
+
+  const selectedIds = symptoms
+    .filter(sym => selectedSymptoms.includes(sym.name))
+    .map(sym => Number(sym.id));
+
+  let bestMatch = null;
+  let bestScore = 0;
+
+  for (const em of emergencies) {
+    if (!Array.isArray(em.symptoms)) continue;
+
+    const emergencyIds = em.symptoms.map(Number);
+    const matches = emergencyIds.filter(id => selectedIds.includes(id)).length;
+
+    const allMatched = emergencyIds.every(id => selectedIds.includes(id));
+
+    // 1. Si tous les symptômes de l'urgence sont sélectionnés → match parfait
+    if (allMatched && emergencyIds.length > 0) {
+      return em;
+    }
+
+    // 2. Sinon, garder la meilleure correspondance partielle avec au moins 2 symptômes
+    const matchRatio = matches / emergencyIds.length;
+    if (matches >= 2 && matchRatio > bestScore) {
+      bestMatch = em;
+      bestScore = matchRatio;
+    }
+  }
+  return bestMatch;
+}
+
+// ...
+function displayEmergencyObject(urgency) {
+  navigate('emergency');
+
+  document.getElementById('emergency-title').textContent = urgency.name;
+  document.getElementById('emergency-description').textContent = urgency.detail;
+
+  const careList = document.getElementById('emergency-care');
+  careList.innerHTML = '';
+
+  if (Array.isArray(urgency.care)) {
+    urgency.care.forEach(line => {
+      const li = document.createElement('li');
+      li.textContent = line.trim();
+      careList.appendChild(li);
+    });
+  } else if (typeof urgency.care === 'string' && urgency.care.trim() !== '') {
+    // Si c'est une chaîne, on peut diviser par saut de ligne
+    urgency.care.split('\n').forEach(line => {
+      const li = document.createElement('li');
+      li.textContent = line.trim();
+      careList.appendChild(li);
+    });
+  } else {
+    // Pas de care ou vide
+    careList.textContent = '—';
+  }
+
+  // Symptoms
+  const detailsList = document.getElementById('emergency-details');
+  detailsList.innerHTML = '';
+  urgency.symptoms.forEach(id => {
+    const s = symptoms.find(sym => sym.id === id);
+    if (s) {
+      const li = document.createElement('li');
+      li.textContent = s.name;
+      detailsList.appendChild(li);
+    }
+  });
+
+  //document.getElementById('emergency-type').textContent = urgency.type.join(', ');
+  const typeContainer = document.getElementById('emergency-type');
+  typeContainer.innerHTML = ''; // vide avant
+
+  urgency.type.forEach(code => {
+    const info = emergencyTypeInfo[code];
+    if (info) {
+      const span = document.createElement('span');
+      span.innerHTML = `${info.iconHtml} <strong>${info.name}</strong>`;
+      span.title = info.description;
+      span.style.marginRight = '8px';
+      typeContainer.appendChild(span);
+    } else {
+      // Si code inconnu
+      const span = document.createElement('span');
+      span.textContent = code;
+      span.style.marginRight = '8px';
+      typeContainer.appendChild(span);
+    }
+  });
+
+    document.getElementById('emergency-meds').textContent = urgency.meds || '—';
+    document.getElementById('emergency-technic').textContent = urgency.technic || '—';
+  }
+
+  const toggle = document.getElementById('darkModeToggle');
+  toggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+
+    // Save preference
+    if (document.body.classList.contains('dark-mode')) {
+      localStorage.setItem('theme', 'dark');
+      toggle.innerHTML = '☀️ Light Mode';
+    } else {
+      localStorage.setItem('theme', 'light');
+      toggle.innerHTML = '🌙 Dark Mode';
+    }
+  });
+
+  // On page load, check preference
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      toggle.innerHTML = '☀️ Light Mode';
+    }
+  });
+
+function displayTechnic(technic, emergencies) {
+  document.getElementById("technic-title").textContent = technic.name;
+  document.getElementById("technic-description").textContent = technic.detail;
+
+  // Steps
+  const stepsUl = document.getElementById("technic-steps");
+  stepsUl.innerHTML = "";
+  if (technic.steps && technic.steps.length) {
+    technic.steps.forEach(step => {
+      const li = document.createElement("li");
+      li.textContent = step;
+      stepsUl.appendChild(li);
+    });
+  } else {
+    stepsUl.innerHTML = "<li>—</li>";
+  }
+
+  // Truc
+  const trucUl = document.getElementById("technic-truc");
+  trucUl.innerHTML = "";
+  if (technic.truc && technic.truc.length) {
+    technic.truc.forEach(t => {
+      const li = document.createElement("li");
+      li.textContent = t;
+      trucUl.appendChild(li);
+    });
+  } else {
+    trucUl.innerHTML = "<li>—</li>";
+  }
+
+  // Related emergencies
+  const relatedUl = document.getElementById("technic-related-emergencies");
+  relatedUl.innerHTML = "";
+
+  if (technic.emergencies && technic.emergencies.length) {
+    technic.emergencies.forEach(emId => {
+      const emergency = emergencies.find(e => e.id === emId);
+      if (emergency) {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = "#"; // ou la route vers ta page emergency avec l’id
+        a.textContent = emergency.name;
+        a.onclick = e => {
+          e.preventDefault();
+          // fonction pour afficher la page d'urgence par ID, à définir par toi
+          showEmergencyById(emId);
+        };
+        li.appendChild(a);
+        relatedUl.appendChild(li);
+      }
+    });
+  } else {
+    relatedUl.innerHTML = "<li>—</li>";
+  }
+}
+
+// Affiche la liste complète au chargement ou après un filtre
+function displayTechnicsList(technics) {
+  const container = document.getElementById("technics-list");
+  container.innerHTML = "";
+
+  if (!technics.length) {
+    container.innerHTML = "<p>No technics found.</p>";
+    return;
+  }
+
+  technics.forEach(technic => {
+    const card = document.createElement("div");
+    card.className = "technic-card mb-3 p-3 border rounded";
+
+    // Titre cliquable qui ouvre la page détail technic (fonction à définir)
+    const title = document.createElement("h3");
+    title.textContent = technic.name;
+    title.style.cursor = "pointer";
+    title.onclick = () => displayTechnicObject(technic);
+    card.appendChild(title);
+    container.appendChild(card);
+  });
+}
+
+
+// Filtre la liste en fonction du texte dans la barre de recherche
+function filterTechnics() {
+  const query = document.getElementById("search-bar-technics").value.toLowerCase().trim();
+  const list = document.getElementById("technics-list");
+  list.innerHTML = "";
+
+  const filtered = technics.filter(t => t.name.toLowerCase().includes(query));
+
+  filtered.forEach(technic => {
+    const item = document.createElement("div");
+    item.className = "card my-2";
+
+    const cardBody = document.createElement("div");
+    cardBody.className = "card-body d-flex justify-content-between align-items-center";
+
+    const title = document.createElement("h5");
+    title.className = "card-title mb-0";
+    title.textContent = technic.name;
+
+    const btn = document.createElement("button");
+    btn.className = "btn btn-primary";
+    btn.textContent = "Details";
+
+    btn.onclick = () => displayTechnicObject(technic);
+
+    cardBody.appendChild(title);
+    cardBody.appendChild(btn);
+    item.appendChild(cardBody);
+    list.appendChild(item);
+  });
+
+  if (query === "") {
+    renderAllTechnics();
+  }
+}
+
+function displayTechnicObject(technic) {
+  navigate('technic');  // ou la page dédiée à la technic
+
+  document.getElementById("technic-title").textContent = technic.name;
+  document.getElementById("technic-description").textContent = technic.detail;
+
+  const stepsUl = document.getElementById("technic-steps");
+  stepsUl.innerHTML = "";
+  if (technic.steps && technic.steps.length) {
+    technic.steps.forEach(step => {
+      const li = document.createElement("li");
+      li.textContent = step;
+      stepsUl.appendChild(li);
+    });
+  } else {
+    stepsUl.innerHTML = "<li>—</li>";
+  }
+
+  const trucUl = document.getElementById("technic-truc");
+  trucUl.innerHTML = "";
+  if (technic.truc && technic.truc.length) {
+    technic.truc.forEach(t => {
+      const li = document.createElement("li");
+      li.textContent = t;
+      trucUl.appendChild(li);
+    });
+  } else {
+    trucUl.innerHTML = "<li>—</li>";
+  }
+
+  // Related emergencies
+  const relatedUl = document.getElementById("technic-related-emergencies");
+  relatedUl.innerHTML = "";
+
+  if (technic.emergencies && technic.emergencies.length) {
+    technic.emergencies.forEach(emId => {
+      const emergency = emergencies.find(e => e.id === emId);
+      if (emergency) {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = "#"; 
+        a.textContent = emergency.name;
+        a.onclick = e => {
+          e.preventDefault();
+          displayEmergencyObject(emergency);
+        };
+        li.appendChild(a);
+        relatedUl.appendChild(li);
+      }
+    });
+  } else {
+    relatedUl.innerHTML = "<li>—</li>";
+  }
+}
+
+function showTechnicsPage() {
+  document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
+  document.getElementById("page-technics").classList.remove("hidden");
+  renderAllTechnics();
+}
+
+function goToBreathing() {
+  document.getElementById("abc-b").classList.remove("d-none");
+  document.getElementById("abc-c").classList.add("d-none");
+}
+
+function goToCirculation() {
+  document.getElementById("abc-c").classList.remove("d-none");
+}
+
+//Function for a 100bpm for use with CPR
+let bpmInterval, audioCtx;
+
+function startCPRBeep(bpm = 100) {
+  stopCPRBeep(); // Au cas où ça tourne déjà
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const interval = 60000 / bpm;
+
+  bpmInterval = setInterval(() => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = "square"; // son court et sec
+    osc.frequency.setValueAtTime(1000, audioCtx.currentTime); // 1000 Hz
+
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime); // volume léger
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.1);
+  }, interval);
+}
+
+function stopCPRBeep() {
+  if (bpmInterval) clearInterval(bpmInterval);
+  if (audioCtx) audioCtx.close();
+}
+
+
+//SOAP function + HTML save
+function saveSOAP() {
+  const form = document.getElementById("soap-form");
+
+  // Données victime
+  const victimName = document.getElementById("soap-name").value.trim();
+  const victimAge = document.getElementById("soap-age").value.trim();
+  const victimGender = document.getElementById("soap-gender").value;
+  const soapDate = document.getElementById("soap-date").value;
+
+  const data = {
+    name: victimName,
+    age: victimAge,
+    gender: victimGender,
+    date: soapDate,
+    subjective: form.subjective.value.trim(),
+    objective: form.objective.value.trim(),
+    assessment: form.assessment.value.trim(),
+    plan: form.plan.value.trim(),
+    rescuer: form.rescuer.value.trim(),
+    timestamp: new Date().toISOString(),
+    opqrst: {
+      onset: form.opqrst_onset.value.trim(),
+      provocation: form.opqrst_provocation.value.trim(),
+      quality: form.opqrst_quality.value.trim(),
+      region: form.opqrst_region.value.trim(),
+      severity: form.opqrst_severity.value.trim(),
+      time: form.opqrst_time.value.trim()
+    }
+  };
+
+  // Charger les anciens
+  const existing = JSON.parse(localStorage.getItem("soapReports") || "[]");
+
+  // Ajouter le nouveau
+  existing.push(data);
+
+  // Sauver tout
+  localStorage.setItem("soapReports", JSON.stringify(existing));
+
+  // Sauver aussi le dernier pour un accès rapide
+  localStorage.setItem("soapReport", JSON.stringify(data));
+
+  alert("SOAP saved offline!");
+}
+
+function showSOAPSummary() {
+  const summary = document.getElementById("soap-summary");
+  const output = document.getElementById("soap-output");
+  const data = JSON.parse(localStorage.getItem("soapReport") || "{}");
+
+  if (!data.subjective) {
+    alert("No SOAP data found.");
+    return;
+  }
+
+  output.innerHTML = `
+    <h3>🧍 Victim Information</h3>
+    <p><strong>Name:</strong> ${data.name || '—'}</p>
+    <p><strong>Age:</strong> ${data.age || '—'}</p>
+    <p><strong>Gender:</strong> ${data.gender || '—'}</p>
+    <p><strong>🕒 Date & Time:</strong> ${data.date || new Date(data.timestamp).toLocaleString()}</p>
+
+    <h3>Détails SOAP</h3>
+    <p><strong>🧠 Subjectif:</strong><br>${data.subjective.replace(/\n/g, "<br>")}</p>
+    <p><strong>👁️ Objectif:</strong><br>${data.objective.replace(/\n/g, "<br>")}</p>
+    <h4>🩺 Pain Assessment (OPQRST)</h4>
+      <ul>
+        <li><strong>Onset:</strong> ${data.opqrst?.onset || "—"}</li>
+        <li><strong>Provocation:</strong> ${data.opqrst?.provocation || "—"}</li>
+        <li><strong>Quality:</strong> ${data.opqrst?.quality || "—"}</li>
+        <li><strong>Region/Radiation:</strong> ${data.opqrst?.region || "—"}</li>
+        <li><strong>Severity:</strong> ${data.opqrst?.severity || "—"}</li>
+        <li><strong>Time:</strong> ${data.opqrst?.time || "—"}</li>
+      </ul>
+    <p><strong>🔎 Assessment:</strong><br>${data.assessment.replace(/\n/g, "<br>")}</p>
+    <p><strong>🛠️ Plan:</strong><br>${data.plan.replace(/\n/g, "<br>")}</p>
+    <p><strong>✍️ First Aiders:</strong> ${data.rescuer}</p>
+  `;
+
+  summary.classList.remove("d-none");
+}
+
+const openBtn = document.getElementById('open-soap-report');
+if (openBtn) {
+  openBtn.addEventListener('click', () => {
+    const data = JSON.parse(localStorage.getItem("soapReport") || "{}");
+    if (!data.subjective) {
+      alert("Aucun rapport SOAP sauvegardé.");
+      return;
+    }
+
+    let html = `
+      <h3>🧍 Victim Information</h3>
+      <p><strong>Name:</strong> ${data.name || '—'}</p>
+      <p><strong>Age:</strong> ${data.age || '—'}</p>
+      <p><strong>Gender:</strong> ${data.gender || '—'}</p>
+      <p><strong>🕒 Date & Time:</strong> ${data.date || new Date(data.timestamp).toLocaleString()}</p>
+
+      <h3>Détails SOAP</h3>
+      <p><strong>🧠 Subjectif:</strong><br>${data.subjective.replace(/\n/g, "<br>")}</p>
+      <p><strong>👁️ Objectif:</strong><br>${data.objective.replace(/\n/g, "<br>")}</p>
+      <h4>🩺 Pain Assessment (OPQRST)</h4>
+        <ul>
+          <li><strong>Onset:</strong> ${data.opqrst?.onset || "—"}</li>
+          <li><strong>Provocation:</strong> ${data.opqrst?.provocation || "—"}</li>
+          <li><strong>Quality:</strong> ${data.opqrst?.quality || "—"}</li>
+          <li><strong>Region/Radiation:</strong> ${data.opqrst?.region || "—"}</li>
+          <li><strong>Severity:</strong> ${data.opqrst?.severity || "—"}</li>
+          <li><strong>Time:</strong> ${data.opqrst?.time || "—"}</li>
+        </ul>
+      <p><strong>🔎 Assessment:</strong><br>${data.assessment.replace(/\n/g, "<br>")}</p>
+      <p><strong>🛠️ Plan:</strong><br>${data.plan.replace(/\n/g, "<br>")}</p>
+      <p><strong>✍️ First Aiders:</strong> ${data.rescuer}</p>
+    `;
+
+    document.getElementById('soap-report-content').innerHTML = html;
+    document.getElementById('soap-report-section').classList.remove('hidden');
+  });
+}
+
+// Fonction pour fermer la section rapport
+function closeSOAPReport() {
+  document.getElementById('soap-report-section').classList.add('hidden');
+}
+
+window.addEventListener('popstate', e => navigate(e.state?.page || 'index', false));
+
+// Pour PWA
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').then(() => {
+      console.log('Service worker enregistré.');
+    });
+  }
+
+function showSOAPList() {
+  const list = document.getElementById("soap-list");
+  const reports = JSON.parse(localStorage.getItem("soapReports") || "[]");
+
+  if (reports.length === 0) {
+    list.innerHTML = "<li class='list-group-item'>No SOAP reports found.</li>";
+  } else {
+    list.innerHTML = "";
+    reports.forEach((report, index) => {
+      const li = document.createElement("li");
+      li.className = "list-group-item";
+      li.innerHTML = `
+        <strong>${report.name || "Unknown"}</strong> – ${new Date(report.timestamp).toLocaleString()}
+        <button class="btn btn-sm btn-link float-end" onclick="viewSOAP(${index})">View</button>
+      `;
+      list.appendChild(li);
+    });
+  }
+
+  document.getElementById("soap-list-section").classList.remove("hidden");
+}
+
+// Pour afficher un rapport en détail
+function viewSOAP(index) {
+  const reports = JSON.parse(localStorage.getItem("soapReports") || "[]");
+  const data = reports[index];
+  if (!data) return alert("Report not found.");
+
+  const html = `
+    <h3>🧍 Victim Information</h3>
+    <p><strong>Name:</strong> ${data.name || '—'}</p>
+    <p><strong>Age:</strong> ${data.age || '—'}</p>
+    <p><strong>Gender:</strong> ${data.gender || '—'}</p>
+    <p><strong>🕒 Date & Time:</strong> ${data.date || new Date(data.timestamp).toLocaleString()}</p>
+
+    <h3>📋 SOAP Report</h3>
+    <p><strong>🧠 Subjective:</strong><br>${data.subjective?.replace(/\n/g, "<br>") || '—'}</p>
+    <p><strong>👁️ Objective:</strong><br>${data.objective?.replace(/\n/g, "<br>") || '—'}</p>
+
+    <h4>🩺 Pain Assessment (OPQRST)</h4>
+    <ul>
+      <li><strong>Onset:</strong> ${data.opqrst?.onset || "—"}</li>
+      <li><strong>Provocation:</strong> ${data.opqrst?.provocation || "—"}</li>
+      <li><strong>Quality:</strong> ${data.opqrst?.quality || "—"}</li>
+      <li><strong>Region/Radiation:</strong> ${data.opqrst?.region || "—"}</li>
+      <li><strong>Severity:</strong> ${data.opqrst?.severity || "—"}</li>
+      <li><strong>Time:</strong> ${data.opqrst?.time || "—"}</li>
+    </ul>
+
+    <p><strong>🔎 Assessment:</strong><br>${data.assessment?.replace(/\n/g, "<br>") || '—'}</p>
+    <p><strong>🛠️ Plan:</strong><br>${data.plan?.replace(/\n/g, "<br>") || '—'}</p>
+    <p><strong>✍️ Rescuer:</strong> ${data.rescuer || '—'}</p>
+  `;
+
+  document.getElementById("soap-report-content").innerHTML = html;
+  document.getElementById("soap-report-section").classList.remove("hidden");
+  document.getElementById("soap-list-section").classList.add("hidden");
+}
+
+function closeSOAPList() {
+  document.getElementById("soap-list-section").classList.add("hidden");
+}
+
+function saveSOAPasPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const data = JSON.parse(localStorage.getItem("soapReport") || "{}");
+  if (!data.subjective) {
+    alert("Aucun rapport SOAP sauvegardé.");
+    return;
+  }
+
+  let y = 10; // position verticale initiale dans le PDF
+
+  doc.setFontSize(16);
+  doc.text("SOAP Report", 10, y);
+  y += 10;
+
+  doc.setFontSize(12);
+  doc.text(`Name: ${data.name || '—'}`, 10, y);
+  y += 7;
+  doc.text(`Age: ${data.age || '—'}`, 10, y);
+  y += 7;
+  doc.text(`Gender: ${data.gender || '—'}`, 10, y);
+  y += 7;
+  doc.text(`Date & Time: ${data.date || new Date(data.timestamp).toLocaleString()}`, 10, y);
+  y += 10;
+
+  doc.text("Subjective:", 10, y);
+  y += 7;
+  doc.text(doc.splitTextToSize(data.subjective || "—", 180), 10, y);
+  y += 20;
+
+  doc.text("Objective:", 10, y);
+  y += 7;
+  doc.text(doc.splitTextToSize(data.objective || "—", 180), 10, y);
+  y += 20;
+
+  doc.text("Pain Assessment (OPQRST):", 10, y);
+  y += 7;
+  const opqrst = data.opqrst || {};
+  doc.text(`Onset: ${opqrst.onset || '—'}`, 10, y);
+  y += 7;
+  doc.text(`Provocation: ${opqrst.provocation || '—'}`, 10, y);
+  y += 7;
+  doc.text(`Quality: ${opqrst.quality || '—'}`, 10, y);
+  y += 7;
+  doc.text(`Region/Radiation: ${opqrst.region || '—'}`, 10, y);
+  y += 7;
+  doc.text(`Severity: ${opqrst.severity || '—'}`, 10, y);
+  y += 7;
+  doc.text(`Time: ${opqrst.time || '—'}`, 10, y);
+  y += 10;
+
+  doc.text("Assessment:", 10, y);
+  y += 7;
+  doc.text(doc.splitTextToSize(data.assessment || "—", 180), 10, y);
+  y += 20;
+
+  doc.text("Plan:", 10, y);
+  y += 7;
+  doc.text(doc.splitTextToSize(data.plan || "—", 180), 10, y);
+  y += 20;
+
+  doc.text(`First Aider: ${data.rescuer || '—'}`, 10, y);
+  y += 10;
+
+  doc.save(`SOAP_Report_${data.name || "unknown"}_${new Date().toISOString()}.pdf`);
+}
+
+</script>
+
+<!--Pour utiliser le jsPDF, enregistrer le SOAP en PDF, version online -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script> -->
+<!--Pour utiliser le jsPDF, enregistrer le SOAP en PDF, version offline -->
+<script src="js/jspdf.umd.min.js"></script>
+
+
+
+</body>
+
+</html>
