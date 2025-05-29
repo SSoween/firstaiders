@@ -25,7 +25,7 @@
     --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     --font-title: 'Rubik', sans-serif;
   /* --color-bg-light: #fdfdfd; */
-    --color-bg-light: rgba(255, 0, 0, 0.3); /* rouge très pâle */
+    --color-bg-light: rgb(255, 255, 255);
     --color-text-dark: #212529;
     --color-accent: #0d6efd;
     --color-accent-bg: #e9f5ff;
@@ -418,7 +418,7 @@
     background: #fff;
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-light);
-    padding: 1rem 1.5rem;
+    padding: 0.5rem 1rem; /* réduit */
     transition: box-shadow 0.3s ease;
   }
   .technic-card:hover {
@@ -529,7 +529,6 @@
   box-shadow: 0 8px 16px rgb(0 0 0 / 0.15);
 }
 
-
   </style>
 
   <script>
@@ -615,9 +614,13 @@
     <h2 class="sub-title">Wilderness & Remote</h2>
     <h2 class="sub-title">Field Guide</h2>
     <div class="button-group-row">
-      <button class="custom-btn primary" onclick="navigate('safe')">🩺 First Assessment (ABC)</button>    
+      <button class="custom-btn primary" onclick="navigate('safe')">
+        <img src="icons/abc.png" alt="ABC icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        First Assessment</button>    
       <button class="custom-btn primary" onclick="navigate('signs')">📋 Second Assessment (SOAP)</button>
-      <button class="custom-btn danger" onclick="call911()">🚨 9-1-1</button>
+      <button class="custom-btn danger" onclick="call911()">
+        <img src="icons/911.png" alt="911 icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        9-1-1</button>
       <div class="mb-4"></div>
       <button onclick="showSOAPList()" class="custom-btn primary">📝 View SOAP Notes</button>
     </div>
@@ -643,7 +646,12 @@
     <div class="button-group-row">
       <button class="custom-btn primary" onclick="navigate('responsive')">✅ Yes</button>    
       <button class="custom-btn primary" onclick="navigate('unsafe')">❌ No</button>
-      <button class="custom-btn danger" onclick="call911()">🚨 9-1-1</button>
+<!--      <button class="custom-btn danger" onclick="call911()">🚨 9-1-1</button> -->
+      <button class="custom-btn danger" onclick="call911()">
+        <img src="icons/911.png" alt="911 icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        9-1-1</button>
+</button>
+
     </div>  
   </section>
 
@@ -662,7 +670,9 @@
     </div>
     <div class="button-group-row">
       <button class="custom-btn primary" onclick="navigate('safe')">✅ Area is Safe & Secure</button>    
-      <button class="custom-btn danger" onclick="call911()">🚨 9-1-1</button>
+      <button class="custom-btn danger" onclick="call911()">
+        <img src="icons/911.png" alt="911 icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        9-1-1</button>
     </div>  
   </section>
 
@@ -682,7 +692,9 @@
     <div class="button-group-row">
       <button class="custom-btn primary" onclick="navigate('breathing')">✅ Yes</button>    
       <button class="custom-btn primary" onclick="navigate('abc')">❌ No</button>
-      <button class="custom-btn danger" onclick="call911()">🚨 9-1-1</button>
+      <button class="custom-btn danger" onclick="call911()">
+        <img src="icons/911.png" alt="911 icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        9-1-1</button>
     </div>  
   </section>
 
@@ -701,8 +713,12 @@
     </div>
     <div class="button-group-row">
       <button class="custom-btn primary" onclick="navigate('signs')">✅ Yes</button>    
-      <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CHOCKING'))">❌ No</button>      
-      <button class="custom-btn danger" onclick="call911()">🚨 9-1-1</button>
+      <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CHOCKING'))">
+        <img src="icons/chocking.png" alt="chocking icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        ❌ No</button>
+      <button class="custom-btn danger" onclick="call911()">
+        <img src="icons/911.png" alt="911 icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        9-1-1</button>
     </div>  
   </section>
 
@@ -754,13 +770,32 @@
       <h3>C - Circulation</h3>
       <p>Are there any signs of circulation: intense bleeding? If yes, it has to be stopped before CPR.</p>
       <div class="button-group-row">   
-        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CPR'))">No → Begin chest compressions</button>
-        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('AED'))">AED available</button>
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CPR'))">
+        <img src="icons/cpr.png" alt="cpr icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        No → Chest compressions</button>
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('AED'))">
+        <img src="icons/aed.png" alt="aed icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        AED available</button>
       </div>
     </div>    
   </section>
 
   <!-- Page for BPM buttons -->
+  <!-- Page for BPM buttons -->
+  <section id="page-bpm" class="hidden container py-4">
+    <h2>CPR Rhythm</h2>
+    <div class="emergency-card mb-3">
+      <p class="mb-2 text-muted">Select a BPM to match the required CPR rhythm:</p>
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <button class="custom-btn primary" onclick="startCPRBeep(100)">100 BPM</button>
+        <button class="custom-btn primary" onclick="startCPRBeep(110)">110 BPM</button>
+        <button class="custom-btn primary" onclick="startCPRBeep(120)">120 BPM</button>
+      </div>
+      <button class="custom-btn danger" onclick="stopCPRBeep()">🛑 Stop</button>
+    </div>
+  </section>
+
+  <!-- a effacer si plus besoin
   <section id="page-bpm" class="hidden container py-4">
     <h2>BPM rythm (110)</h2>
     <div class="emergency-card mb-3">
@@ -770,7 +805,7 @@
       </div>
     </div>
   </section>
-
+-->
   <!-- Page for signs & Symptoms-->
   <section id="page-signs" class="hidden container py-4">
     <h2>Signs & Symptoms</h2>
@@ -858,7 +893,9 @@
       <h3>Emergency Technics</h3>
       <p id="emergency-technic">—</p>
     </div>
-    <button class="btn btn-danger" id="call-911" onclick="call911()">9-1-1</button>
+      <button class="custom-btn danger" onclick="call911()">
+        <img src="icons/911.png" alt="911 icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        9-1-1</button>
   </section>
 
   <!-- Page legal -->
@@ -885,6 +922,20 @@
 <!--Partie SOAP -->
 <section id="page-soap" class="hidden container py-4">
   <h2>SOAP Assessment</h2>
+    <div class="emergency-card mb-3">
+      <div style="margin-bottom: 0.5em;">
+        Secondary Assessment should be completed every 5–10 min for Critical, and 10–60 min for Major emergencies.
+      </div>
+      <ul style="margin: 0 0 0.5em 1.2em; padding: 0;">
+        <li style="font-size: 0.8em;">Protect documentation in wilderness or remote environment.</li>
+        <li style="font-size: 0.8em;">In our case, get a waterproof case for your smartphone.</li>
+      </ul>
+      <ul style="margin: 0 0 0.5em 1.2em; padding: 0;">
+        <li style="font-size: 0.8em;">Send the SOAP notes to the appropriate person. Here the PDF can be sent once back online.</li>
+        <li style="font-size: 0.8em;">If radioing, read the SOAP notes.</li>
+        <li style="font-size: 0.8em;">Prepare what you'll say. Be concise. Be objective.</li>
+      </ul>
+    </div>
   <div class="emergency-card mb-3">
     <h3>Victim Information</h3>
     <div class="mb-2">
@@ -2265,7 +2316,79 @@ const technics = [
     "truc": [],
     "bidule": ["M", "C"],
     "emergencies": [123456]
-  }
+  },
+  {
+    "id": 320,
+    "name": "BASIC CARE",
+    "detail": "Basic needs include shelter, warmth, water and food. When providing extended care, address the person's basic needs in this order:",
+    "steps": [
+      "1. Quickly establish a shelter that protects agains environmental conditions.",
+      "2. If necessary, build a fire. If possible, choose a spot where fires have been lit before.",
+      "3. decide how to ration your provisions."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+  {
+    "id": 321,
+    "name": "WATER PURIFICATION TECHNIQUES",
+    "detail": "To make water safe you can boil or filter it, or use a chemical disinfectants or ultraviolet radiation.",
+    "steps": [
+      "Boiling: Boil water for a minimum of 10 minutes.",
+      "Filtering: Research the filter you plan to use as not all filters remove all contaminants. Choose the cleanest water available (ideally fast-moving water), then follow the manufacturer's directions.",
+      "Chemically Disinfecting: Chlorine and iodine kill most microorganisms, but they do not remove Cryptosporidium. Always follow the manufacturer's directions and give the chemicals enough time to work (if teh water is cold, it may take longer to purify).",
+      "Ultraviolet: Ultraviolet radiation kills most bacteria and viruses but because it does not involve physical filters it is only suitable if the water is already clear. The device itself is a light stick that requires batteries and can be fragile, so a backup option for purification is crucial."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+  {
+    "id": 322,
+    "name": "BODY POSITIONS AND MOVEMENT",
+    "detail": "Help the person get comfortable; encourage him/her to change positions if uncomfortable at any time. If the person is able, encourage him/her to sit up and/or walk around to help keep warm.",
+    "steps": [
+      "Sitting: Makes it easier to breathe.",
+      "Lying down with knees bent: Provides abdominal relief.",
+      "Recovery position: Assists with drainage.",
+      "Lying on the right side: Makes it easier to breathe."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+  {
+    "id": 323,
+    "name": "PERSONAL HYGIENE",
+    "detail": "Ensure everyone in your group practises good hygiene, particularly when preparing food or caring for injuries. Be sure to do the following:",
+    "steps": [
+      "- Pack out any materials soiled by blood, urine, or feces, as these are considered biohazard.",
+      "- Clean, dry and apply fresh bandages to wounds daily.",
+      "- Help ill or injured people maintain good hygiene (e.g. provide a sponge bath or change of clothing).",
+      "- Follow the tips on LOWERING THE RISK OF INFECTION."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  },
+  {
+    "id": 323,
+    "name": "TOILETING CARE",
+    "detail": "If a person is unable to get up to use the toilet, the following items can be used to assist doing so in his/her current location. You may need to help the person get into a comfortable position first.",
+    "steps": [
+      "Toileting care items:",
+      "- Commercial incontinence pads.",
+      "- A bag filled with dry moss.",
+      "- A bottle.",
+      "- A bed (e.g. a piece of flat wood covered with absorbent material).",
+      "- A garbage bag with an absorbent layer.",
+      "Bowel movements should occur at least every two to three days. Getting enough fluids will help, but a laxative may be required if the person is experiencing difficulty."
+    ],
+    "truc": [],
+    "bidule": ["M", "C"],
+    "emergencies": [123456]
+  }      
 ];
 
 displayTechnicsList(technics);
@@ -2280,6 +2403,88 @@ document.addEventListener('DOMContentLoaded', () => {
   else navigate('index', false);
 });
 
+//Change the following 2 functions to display with cards instead of thin line
+function displayGroups(filter = '') {
+  const container = document.getElementById('group-list');
+  container.innerHTML = '';
+
+  const filteredGroups = groups.filter(g =>
+    g.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  filteredGroups.forEach(group => {
+    const card = document.createElement('div');
+    card.className = 'technic-card mb-3 p-3 border rounded d-flex align-items-center gap-3';
+    card.style.cursor = 'pointer';
+
+    const icon = document.createElement('img');
+    icon.src = group.iconUrl;
+    icon.alt = group.name;
+    icon.style.width = '32px';
+    icon.style.height = '32px';
+    icon.style.objectFit = 'contain';
+    icon.setAttribute('aria-hidden', 'true');
+
+    const title = document.createElement('strong');
+    title.className = 'mb-0';
+    title.textContent = group.name;
+
+    card.appendChild(icon);
+    card.appendChild(title);
+
+    card.onclick = () => displaySymptomsGroup(group.id);
+
+    container.appendChild(card);
+  });
+}
+
+function filterGroups() {
+  const term = document.getElementById('search-bar').value.trim().toLowerCase();
+  const container = document.getElementById('group-list');
+  container.innerHTML = '';
+
+  if (term === '') {
+    displayGroups();
+    return;
+  }
+
+  const matchedSymptoms = symptoms.filter(symptom =>
+    symptom.name.toLowerCase().includes(term)
+  );
+
+  if (matchedSymptoms.length === 0) {
+    container.innerHTML = '<div class="text-muted">No symptom found.</div>';
+    return;
+  }
+
+  matchedSymptoms.forEach(symptom => {
+    const group = groups.find(g => g.id === symptom.groupId);
+    const card = document.createElement('div');
+    card.className = 'technic-card mb-2 p-2 border rounded d-flex align-items-center gap-2';
+    card.style.cursor = 'pointer';
+
+    if (group?.iconUrl) {
+      const icon = document.createElement('img');
+      icon.src = group.iconUrl;
+      icon.alt = group.name;
+      icon.style.width = '24px';
+      icon.style.height = '24px';
+      icon.style.objectFit = 'contain';
+      card.appendChild(icon);
+    }
+
+    const label = document.createElement('span');
+    label.textContent = symptom.name;
+    card.appendChild(label);
+
+    card.onclick = () => addSymptom(symptom.name);
+    container.appendChild(card);
+  });
+}
+
+
+
+/*
 // Function to display Groups of symptoms
 function displayGroups(filter = '') {
   const container = document.getElementById('group-list');
@@ -2381,6 +2586,7 @@ function renderAllEmergencies() {
     container.appendChild(div);
   });
 }
+  */
 
   // Recherche filtrée
 function filterEmergencies() {
@@ -2566,7 +2772,7 @@ function findBestMatchingEmergency(selectedSymptoms) {
   return bestMatch;
 }
   */
-
+  // Changed function for better logic: exact, partial, update
   function findBestMatchingEmergency(selectedSymptoms) {
   if (!selectedSymptoms.length) return null;
 
@@ -2877,6 +3083,45 @@ function goToCirculation() {
 
 //Function for a 100bpm for use with CPR
 let bpmInterval, audioCtx;
+let currentBpm = null;
+
+function startCPRBeep(bpm = 100) {
+  stopCPRBeep(); // Arrêter si déjà en cours
+  currentBpm = bpm;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const interval = 60000 / bpm;
+
+  bpmInterval = setInterval(() => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = "square";
+    osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
+
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.1);
+  }, interval);
+}
+
+function stopCPRBeep() {
+  if (bpmInterval) clearInterval(bpmInterval);
+  bpmInterval = null;
+
+  if (audioCtx && audioCtx.state !== 'closed') {
+    audioCtx.close();
+  }
+
+  audioCtx = null;
+}
+
+
+/* a effacer si plus besoin
+let bpmInterval, audioCtx;
 
 function startCPRBeep(bpm = 100) {
   stopCPRBeep(); // Au cas où ça tourne déjà
@@ -2904,6 +3149,7 @@ function stopCPRBeep() {
   if (bpmInterval) clearInterval(bpmInterval);
   if (audioCtx) audioCtx.close();
 }
+  */
 
 
 //SOAP function + HTML save
@@ -3035,12 +3281,41 @@ function closeSOAPReport() {
 window.addEventListener('popstate', e => navigate(e.state?.page || 'index', false));
 
 // Pour PWA
+// Register Service Worker and auto-update silently
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(registration => {
+      console.log('✅ Service Worker registered.');
+
+      // Listen for updates to the Service Worker
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed') {
+            if (navigator.serviceWorker.controller) {
+              // New version available – reload automatically
+              console.log('🔁 New version available. Reloading...');
+              window.location.reload();
+            } else {
+              console.log('⚡ First-time installation of the PWA.');
+            }
+          }
+        });
+      });
+    })
+    .catch(error => {
+      console.error('❌ Failed to register Service Worker:', error);
+    });
+}
+
+/*
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').then(() => {
       console.log('Service worker enregistré.');
     });
   }
-
+*/
 function showSOAPList() {
   const list = document.getElementById("soap-list");
   const reports = JSON.parse(localStorage.getItem("soapReports") || "[]");
