@@ -67,7 +67,9 @@ const urlsToCache = [
   'icons/abc.png',
   'icons/aed.png',
   'icons/chocking.png',
-  'icons/cpr.png'
+  'icons/cpr.png',
+  'icons/pls.png',
+  'icons/kit.png'
 ];
 
 // Installation : mise en cache initiale

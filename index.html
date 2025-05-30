@@ -529,6 +529,37 @@
   box-shadow: 0 8px 16px rgb(0 0 0 / 0.15);
 }
 
+#kit-items {
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+#kit-items h3 {
+  margin-top: 1em;
+  font-size: 1.1em;
+  border-bottom: 1px solid #ccc;
+}
+
+.kit-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5em;
+  border-bottom: 1px solid #ddd;
+  padding: 0.3em 0;
+}
+
+.kit-item .item-name {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.kit-item input {
+  width: 60px;
+  text-align: right;
+  padding: 2px 4px;
+}
+
   </style>
 
   <script>
@@ -604,6 +635,7 @@
         <!-- <li><a class="dropdown-item text-primary fw-bold" href="game.html">🧠 Training Game (TBI)</a></li> -->
         <li><a class="dropdown-item" href="#" onclick="navigate('bpm'); return false;">💓 BPM 110</a></li>
         <button id="darkModeToggle" class="dropdown-item d-flex align-items-center" type="button"> 🌙 Toggle Dark Mode </button>
+        <li><a class="dropdown-item" href="#" onclick="navigate('kit'); return false;">🧰 Kit First Aid</a></li>
       </ul>
     </div>
   </nav>
@@ -617,7 +649,9 @@
       <button class="custom-btn primary" onclick="navigate('safe')">
         <img src="icons/abc.png" alt="ABC icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
         First Assessment</button>    
-      <button class="custom-btn primary" onclick="navigate('signs')">📋 Second Assessment (SOAP)</button>
+      <button class="custom-btn primary" onclick="navigate('signs')">
+        <img src="icons/soap.png" alt="soap icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        Second Assessment (SOAP)</button>
       <button class="custom-btn danger" onclick="call911()">
         <img src="icons/911.png" alt="911 icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
         9-1-1</button>
@@ -625,7 +659,7 @@
       <button onclick="showSOAPList()" class="custom-btn primary">📝 View SOAP Notes</button>
     </div>
     <footer class="footer-note">
-      <span>🧰 Built with care by Gaëtan H. — <a href="mailto:1stAid@soween.com">1stAid@soween.com</a></span>
+      <span>Built with care by Gaëtan H. — <a href="mailto:1stAid@soween.com">1stAid@soween.com</a></span>
     </footer>
   </section>
 
@@ -762,7 +796,9 @@
       <h3>B - Breathing</h3>
       <p>Is the person breathing normally?</p>
       <div class="button-group-row">         
-        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('RECOVERY POSITION'))">Yes → Place in recovery position</button>
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('RECOVERY POSITION'))">
+          <img src="icons/pls.png" alt="pls icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+          Yes → Recovery position</button>
         <button class="custom-btn danger" onclick="goToCirculation()">No → Check circulation</button>
       </div>
     </div>
@@ -771,11 +807,11 @@
       <p>Are there any signs of circulation: intense bleeding? If yes, it has to be stopped before CPR.</p>
       <div class="button-group-row">   
         <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CPR'))">
-        <img src="icons/cpr.png" alt="cpr icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
-        No → Chest compressions</button>
+          <img src="icons/cpr.png" alt="cpr icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+          No → Chest compressions</button>
         <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('AED'))">
-        <img src="icons/aed.png" alt="aed icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
-        AED available</button>
+          <img src="icons/aed.png" alt="aed icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+          AED available</button>
       </div>
     </div>    
   </section>
@@ -1032,6 +1068,16 @@
   <button class="btn btn-primary" onclick="saveSOAPasPDF()">Save to PDF</button>
   <button class="btn btn-secondary" onclick="closeSOAPList()">Close</button>
 </section>
+
+<!--Page affichage Kit Premier Soin-->
+<section id="page-kit" class="hidden container py-4">
+  <h2><img src="icons/kit.png" alt="Kit Icon" style="width: 1.2em; vertical-align: middle; margin-right: 0.3em;">
+    72h First Aid Kit</h2>
+  <p>This checklist helps you manage and track your emergency kit contents.</p>
+  <div id="kit-items"></div>
+  <button onclick="saveKitQuantities()">💾 Save Quantities</button>
+</section>
+
 
 <script>
 
@@ -2403,6 +2449,104 @@ document.addEventListener('DOMContentLoaded', () => {
   else navigate('index', false);
 });
 
+//Kit Premier Soins
+const kitItems = [
+  { category: "Wound Care", items: [
+    { name: "Adhesive Bandages [100]", qty: 100 },
+    { name: "Gauze Pads (3\"x3\") [6]", qty: 6 },
+    { name: "Conforming Bandage (2\"x5yd) [2]", qty: 2 },
+    { name: "Conforming Bandage (3\"x5yd) [2]", qty: 2 },
+    { name: "Compress Pressure Bandage (4\"x4\") [1]", qty: 1 },
+    { name: "Triangular Bandage [1]", qty: 1 },
+    { name: "Safety Pins [24]", qty: 24 },
+    { name: "Windlass Tourniquet [1]", qty: 1 }
+  ]},
+  { category: "Fracture/Sprain", items: [
+    { name: "Splint (4\"x24\") [1]", qty: 1 },
+    { name: "Instant Cold Pack (5.5\"x4\") [1]", qty: 1 }
+  ]},
+  { category: "Emergency Tools", items: [
+    { name: "CPR Barrier [1]", qty: 1 },
+    { name: "Bandage Scissors (14cm) [1]", qty: 1 },
+    { name: "Splinter Forceps (11.4cm) [1]", qty: 1 },
+    { name: "Multifunction Saber Card [1]", qty: 1 },
+    { name: "Aluminum LED Flashlight [1]", qty: 1 },
+    { name: "Whistle [1]", qty: 1 }
+  ]},
+  { category: "Sanitation Supplies", items: [
+    { name: "Vinyl Gloves [2]", qty: 2 },
+    { name: "Hand/Skin Cleaning Towelette [12]", qty: 12 },
+    { name: "Antiseptic Wound Towelette [12]", qty: 12 },
+    { name: "Cotton Tipped Applicators [24]", qty: 24 },
+    { name: "Tongue Depressors [2]", qty: 2 },
+    { name: "Waste Disposal Bag [1]", qty: 1 }
+  ]},
+  { category: "Survival Tools", items: [
+    { name: "Thermal Blanket [1]", qty: 1 },
+    { name: "Multi-Tool Plier [1]", qty: 1 },
+    { name: "Multifunction Pen [1]", qty: 1 },
+    { name: "Survival Bracelet [1]", qty: 1 },
+    { name: "Rope [1]", qty: 1 },
+    { name: "Screwdriver [1]", qty: 1 },
+    { name: "Telescopic Bellow [1]", qty: 1 },
+    { name: "Spork [1]", qty: 1 },
+    { name: "Fishing Tools [1]", qty: 1 },
+    { name: "Wire Saw [1]", qty: 1 },
+    { name: "Flint and Fire Starter [1]", qty: 1 },
+    { name: "Carabiner [1]", qty: 1 }
+  ]},
+  { category: "Storage", items: [
+    { name: "Tactical Molle Bag [1]", qty: 1 }
+  ]}
+];
+
+function renderKitItems() {
+  const saved = JSON.parse(localStorage.getItem("kitQuantities") || "{}");
+  const container = document.getElementById('kit-items');
+  container.innerHTML = '';
+
+  kitItems.forEach(group => {
+    const section = document.createElement('div');
+    section.innerHTML = `<h3>${group.category}</h3>`;
+    group.items.forEach(item => {
+      const value = saved[item.name] ?? item.qty;
+
+      const itemRow = document.createElement('div');
+      itemRow.className = 'kit-item';
+      itemRow.innerHTML = `
+        <span class="item-name">${item.name}</span>
+        <input type="number" min="0" id="kit-${item.name}" value="${value}" class="qty-input">
+      `;
+      section.appendChild(itemRow);
+    });
+    container.appendChild(section);
+  });
+}
+
+
+function saveKitQuantities() {
+  const data = {};
+  kitItems.forEach(group => {
+    group.items.forEach(item => {
+      const input = document.getElementById(`kit-${item.name}`);
+      data[item.name] = parseInt(input.value) || 0;
+    });
+  });
+  localStorage.setItem("kitQuantities", JSON.stringify(data));
+  alert("✅ Quantities saved.");
+}
+
+// Appelle renderKitItems quand tu navigues vers la page
+function navigate(pageId) {
+  document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+  document.getElementById(`page-${pageId}`).classList.remove('hidden');
+  if (pageId === 'kit') renderKitItems();
+}
+// -> fin Kit Premier Soins
+
+
+
+
 //Change the following 2 functions to display with cards instead of thin line
 function displayGroups(filter = '') {
   const container = document.getElementById('group-list');
@@ -2481,112 +2625,6 @@ function filterGroups() {
     container.appendChild(card);
   });
 }
-
-
-
-/*
-// Function to display Groups of symptoms
-function displayGroups(filter = '') {
-  const container = document.getElementById('group-list');
-  container.innerHTML = '';
-
-  groups
-    .filter(g => g.name.toLowerCase().includes(filter.toLowerCase()))
-    .forEach(group => {
-      const col = document.createElement('div');
-      col.className = 'col-12 col-md-6 col-lg-4 mb-3';
-
-      const btn = document.createElement('button');
-      btn.className = 'btn btn-outline-primary w-100 d-flex align-items-center justify-content-start gap-2';
-
-      // Remplacer l'emoji par une image PNG
-      const iconImg = document.createElement('img');
-      iconImg.src = group.iconUrl; // utilise le champ iconUrl (ex: "icons/heart.png")
-      iconImg.alt = group.name;
-      iconImg.style.width = '24px';
-      iconImg.style.height = '24px';
-      iconImg.style.objectFit = 'contain';
-      iconImg.setAttribute('aria-hidden', 'true');
-
-      btn.appendChild(iconImg);
-
-      const textSpan = document.createElement('span');
-      textSpan.textContent = ' ' + group.name;
-      btn.appendChild(textSpan);
-
-      btn.onclick = () => displaySymptomsGroup(group.id);
-
-      col.appendChild(btn);
-      container.appendChild(col);
-    });
-}
-
-
-function filterGroups() {
-  const term = document.getElementById('search-bar').value.trim().toLowerCase();
-  const container = document.getElementById('group-list');
-  container.innerHTML = '';
-
-  if (term === '') {
-    displayGroups();
-    return;
-  }
-
-  const matchedSymptoms = symptoms.filter(symptom =>
-    symptom.name.toLowerCase().includes(term)
-  );
-
-  if (matchedSymptoms.length === 0) {
-    container.innerHTML = '<div class="text-muted">No symptom found.</div>';
-    return;
-  }
-
-  matchedSymptoms.forEach(symptom => {
-    const group = groups.find(g => g.id === symptom.groupId);
-    const btn = document.createElement('button');
-    btn.className = 'btn btn-outline-secondary m-2 d-flex align-items-center';
-
-    // Remplacement du span emoji par une image PNG
-    if (group?.iconUrl) {
-      const iconImg = document.createElement('img');
-      iconImg.src = group.iconUrl;
-      iconImg.alt = group.name;
-      iconImg.style.width = '20px';
-      iconImg.style.height = '20px';
-      iconImg.style.objectFit = 'contain';
-      iconImg.style.marginRight = '6px';
-      btn.appendChild(iconImg);
-    } else {
-      // fallback si pas d'icône (optionnel)
-      const fallbackSpan = document.createElement('span');
-      fallbackSpan.textContent = group?.icon || '';
-      fallbackSpan.style.fontSize = '1.3rem';
-      fallbackSpan.style.marginRight = '6px';
-      btn.appendChild(fallbackSpan);
-    }
-
-    const label = document.createElement('span');
-    label.textContent = symptom.name;
-
-    btn.appendChild(label);
-
-    btn.onclick = () => addSymptom(symptom.name);
-    container.appendChild(btn);
-  });
-}
-
-function renderAllEmergencies() {
-  const container = document.getElementById('emergency-list');
-  container.innerHTML = '';
-  emergencies.forEach(emergency => {
-    const div = document.createElement('div');
-    div.className = 'card-list-item';
-    div.innerHTML = `<strong>${emergency.name}</strong>`;
-    div.onclick = () => displayEmergencyObject(emergency);
-    container.appendChild(div);
-  });
-}
-  */
 
   // Recherche filtrée
 function filterEmergencies() {
@@ -2738,40 +2776,7 @@ function unselectSymptom(symptoms) {
     majSymptoms();
   }
 }
-/*
-function findBestMatchingEmergency(selectedSymptoms) {
-  if (selectedSymptoms.length === 0) return null;
 
-  const selectedIds = symptoms
-    .filter(sym => selectedSymptoms.includes(sym.name))
-    .map(sym => Number(sym.id));
-
-  let bestMatch = null;
-  let bestScore = 0;
-
-  for (const em of emergencies) {
-    if (!Array.isArray(em.symptoms)) continue;
-
-    const emergencyIds = em.symptoms.map(Number);
-    const matches = emergencyIds.filter(id => selectedIds.includes(id)).length;
-
-    const allMatched = emergencyIds.every(id => selectedIds.includes(id));
-
-    // 1. Si tous les symptômes de l'urgence sont sélectionnés → match parfait
-    if (allMatched && emergencyIds.length > 0) {
-      return em;
-    }
-
-    // 2. Sinon, garder la meilleure correspondance partielle avec au moins 2 symptômes
-    const matchRatio = matches / emergencyIds.length;
-    if (matches >= 2 && matchRatio > bestScore) {
-      bestMatch = em;
-      bestScore = matchRatio;
-    }
-  }
-  return bestMatch;
-}
-  */
   // Changed function for better logic: exact, partial, update
   function findBestMatchingEmergency(selectedSymptoms) {
   if (!selectedSymptoms.length) return null;
