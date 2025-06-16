@@ -25,7 +25,7 @@
     --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     --font-title: 'Rubik', sans-serif;
   /* --color-bg-light: #fdfdfd; */
-    --color-bg-light: rgb(255, 255, 255);
+    --color-bg-light: rgba(255, 0, 0, 0.2); /* rouge très pâle */
     --color-text-dark: #212529;
     --color-accent: #0d6efd;
     --color-accent-bg: #e9f5ff;
@@ -99,7 +99,7 @@
     color: var(--color-accent);
   }
 
-  #search-bar, #search-bar-emergencies, #searchInput {
+  #searchInput {
     background: #fff;
     border: 2px solid var(--color-muted-border);
     padding: 0.75rem 1.25rem;
@@ -418,7 +418,7 @@
     background: #fff;
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-light);
-    padding: 0.5rem 1rem; /* réduit */
+    padding: 1rem 1.5rem;
     transition: box-shadow 0.3s ease;
   }
   .technic-card:hover {
@@ -520,8 +520,8 @@
   background: #fff;
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-light);
-  padding: 1rem 1.5rem;
-  margin-bottom: 1.5rem;
+  padding: 0.5rem 1.5rem;       /* moins d’espace en haut et en bas */
+  margin-bottom: 1rem;          /* moins d’espace entre les cartes */
   transition: box-shadow 0.3s ease;
   cursor: pointer;
 }
@@ -533,13 +533,6 @@
   font-size: 0.9em;
   line-height: 1.5;
 }
-
-#kit-items h3 {
-  margin-top: 1em;
-  font-size: 1.1em;
-  border-bottom: 1px solid #ccc;
-}
-
 .kit-item {
   display: flex;
   justify-content: space-between;
@@ -548,17 +541,12 @@
   border-bottom: 1px solid #ddd;
   padding: 0.3em 0;
 }
-
-.kit-item .item-name {
-  flex: 1;
-  margin-right: 10px;
-}
-
 .kit-item input {
   width: 60px;
   text-align: right;
   padding: 2px 4px;
 }
+
 
   </style>
 
@@ -581,36 +569,44 @@
       }
     };
 
-    //Mise a jour de navigate pour integrer la page ABC
-    function navigate(page, push = true) {
-    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-    const target = document.getElementById('page-' + page);
-    if (target) {
-      target.classList.remove('hidden');
-    }
+function navigate(page, push = true) {
+  // Masquer toutes les sections
+  document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
 
-    if (push) history.pushState({ page: page }, '', '#' + page);
+  // Afficher la section cible
+  const target = document.getElementById('page-' + page);
+  if (target) {
+    target.classList.remove('hidden');
+  }
 
-    // Affiche dynamiquement le bon contenu selon la page demandée
-    switch (page) {
-      case 'signs':
-        displayGroups();
-        break;
-      case 'emergencies':
-        renderAllEmergencies();
-        break;
-      case 'technic':
-        displayTechnicsList(technics);
-        break;
-      // tu peux ajouter d'autres pages ici si besoin
-      default:
-        break;
-      }
-    }
+  // Gestion de l'historique (évite les doublons sur back/forward)
+  if (push) {
+    history.pushState({ page }, '', '#' + page);
+  }
 
-    function call911() {
-      window.location.href = 'tel:911';
-    }
+  // Chargement dynamique de contenu spécifique par page
+  switch (page) {
+    case 'signs':
+      displayGroups();
+      break;
+    case 'emergencies':
+      renderAllEmergencies();
+      break;
+    case 'technic':
+      displayTechnicsList(technics);
+      break;
+    case 'kit':
+      renderKitItems();
+      break;
+    case 'soap':
+      showSOAPSummary(); // si tu veux que ça affiche la dernière note directe
+      break;
+    // Ajoute ici d'autres cas si nécessaire
+    default:
+      break;
+  }
+}
+
 
   </script>
 </head>
@@ -633,9 +629,10 @@
         <li><a class="dropdown-item" href="#" onclick="navigate('legal'); return false;">Legal</a></li>
         <li><hr class="dropdown-divider"></li> <!-- Optionnel : séparation -->
         <!-- <li><a class="dropdown-item text-primary fw-bold" href="game.html">🧠 Training Game (TBI)</a></li> -->
-        <li><a class="dropdown-item" href="#" onclick="navigate('bpm'); return false;">💓 BPM 110</a></li>
+        <li><a class="dropdown-item" href="#" onclick="navigate('bpm'); return false;">💓 CPR BPM</a></li>
         <button id="darkModeToggle" class="dropdown-item d-flex align-items-center" type="button"> 🌙 Toggle Dark Mode </button>
         <li><a class="dropdown-item" href="#" onclick="navigate('kit'); return false;">🧰 Kit First Aid</a></li>
+        <li><a class="dropdown-item" href="#" onclick="navigate('install'); return false;">📲 Install App</a></li>
       </ul>
     </div>
   </nav>
@@ -647,13 +644,13 @@
     <h2 class="sub-title">Field Guide</h2>
     <div class="button-group-row">
       <button class="custom-btn primary" onclick="navigate('safe')">
-        <img src="icons/abc.png" alt="ABC icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
-        First Assessment</button>    
+        <img src="icons/abc.png" alt="ABC icon" style="height: 2.5em; vertical-align: middle; margin-right: 0.5em;">
+        First Assessment</button> 
       <button class="custom-btn primary" onclick="navigate('signs')">
-        <img src="icons/soap.png" alt="soap icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        <img src="icons/soap.png" alt="soap icon" style="height: 2.5em; vertical-align: middle; margin-right: 0.5em;">
         Second Assessment (SOAP)</button>
       <button class="custom-btn danger" onclick="call911()">
-        <img src="icons/911.png" alt="911 icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        <img src="icons/911.png" alt="911 icon" style="height: 2.5em; vertical-align: middle; margin-right: 0.5em;">
         9-1-1</button>
       <div class="mb-4"></div>
       <button onclick="showSOAPList()" class="custom-btn primary">📝 View SOAP Notes</button>
@@ -680,12 +677,9 @@
     <div class="button-group-row">
       <button class="custom-btn primary" onclick="navigate('responsive')">✅ Yes</button>    
       <button class="custom-btn primary" onclick="navigate('unsafe')">❌ No</button>
-<!--      <button class="custom-btn danger" onclick="call911()">🚨 9-1-1</button> -->
       <button class="custom-btn danger" onclick="call911()">
-        <img src="icons/911.png" alt="911 icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        <img src="icons/911.png" alt="911 icon" style="height: 2.5em; vertical-align: middle; margin-right: 0.5em;">
         9-1-1</button>
-</button>
-
     </div>  
   </section>
 
@@ -705,7 +699,7 @@
     <div class="button-group-row">
       <button class="custom-btn primary" onclick="navigate('safe')">✅ Area is Safe & Secure</button>    
       <button class="custom-btn danger" onclick="call911()">
-        <img src="icons/911.png" alt="911 icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        <img src="icons/911.png" alt="911 icon" style="height: 2.5em; vertical-align: middle; margin-right: 0.5em;">
         9-1-1</button>
     </div>  
   </section>
@@ -727,7 +721,7 @@
       <button class="custom-btn primary" onclick="navigate('breathing')">✅ Yes</button>    
       <button class="custom-btn primary" onclick="navigate('abc')">❌ No</button>
       <button class="custom-btn danger" onclick="call911()">
-        <img src="icons/911.png" alt="911 icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        <img src="icons/911.png" alt="911 icon" style="height: 2.5em; vertical-align: middle; margin-right: 0.5em;">
         9-1-1</button>
     </div>  
   </section>
@@ -747,11 +741,9 @@
     </div>
     <div class="button-group-row">
       <button class="custom-btn primary" onclick="navigate('signs')">✅ Yes</button>    
-      <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CHOCKING'))">
-        <img src="icons/chocking.png" alt="chocking icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
-        ❌ No</button>
+      <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CHOCKING'))">❌ No</button>      
       <button class="custom-btn danger" onclick="call911()">
-        <img src="icons/911.png" alt="911 icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
+        <img src="icons/911.png" alt="911 icon" style="height: 2.5em; vertical-align: middle; margin-right: 0.5em;">
         9-1-1</button>
     </div>  
   </section>
@@ -796,9 +788,7 @@
       <h3>B - Breathing</h3>
       <p>Is the person breathing normally?</p>
       <div class="button-group-row">         
-        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('RECOVERY POSITION'))">
-          <img src="icons/pls.png" alt="pls icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
-          Yes → Recovery position</button>
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('RECOVERY POSITION'))">Yes → Place in recovery position</button>
         <button class="custom-btn danger" onclick="goToCirculation()">No → Check circulation</button>
       </div>
     </div>
@@ -806,46 +796,34 @@
       <h3>C - Circulation</h3>
       <p>Are there any signs of circulation: intense bleeding? If yes, it has to be stopped before CPR.</p>
       <div class="button-group-row">   
-        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CPR'))">
-          <img src="icons/cpr.png" alt="cpr icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
-          No → Chest compressions</button>
-        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('AED'))">
-          <img src="icons/aed.png" alt="aed icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
-          AED available</button>
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CPR'))">No → Begin chest compressions</button>
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('AED'))">AED available</button>
       </div>
     </div>    
   </section>
 
   <!-- Page for BPM buttons -->
-  <!-- Page for BPM buttons -->
   <section id="page-bpm" class="hidden container py-4">
     <h2>CPR Rhythm</h2>
     <div class="emergency-card mb-3">
       <p class="mb-2 text-muted">Select a BPM to match the required CPR rhythm:</p>
-      <div class="d-flex flex-wrap gap-2 mb-3">
+      <div class="button-group-row">
         <button class="custom-btn primary" onclick="startCPRBeep(100)">100 BPM</button>
         <button class="custom-btn primary" onclick="startCPRBeep(110)">110 BPM</button>
         <button class="custom-btn primary" onclick="startCPRBeep(120)">120 BPM</button>
       </div>
-      <button class="custom-btn danger" onclick="stopCPRBeep()">🛑 Stop</button>
-    </div>
-  </section>
-
-  <!-- a effacer si plus besoin
-  <section id="page-bpm" class="hidden container py-4">
-    <h2>BPM rythm (110)</h2>
-    <div class="emergency-card mb-3">
-      <div class="button-group-row">
-        <button class="custom-btn primary" onclick="startCPRBeep(110)">💓 Start 110 BPM</button>
-        <button class="custom-btn primary" onclick="stopCPRBeep()">Stop</button>
+      <div class="mb-4"></div>
+      <div>
+        <button class="custom-btn danger" onclick="stopCPRBeep()">🛑 Stop</button>
       </div>
     </div>
   </section>
--->
+
   <!-- Page for signs & Symptoms-->
   <section id="page-signs" class="hidden container py-4">
     <h2>Signs & Symptoms</h2>
     <input id="search-bar" class="form-control" type="text" placeholder="Search symptoms..." oninput="filterGroups()" aria-label="Search symptoms">
+    <div class="mb-4"></div>
     <!-- Sticky container -->
     <div class="sticky-selected-symptoms">
       <h5>Selected Symptoms</h5>
@@ -887,7 +865,7 @@
   <!-- List of Emergencies -->
   <section id="page-emergencies" class="hidden container py-4">
     <h2>List of Emergencies</h2>
-    <input id="search-bar-emergencies" class="form-control" type="text" placeholder="Search emergencies..." oninput="filterEmergencies()" aria-label="Search emergencies">
+    <input id="search-bar-emergencies" class="form-control mb-3" type="text" placeholder="Search emergencies..." oninput="filterEmergencies()" aria-label="Search emergencies">
     <div>
       <div id="emergency-list"></div>
     </div>
@@ -929,9 +907,7 @@
       <h3>Emergency Technics</h3>
       <p id="emergency-technic">—</p>
     </div>
-      <button class="custom-btn danger" onclick="call911()">
-        <img src="icons/911.png" alt="911 icon" style="height: 1.8em; vertical-align: middle; margin-right: 0.5em;">
-        9-1-1</button>
+    <button class="btn btn-danger" id="call-911" onclick="call911()">9-1-1</button>
   </section>
 
   <!-- Page legal -->
@@ -963,11 +939,8 @@
         Secondary Assessment should be completed every 5–10 min for Critical, and 10–60 min for Major emergencies.
       </div>
       <ul style="margin: 0 0 0.5em 1.2em; padding: 0;">
-        <li style="font-size: 0.8em;">Protect documentation in wilderness or remote environment.</li>
-        <li style="font-size: 0.8em;">In our case, get a waterproof case for your smartphone.</li>
-      </ul>
-      <ul style="margin: 0 0 0.5em 1.2em; padding: 0;">
-        <li style="font-size: 0.8em;">Send the SOAP notes to the appropriate person. Here the PDF can be sent once back online.</li>
+        <li style="font-size: 0.8em;">Protect documentation in wilderness or remote environment. In our case, get a waterproof case for your smartphone.</li>
+        <li style="font-size: 0.8em;">Send the SOAP notes to the appropriate person. In our case, the PDF can be sent once back online.</li>
         <li style="font-size: 0.8em;">If radioing, read the SOAP notes.</li>
         <li style="font-size: 0.8em;">Prepare what you'll say. Be concise. Be objective.</li>
       </ul>
@@ -1078,6 +1051,24 @@
   <button onclick="saveKitQuantities()">💾 Save Quantities</button>
 </section>
 
+<section id="page-install" class="hidden container py-4">
+  <h2>📲 Install FIRST AIDers as an App</h2>
+  <p>This application can work 100% offline once installed on your device.</p>
+  <h3>📱 On iPhone (Safari)</h3>
+  <ol>
+    <li>Tap the <strong>Share</strong> button (bottom center of Safari).</li>
+    <li>Choose <strong>"Add to Home Screen"</strong>.</li>
+    <li>Tap <strong>"Add"</strong> in the top-right corner.</li>
+  </ol>
+  <h3>📱 On Android (Chrome)</h3>
+  <ol>
+    <li>Tap the <strong>three-dot menu</strong> (top-right corner).</li>
+    <li>Select <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong>.</li>
+    <li>Confirm by tapping <strong>"Install"</strong>.</li>
+  </ol>
+  <p>Once installed, launch it like any other app — even when offline.</p>
+  <p>The SOAP you record while being offline are saved as PDF in your phone.</p>
+</section>
 
 <script>
 
@@ -2362,79 +2353,7 @@ const technics = [
     "truc": [],
     "bidule": ["M", "C"],
     "emergencies": [123456]
-  },
-  {
-    "id": 320,
-    "name": "BASIC CARE",
-    "detail": "Basic needs include shelter, warmth, water and food. When providing extended care, address the person's basic needs in this order:",
-    "steps": [
-      "1. Quickly establish a shelter that protects agains environmental conditions.",
-      "2. If necessary, build a fire. If possible, choose a spot where fires have been lit before.",
-      "3. decide how to ration your provisions."
-    ],
-    "truc": [],
-    "bidule": ["M", "C"],
-    "emergencies": [123456]
-  },
-  {
-    "id": 321,
-    "name": "WATER PURIFICATION TECHNIQUES",
-    "detail": "To make water safe you can boil or filter it, or use a chemical disinfectants or ultraviolet radiation.",
-    "steps": [
-      "Boiling: Boil water for a minimum of 10 minutes.",
-      "Filtering: Research the filter you plan to use as not all filters remove all contaminants. Choose the cleanest water available (ideally fast-moving water), then follow the manufacturer's directions.",
-      "Chemically Disinfecting: Chlorine and iodine kill most microorganisms, but they do not remove Cryptosporidium. Always follow the manufacturer's directions and give the chemicals enough time to work (if teh water is cold, it may take longer to purify).",
-      "Ultraviolet: Ultraviolet radiation kills most bacteria and viruses but because it does not involve physical filters it is only suitable if the water is already clear. The device itself is a light stick that requires batteries and can be fragile, so a backup option for purification is crucial."
-    ],
-    "truc": [],
-    "bidule": ["M", "C"],
-    "emergencies": [123456]
-  },
-  {
-    "id": 322,
-    "name": "BODY POSITIONS AND MOVEMENT",
-    "detail": "Help the person get comfortable; encourage him/her to change positions if uncomfortable at any time. If the person is able, encourage him/her to sit up and/or walk around to help keep warm.",
-    "steps": [
-      "Sitting: Makes it easier to breathe.",
-      "Lying down with knees bent: Provides abdominal relief.",
-      "Recovery position: Assists with drainage.",
-      "Lying on the right side: Makes it easier to breathe."
-    ],
-    "truc": [],
-    "bidule": ["M", "C"],
-    "emergencies": [123456]
-  },
-  {
-    "id": 323,
-    "name": "PERSONAL HYGIENE",
-    "detail": "Ensure everyone in your group practises good hygiene, particularly when preparing food or caring for injuries. Be sure to do the following:",
-    "steps": [
-      "- Pack out any materials soiled by blood, urine, or feces, as these are considered biohazard.",
-      "- Clean, dry and apply fresh bandages to wounds daily.",
-      "- Help ill or injured people maintain good hygiene (e.g. provide a sponge bath or change of clothing).",
-      "- Follow the tips on LOWERING THE RISK OF INFECTION."
-    ],
-    "truc": [],
-    "bidule": ["M", "C"],
-    "emergencies": [123456]
-  },
-  {
-    "id": 323,
-    "name": "TOILETING CARE",
-    "detail": "If a person is unable to get up to use the toilet, the following items can be used to assist doing so in his/her current location. You may need to help the person get into a comfortable position first.",
-    "steps": [
-      "Toileting care items:",
-      "- Commercial incontinence pads.",
-      "- A bag filled with dry moss.",
-      "- A bottle.",
-      "- A bed (e.g. a piece of flat wood covered with absorbent material).",
-      "- A garbage bag with an absorbent layer.",
-      "Bowel movements should occur at least every two to three days. Getting enough fluids will help, but a laxative may be required if the person is experiencing difficulty."
-    ],
-    "truc": [],
-    "bidule": ["M", "C"],
-    "emergencies": [123456]
-  }      
+  }
 ];
 
 displayTechnicsList(technics);
@@ -2449,138 +2368,42 @@ document.addEventListener('DOMContentLoaded', () => {
   else navigate('index', false);
 });
 
-//Kit Premier Soins
-const kitItems = [
-  { category: "Wound Care", items: [
-    { name: "Adhesive Bandages [100]", qty: 100 },
-    { name: "Gauze Pads (3\"x3\") [6]", qty: 6 },
-    { name: "Conforming Bandage (2\"x5yd) [2]", qty: 2 },
-    { name: "Conforming Bandage (3\"x5yd) [2]", qty: 2 },
-    { name: "Compress Pressure Bandage (4\"x4\") [1]", qty: 1 },
-    { name: "Triangular Bandage [1]", qty: 1 },
-    { name: "Safety Pins [24]", qty: 24 },
-    { name: "Windlass Tourniquet [1]", qty: 1 }
-  ]},
-  { category: "Fracture/Sprain", items: [
-    { name: "Splint (4\"x24\") [1]", qty: 1 },
-    { name: "Instant Cold Pack (5.5\"x4\") [1]", qty: 1 }
-  ]},
-  { category: "Emergency Tools", items: [
-    { name: "CPR Barrier [1]", qty: 1 },
-    { name: "Bandage Scissors (14cm) [1]", qty: 1 },
-    { name: "Splinter Forceps (11.4cm) [1]", qty: 1 },
-    { name: "Multifunction Saber Card [1]", qty: 1 },
-    { name: "Aluminum LED Flashlight [1]", qty: 1 },
-    { name: "Whistle [1]", qty: 1 }
-  ]},
-  { category: "Sanitation Supplies", items: [
-    { name: "Vinyl Gloves [2]", qty: 2 },
-    { name: "Hand/Skin Cleaning Towelette [12]", qty: 12 },
-    { name: "Antiseptic Wound Towelette [12]", qty: 12 },
-    { name: "Cotton Tipped Applicators [24]", qty: 24 },
-    { name: "Tongue Depressors [2]", qty: 2 },
-    { name: "Waste Disposal Bag [1]", qty: 1 }
-  ]},
-  { category: "Survival Tools", items: [
-    { name: "Thermal Blanket [1]", qty: 1 },
-    { name: "Multi-Tool Plier [1]", qty: 1 },
-    { name: "Multifunction Pen [1]", qty: 1 },
-    { name: "Survival Bracelet [1]", qty: 1 },
-    { name: "Rope [1]", qty: 1 },
-    { name: "Screwdriver [1]", qty: 1 },
-    { name: "Telescopic Bellow [1]", qty: 1 },
-    { name: "Spork [1]", qty: 1 },
-    { name: "Fishing Tools [1]", qty: 1 },
-    { name: "Wire Saw [1]", qty: 1 },
-    { name: "Flint and Fire Starter [1]", qty: 1 },
-    { name: "Carabiner [1]", qty: 1 }
-  ]},
-  { category: "Storage", items: [
-    { name: "Tactical Molle Bag [1]", qty: 1 }
-  ]}
-];
-
-function renderKitItems() {
-  const saved = JSON.parse(localStorage.getItem("kitQuantities") || "{}");
-  const container = document.getElementById('kit-items');
-  container.innerHTML = '';
-
-  kitItems.forEach(group => {
-    const section = document.createElement('div');
-    section.innerHTML = `<h3>${group.category}</h3>`;
-    group.items.forEach(item => {
-      const value = saved[item.name] ?? item.qty;
-
-      const itemRow = document.createElement('div');
-      itemRow.className = 'kit-item';
-      itemRow.innerHTML = `
-        <span class="item-name">${item.name}</span>
-        <input type="number" min="0" id="kit-${item.name}" value="${value}" class="qty-input">
-      `;
-      section.appendChild(itemRow);
-    });
-    container.appendChild(section);
-  });
-}
-
-
-function saveKitQuantities() {
-  const data = {};
-  kitItems.forEach(group => {
-    group.items.forEach(item => {
-      const input = document.getElementById(`kit-${item.name}`);
-      data[item.name] = parseInt(input.value) || 0;
-    });
-  });
-  localStorage.setItem("kitQuantities", JSON.stringify(data));
-  alert("✅ Quantities saved.");
-}
-
-// Appelle renderKitItems quand tu navigues vers la page
-function navigate(pageId) {
-  document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-  document.getElementById(`page-${pageId}`).classList.remove('hidden');
-  if (pageId === 'kit') renderKitItems();
-}
-// -> fin Kit Premier Soins
-
-
-
-
-//Change the following 2 functions to display with cards instead of thin line
+// Function to display Groups of symptoms
 function displayGroups(filter = '') {
   const container = document.getElementById('group-list');
   container.innerHTML = '';
 
-  const filteredGroups = groups.filter(g =>
-    g.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  groups
+    .filter(g => g.name.toLowerCase().includes(filter.toLowerCase()))
+    .forEach(group => {
+      const col = document.createElement('div');
+      col.className = 'col-12 col-md-6 col-lg-4 mb-3';
 
-  filteredGroups.forEach(group => {
-    const card = document.createElement('div');
-    card.className = 'technic-card mb-3 p-3 border rounded d-flex align-items-center gap-3';
-    card.style.cursor = 'pointer';
+      const btn = document.createElement('button');
+      btn.className = 'btn btn-outline-primary w-100 d-flex align-items-center justify-content-start gap-2';
 
-    const icon = document.createElement('img');
-    icon.src = group.iconUrl;
-    icon.alt = group.name;
-    icon.style.width = '32px';
-    icon.style.height = '32px';
-    icon.style.objectFit = 'contain';
-    icon.setAttribute('aria-hidden', 'true');
+      // Remplacer l'emoji par une image PNG
+      const iconImg = document.createElement('img');
+      iconImg.src = group.iconUrl; // utilise le champ iconUrl (ex: "icons/heart.png")
+      iconImg.alt = group.name;
+      iconImg.style.width = '24px';
+      iconImg.style.height = '24px';
+      iconImg.style.objectFit = 'contain';
+      iconImg.setAttribute('aria-hidden', 'true');
 
-    const title = document.createElement('strong');
-    title.className = 'mb-0';
-    title.textContent = group.name;
+      btn.appendChild(iconImg);
 
-    card.appendChild(icon);
-    card.appendChild(title);
+      const textSpan = document.createElement('span');
+      textSpan.textContent = ' ' + group.name;
+      btn.appendChild(textSpan);
 
-    card.onclick = () => displaySymptomsGroup(group.id);
+      btn.onclick = () => displaySymptomsGroup(group.id);
 
-    container.appendChild(card);
-  });
+      col.appendChild(btn);
+      container.appendChild(col);
+    });
 }
+
 
 function filterGroups() {
   const term = document.getElementById('search-bar').value.trim().toLowerCase();
@@ -2603,26 +2426,47 @@ function filterGroups() {
 
   matchedSymptoms.forEach(symptom => {
     const group = groups.find(g => g.id === symptom.groupId);
-    const card = document.createElement('div');
-    card.className = 'technic-card mb-2 p-2 border rounded d-flex align-items-center gap-2';
-    card.style.cursor = 'pointer';
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-outline-secondary m-2 d-flex align-items-center';
 
+    // Remplacement du span emoji par une image PNG
     if (group?.iconUrl) {
-      const icon = document.createElement('img');
-      icon.src = group.iconUrl;
-      icon.alt = group.name;
-      icon.style.width = '24px';
-      icon.style.height = '24px';
-      icon.style.objectFit = 'contain';
-      card.appendChild(icon);
+      const iconImg = document.createElement('img');
+      iconImg.src = group.iconUrl;
+      iconImg.alt = group.name;
+      iconImg.style.width = '20px';
+      iconImg.style.height = '20px';
+      iconImg.style.objectFit = 'contain';
+      iconImg.style.marginRight = '6px';
+      btn.appendChild(iconImg);
+    } else {
+      // fallback si pas d'icône (optionnel)
+      const fallbackSpan = document.createElement('span');
+      fallbackSpan.textContent = group?.icon || '';
+      fallbackSpan.style.fontSize = '1.3rem';
+      fallbackSpan.style.marginRight = '6px';
+      btn.appendChild(fallbackSpan);
     }
 
     const label = document.createElement('span');
     label.textContent = symptom.name;
-    card.appendChild(label);
 
-    card.onclick = () => addSymptom(symptom.name);
-    container.appendChild(card);
+    btn.appendChild(label);
+
+    btn.onclick = () => addSymptom(symptom.name);
+    container.appendChild(btn);
+  });
+}
+
+function renderAllEmergencies() {
+  const container = document.getElementById('emergency-list');
+  container.innerHTML = '';
+  emergencies.forEach(emergency => {
+    const div = document.createElement('div');
+    div.className = 'card-list-item';
+    div.innerHTML = `<strong>${emergency.name}</strong>`;
+    div.onclick = () => displayEmergencyObject(emergency);
+    container.appendChild(div);
   });
 }
 
@@ -2636,8 +2480,8 @@ function filterEmergencies() {
     .filter(em => em.name.toLowerCase().includes(query))
     .forEach(em => {
       const item = document.createElement("div");
-      //item.className = "card my-2";
-      item.className = "technic-card mb-3 p-3 border rounded";
+      item.className = "card my-2";
+      //item.className = "technic-card mb-3 p-3 border rounded";
 
       const cardBody = document.createElement("div");
       cardBody.className = "card-body d-flex justify-content-between align-items-center";
@@ -2776,8 +2620,41 @@ function unselectSymptom(symptoms) {
     majSymptoms();
   }
 }
+/*
+function findBestMatchingEmergency(selectedSymptoms) {
+  if (selectedSymptoms.length === 0) return null;
 
-  // Changed function for better logic: exact, partial, update
+  const selectedIds = symptoms
+    .filter(sym => selectedSymptoms.includes(sym.name))
+    .map(sym => Number(sym.id));
+
+  let bestMatch = null;
+  let bestScore = 0;
+
+  for (const em of emergencies) {
+    if (!Array.isArray(em.symptoms)) continue;
+
+    const emergencyIds = em.symptoms.map(Number);
+    const matches = emergencyIds.filter(id => selectedIds.includes(id)).length;
+
+    const allMatched = emergencyIds.every(id => selectedIds.includes(id));
+
+    // 1. Si tous les symptômes de l'urgence sont sélectionnés → match parfait
+    if (allMatched && emergencyIds.length > 0) {
+      return em;
+    }
+
+    // 2. Sinon, garder la meilleure correspondance partielle avec au moins 2 symptômes
+    const matchRatio = matches / emergencyIds.length;
+    if (matches >= 2 && matchRatio > bestScore) {
+      bestMatch = em;
+      bestScore = matchRatio;
+    }
+  }
+  return bestMatch;
+}
+  */
+
   function findBestMatchingEmergency(selectedSymptoms) {
   if (!selectedSymptoms.length) return null;
 
@@ -2966,9 +2843,15 @@ function displayTechnicsList(technics) {
   }
 
   technics.forEach(technic => {
+    const div = document.createElement('div');
+    div.className = 'card-list-item';
+    div.innerHTML = `<strong>${technic.name}</strong>`;
+    div.onclick = () => displayTechnicObject(technic);
+    container.appendChild(div);
+
+    /*
     const card = document.createElement("div");
     card.className = "technic-card mb-3 p-3 border rounded";
-
     // Titre cliquable qui ouvre la page détail technic (fonction à définir)
     const title = document.createElement("h3");
     title.textContent = technic.name;
@@ -2976,6 +2859,7 @@ function displayTechnicsList(technics) {
     title.onclick = () => displayTechnicObject(technic);
     card.appendChild(title);
     container.appendChild(card);
+    */
   });
 }
 
@@ -3088,45 +2972,6 @@ function goToCirculation() {
 
 //Function for a 100bpm for use with CPR
 let bpmInterval, audioCtx;
-let currentBpm = null;
-
-function startCPRBeep(bpm = 100) {
-  stopCPRBeep(); // Arrêter si déjà en cours
-  currentBpm = bpm;
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  const interval = 60000 / bpm;
-
-  bpmInterval = setInterval(() => {
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-
-    osc.type = "square";
-    osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
-
-    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.1);
-  }, interval);
-}
-
-function stopCPRBeep() {
-  if (bpmInterval) clearInterval(bpmInterval);
-  bpmInterval = null;
-
-  if (audioCtx && audioCtx.state !== 'closed') {
-    audioCtx.close();
-  }
-
-  audioCtx = null;
-}
-
-
-/* a effacer si plus besoin
-let bpmInterval, audioCtx;
 
 function startCPRBeep(bpm = 100) {
   stopCPRBeep(); // Au cas où ça tourne déjà
@@ -3154,7 +2999,6 @@ function stopCPRBeep() {
   if (bpmInterval) clearInterval(bpmInterval);
   if (audioCtx) audioCtx.close();
 }
-  */
 
 
 //SOAP function + HTML save
@@ -3286,41 +3130,12 @@ function closeSOAPReport() {
 window.addEventListener('popstate', e => navigate(e.state?.page || 'index', false));
 
 // Pour PWA
-// Register Service Worker and auto-update silently
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js')
-    .then(registration => {
-      console.log('✅ Service Worker registered.');
-
-      // Listen for updates to the Service Worker
-      registration.addEventListener('updatefound', () => {
-        const newWorker = registration.installing;
-
-        newWorker.addEventListener('statechange', () => {
-          if (newWorker.state === 'installed') {
-            if (navigator.serviceWorker.controller) {
-              // New version available – reload automatically
-              console.log('🔁 New version available. Reloading...');
-              window.location.reload();
-            } else {
-              console.log('⚡ First-time installation of the PWA.');
-            }
-          }
-        });
-      });
-    })
-    .catch(error => {
-      console.error('❌ Failed to register Service Worker:', error);
-    });
-}
-
-/*
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').then(() => {
       console.log('Service worker enregistré.');
     });
   }
-*/
+
 function showSOAPList() {
   const list = document.getElementById("soap-list");
   const reports = JSON.parse(localStorage.getItem("soapReports") || "[]");
@@ -3451,6 +3266,103 @@ function saveSOAPasPDF() {
 
   doc.save(`SOAP_Report_${data.name || "unknown"}_${new Date().toISOString()}.pdf`);
 }
+
+// First aid kit logic
+//Kit Premier Soins--------------------------------------------------------------------------------------------------------------
+const kitItems = [
+  { category: "Wound Care", items: [
+    { name: "Adhesive Bandages [100]", qty: 100 },
+    { name: "Gauze Pads (3\"x3\") [6]", qty: 6 },
+    { name: "Conforming Bandage (2\"x5yd) [2]", qty: 2 },
+    { name: "Conforming Bandage (3\"x5yd) [2]", qty: 2 },
+    { name: "Compress Pressure Bandage (4\"x4\") [1]", qty: 1 },
+    { name: "Triangular Bandage [1]", qty: 1 },
+    { name: "Safety Pins [24]", qty: 24 },
+    { name: "Windlass Tourniquet [1]", qty: 1 }
+  ]},
+  { category: "Fracture/Sprain", items: [
+    { name: "Splint (4\"x24\") [1]", qty: 1 },
+    { name: "Instant Cold Pack (5.5\"x4\") [1]", qty: 1 }
+  ]},
+  { category: "Emergency Tools", items: [
+    { name: "CPR Barrier [1]", qty: 1 },
+    { name: "Bandage Scissors (14cm) [1]", qty: 1 },
+    { name: "Splinter Forceps (11.4cm) [1]", qty: 1 },
+    { name: "Multifunction Saber Card [1]", qty: 1 },
+    { name: "Aluminum LED Flashlight [1]", qty: 1 },
+    { name: "Whistle [1]", qty: 1 }
+  ]},
+  { category: "Sanitation Supplies", items: [
+    { name: "Vinyl Gloves [2]", qty: 2 },
+    { name: "Hand/Skin Cleaning Towelette [12]", qty: 12 },
+    { name: "Antiseptic Wound Towelette [12]", qty: 12 },
+    { name: "Cotton Tipped Applicators [24]", qty: 24 },
+    { name: "Tongue Depressors [2]", qty: 2 },
+    { name: "Waste Disposal Bag [1]", qty: 1 }
+  ]},
+  { category: "Survival Tools", items: [
+    { name: "Thermal Blanket [1]", qty: 1 },
+    { name: "Multi-Tool Plier [1]", qty: 1 },
+    { name: "Multifunction Pen [1]", qty: 1 },
+    { name: "Survival Bracelet [1]", qty: 1 },
+    { name: "Rope [1]", qty: 1 },
+    { name: "Screwdriver [1]", qty: 1 },
+    { name: "Telescopic Bellow [1]", qty: 1 },
+    { name: "Spork [1]", qty: 1 },
+    { name: "Fishing Tools [1]", qty: 1 },
+    { name: "Wire Saw [1]", qty: 1 },
+    { name: "Flint and Fire Starter [1]", qty: 1 },
+    { name: "Carabiner [1]", qty: 1 }
+  ]},
+  { category: "Storage", items: [
+    { name: "Tactical Molle Bag [1]", qty: 1 }
+  ]}
+];
+
+function renderKitItems() {
+  const saved = JSON.parse(localStorage.getItem("kitQuantities") || "{}");
+  const container = document.getElementById('kit-items');
+  container.innerHTML = '';
+
+  kitItems.forEach(group => {
+    const section = document.createElement('div');
+    section.innerHTML = `<h3>${group.category}</h3>`;
+    group.items.forEach(item => {
+      const value = saved[item.name] ?? item.qty;
+
+      const itemRow = document.createElement('div');
+      itemRow.className = 'kit-item';
+      itemRow.innerHTML = `
+        <span class="item-name">${item.name}</span>
+        <input type="number" min="0" id="kit-${item.name}" value="${value}" class="qty-input">
+      `;
+      section.appendChild(itemRow);
+    });
+    container.appendChild(section);
+  });
+}
+
+function saveKitQuantities() {
+  const data = {};
+  kitItems.forEach(group => {
+    group.items.forEach(item => {
+      const input = document.getElementById(`kit-${item.name}`);
+      data[item.name] = parseInt(input.value) || 0;
+    });
+  });
+  localStorage.setItem("kitQuantities", JSON.stringify(data));
+  alert("✅ Quantities saved.");
+}
+
+/* Si je laisse ca, ca fait bugger Emergencies.. mais si je l'enleve, pas de kits..
+// Appelle renderKitItems quand tu navigues vers la page
+function navigate(pageId) {
+  document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+  document.getElementById(`page-${pageId}`).classList.remove('hidden');
+  if (pageId === 'kit') renderKitItems();
+}
+*/
+// -> fin Kit Premier Soins--------------------------------------------------------------------------------------------------------------
 
 </script>
 
