@@ -547,6 +547,47 @@
   padding: 2px 4px;
 }
 
+/* -------------------------------- Pour la partie Game -------------------------------- */
+#game-content ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#game-content li {
+  background: #f0f0f0;
+  margin: 6px 0;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+button.choice-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  margin: 6px 6px 6px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.choice-btn:hover {
+  background: #0056b3;
+}
+
+button.correct {
+  background-color: #28a745 !important;
+}
+
+button.incorrect {
+  background-color: #dc3545 !important;
+}
+
+.hidden {
+  display: none !important;
+}
+/* -------------------------------- Pour la partie Game -------------------------------- */
+
 
   </style>
 
@@ -601,6 +642,11 @@ function navigate(page, push = true) {
     case 'soap':
       showSOAPSummary(); // si tu veux que ça affiche la dernière note directe
       break;
+    // Si on entre dans le jeu, on démarre une partie
+    case 'game':
+      game.startMode('guess-emergency');
+    break;
+
     // Ajoute ici d'autres cas si nécessaire
     default:
       break;
@@ -628,11 +674,13 @@ function navigate(page, push = true) {
         <li><a class="dropdown-item" href="#" onclick="navigate('technics'); return false;">List of Technics</a></li>
         <li><a class="dropdown-item" href="#" onclick="navigate('legal'); return false;">Legal</a></li>
         <li><hr class="dropdown-divider"></li> <!-- Optionnel : séparation -->
-        <!-- <li><a class="dropdown-item text-primary fw-bold" href="game.html">🧠 Training Game (TBI)</a></li> -->
         <li><a class="dropdown-item" href="#" onclick="navigate('bpm'); return false;">💓 CPR BPM</a></li>
         <button id="darkModeToggle" class="dropdown-item d-flex align-items-center" type="button"> 🌙 Toggle Dark Mode </button>
         <li><a class="dropdown-item" href="#" onclick="navigate('kit'); return false;">🧰 Kit First Aid</a></li>
         <li><a class="dropdown-item" href="#" onclick="navigate('install'); return false;">📲 Install App</a></li>
+        <li><a class="dropdown-item" href="#" onclick="navigate('game'); return false;">🧩 Training Game</a></li>
+        <li><a class="dropdown-item" href="#" onclick="navigate('tips'); return false;">💡 Tips</a></li>
+        <li><a class="dropdown-item" href="#" onclick="navigate('profile'); return false;">🪪 My Profile</a></li>
       </ul>
     </div>
   </nav>
@@ -1069,6 +1117,91 @@ function navigate(page, push = true) {
   <p>Once installed, launch it like any other app — even when offline.</p>
   <p>The SOAP you record while being offline are saved as PDF in your phone.</p>
 </section>
+
+<section id="page-tips" class="hidden container py-4">
+  <h2>Tips for First Aiders</h2>
+  <p>Below a list of tips to apply when being a First Aider.</p>
+  <h3>How to be</h3>
+  <ol>
+    <li><strong>Present</strong> yourself.</li>
+    <li>Be <strong>Present</strong>.</li>
+    <li>Detail <strong>Steps</strong>.</li>
+    <li>Get <strong>Permission</strong>.</li>
+  </ol>
+  <h3>What to avoid</h3>
+  <ol>
+    <li>Do not <strong>Declare Death</strong>.</li>
+    <li>Take <strong>Photos</strong>.</li>
+  </ol>
+</section>
+
+<!-- Test pour game 
+<section id="page-game" class="hidden container py-4">
+  <h2>Guess the Emergency</h2>
+  <div id="game-symptoms"></div>
+  <div id="game-choices"></div>
+</section> -->
+
+
+<section id="page-game" class="hidden container py-4">
+  <h2>🧩 Training Game</h2>
+  <div id="game-menu" class="mb-3">
+    <label for="mode-select">Choose a game type:</label>
+    <select id="mode-select">
+      <option value="symptoms-from-emergency">Which Symptoms for Emergency</option>
+      <option value="guess-emergency">Guess Emergency</option>
+      <option value="true-false">True or False</option>
+      <!-- <option value="history">Historique & Profil (bientôt)</option> -->
+      <option value="case-study">Case Study (for test)</option>
+      <option value="speed-challenge">Chrono / Rapidité (soon)</option>
+    </select>
+    <button id="start-game-btn">Démarrer</button>
+  </div>
+  <div id="game-content">
+    <!-- Contenu dynamique du jeu ici -->
+  </div>
+  <button id="quit-game-btn" class="hidden mt-3">Quitter le jeu</button>
+</section>
+
+<section id="page-profile" class="hidden container py-4">
+  <h2>🪪 My Profile</h2>
+  <form id="profileForm">
+    <div class="mb-2">
+      <label for="firstName" class="form-label">First Name</label>
+      <input type="text" id="firstName" class="form-control">
+    </div>
+    <div class="mb-2">
+      <label for="lastName" class="form-label">Last Name</label>
+      <input type="text" id="lastName" class="form-control">
+    </div>
+    <div class="mb-2">
+      <label for="isCertified" class="form-label">Certification</label>
+      <input type="text" id="isCertified" class="form-control" placeholder="Ex: Wilderness First Aid & CPR/AED Level C">
+    </div>
+    <div class="mb-2">
+      <label for="certNumber" class="form-label">Certificat Number</label>
+      <input type="text" id="certNumber" class="form-control">
+    </div>
+    <div class="mb-2">
+      <label for="issueDate" class="form-label">Issue Date</label>
+      <input type="date" id="issueDate" class="form-control">
+    </div>
+    <div class="mb-2">
+      <label for="expiryDate" class="form-label">Expiry Date</label>
+      <input type="date" id="expiryDate" class="form-control">
+    </div>
+    <div class="mb-2">
+      <label for="issuedIn" class="form-label">Issued In</label>
+      <input type="text" id="issuedIn" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Save</button>
+  </form>
+  <p class="mt-4 text-muted small">
+    To validate a certificate, go to <a href="https://myrc.redcross.ca" target="_blank">myrc.redcross.ca</a> and click on "Validate Certificate".
+  </p>
+</section>
+
+
 
 <script>
 
@@ -2356,6 +2489,21 @@ const technics = [
   }
 ];
 
+const caseStudies = [
+  {
+    id: 1001,
+    scenario: "Une femme de 30 ans est allongée, inconsciente mais respire, sa peau est pâle et moite. Elle a une odeur sucrée autour d’elle.",
+    correctEmergencyId: 17 // par ex : hypoglycémie
+  },
+  {
+    id: 1002,
+    scenario: "Un adolescent s’est blessé en jouant au foot. Il a un genou gonflé, rouge et douloureux, mais reste conscient.",
+    correctEmergencyId: 23 // par ex : entorse
+  },
+  // etc.
+];
+
+
 displayTechnicsList(technics);
 
 function getTechnicByName(name) {
@@ -3334,7 +3482,7 @@ function renderKitItems() {
       itemRow.className = 'kit-item';
       itemRow.innerHTML = `
         <span class="item-name">${item.name}</span>
-        <input type="number" min="0" id="kit-${item.name}" value="${value}" class="qty-input">
+        <input type="number" min="0" id="kit-${sanitizeId(item.name)}" value="${value}" class="qty-input">
       `;
       section.appendChild(itemRow);
     });
@@ -3346,23 +3494,423 @@ function saveKitQuantities() {
   const data = {};
   kitItems.forEach(group => {
     group.items.forEach(item => {
-      const input = document.getElementById(`kit-${item.name}`);
+      const input = document.getElementById(`kit-${sanitizeId(item.name)}`);
       data[item.name] = parseInt(input.value) || 0;
     });
   });
   localStorage.setItem("kitQuantities", JSON.stringify(data));
   alert("✅ Quantities saved.");
 }
+// -> fin Kit Premier Soins----------------------------------------------------------------------
 
-/* Si je laisse ca, ca fait bugger Emergencies.. mais si je l'enleve, pas de kits..
-// Appelle renderKitItems quand tu navigues vers la page
-function navigate(pageId) {
-  document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-  document.getElementById(`page-${pageId}`).classList.remove('hidden');
-  if (pageId === 'kit') renderKitItems();
+// ============================= Boiler Plate for games =============================
+const game = {
+  currentMode: null,
+  correctAnswersCount: 0,
+  totalQuestions: 0,
+
+  init() {
+    document.getElementById('start-game-btn').addEventListener('click', () => {
+      const mode = document.getElementById('mode-select').value;
+      this.startMode(mode);
+    });
+    document.getElementById('quit-game-btn').addEventListener('click', () => {
+      this.quitGame();
+    });
+  },
+
+  startMode(mode) {
+    this.currentMode = mode;
+
+    this.maxQuestionsPerSession = 5; // par exemple
+
+    this.correctAnswersCount = 0;
+    this.totalQuestions = 0;
+
+    document.getElementById('game-menu').classList.add('hidden');
+    document.getElementById('quit-game-btn').classList.remove('hidden');
+    this.clearContent();
+
+    switch (mode) {
+      case 'symptoms-from-emergency':
+        this.modeSymptomsFromEmergency_next();
+        break;
+      case 'guess-emergency':
+        this.modeGuessEmergency_start();
+        break;
+      case 'true-false':
+        this.modeTrueFalse_next();
+        break;
+      case 'history':
+        this.modeHistory_show();
+        break;
+      case 'case-study':
+        this.caseStudy_start();
+        break;
+      case 'speed-challenge':
+        this.showMessage('Mode "Chrono / Rapidité" bientôt disponible.');
+        break;
+      default:
+        this.showMessage('Mode inconnu.');
+    }
+  },
+
+  quitGame() {
+    this.currentMode = null;
+    this.clearContent();
+    document.getElementById('game-menu').classList.remove('hidden');
+    document.getElementById('quit-game-btn').classList.add('hidden');
+  },
+
+  clearContent() {
+    document.getElementById('game-content').innerHTML = '';
+  },
+
+  showMessage(msg) {
+    document.getElementById('game-content').innerHTML = `<p>${msg}</p>`;
+  },
+
+  // ================= MODE : Urgence → Symptômes =================
+  modeSymptomsFromEmergency_next() {
+    const emergency = emergencies[Math.floor(Math.random() * emergencies.length)];
+    const trueSymptoms = emergency.symptoms.map(id => getSymptomNameById(id)).filter(Boolean);
+    const falseSymptoms = symptoms
+      .filter(s => !emergency.symptoms.includes(s.id))
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 5)
+      .map(s => s.name);
+    const allSymptoms = trueSymptoms.concat(falseSymptoms).sort(() => Math.random() - 0.5);
+    const html = `
+      <h3>Quels sont les symptômes de l'urgence : <em>${emergency.name}</em> ?</h3>
+      <form id="symptoms-form">
+        <ul>
+          ${allSymptoms.map(sym => `
+            <li><label><input type="checkbox" name="symptom" value="${sym}"> ${sym}</label></li>
+          `).join('')}
+        </ul>
+        <button type="submit" class="choice-btn">Valider</button>
+      </form>
+      <div id="symptoms-feedback" style="margin-top:1em;"></div>
+      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+    `;
+    document.getElementById('game-content').innerHTML = html;
+    document.getElementById('symptoms-form').addEventListener('submit', e => {
+      e.preventDefault();
+      this.modeSymptomsFromEmergency_check(emergency, trueSymptoms);
+    });
+  },
+  modeSymptomsFromEmergency_check(emergency, trueSymptoms) {
+    this.totalQuestions++;
+    const form = document.getElementById('symptoms-form');
+    const selected = Array.from(form.elements['symptom'])
+      .filter(input => input.checked)
+      .map(input => input.value);
+    const missed = trueSymptoms.filter(s => !selected.includes(s));
+    const wrong = selected.filter(s => !trueSymptoms.includes(s));
+    const isCorrect = missed.length === 0 && wrong.length === 0;
+    if (isCorrect) this.correctAnswersCount++;
+
+    let feedback = `
+      <p>${isCorrect ? '✅ Bravo, bonne réponse !' : '❌ Réponse incorrecte.'}</p>
+      <p><strong>Symptômes corrects :</strong> ${trueSymptoms.join(', ')}</p>
+      <p>${missed.length ? 'Manquants : ' + missed.join(', ') : ''}</p>
+      <p>${wrong.length ? 'Erronés : ' + wrong.join(', ') : ''}</p>
+      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+    `;
+    // Si le jeu est terminé
+    if (this.totalQuestions >= this.maxQuestionsPerSession) {
+      this.saveToHistory(); // 💾 Historique
+      feedback += `<button id="quit-btn" class="choice-btn">Terminer</button>`;
+    } else {
+      feedback += `<button id="next-question-btn" class="choice-btn">Question suivante</button>`;
+    }
+    document.getElementById('symptoms-feedback').innerHTML = feedback;
+    if (this.totalQuestions >= this.maxQuestionsPerSession) {
+      document.getElementById('quit-btn').addEventListener('click', () => {
+        this.quitGame();
+      });
+    } else {
+      document.getElementById('next-question-btn').addEventListener('click', () => {
+        this.modeSymptomsFromEmergency_next();
+      });
+    }
+  },// ================= FIN MODE : Urgence → Symptômes =================
+
+    // ================= MODE : Vrai / Faux =================
+  modeTrueFalse_next() {
+    this.totalQuestions++;
+    const emergency = emergencies[Math.floor(Math.random() * emergencies.length)];
+    const allSymptoms = symptoms.map(s => s.name);
+    const trueSymptoms = emergency.symptoms.map(id => getSymptomNameById(id)).filter(Boolean);
+    const isTrue = Math.random() < 0.5;
+    const symptom = isTrue
+      ? trueSymptoms[Math.floor(Math.random() * trueSymptoms.length)]
+      : allSymptoms.filter(s => !trueSymptoms.includes(s)).sort(() => Math.random() - 0.5)[0];
+    // Stocke temporairement les données de la question
+    this.currentTF = { emergency, symptom, isTrue };
+    const html = `
+      <h3>Urgence : <em>${emergency.name}</em></h3>
+      <p>Ce symptôme est-il associé ?</p>
+      <h2 style="color:#2c3e50;">${symptom}</h2>
+      <div style="margin:1em 0;">
+        <button class="choice-btn" onclick="game.modeTrueFalse_check(true)">✅ Vrai</button>
+        <button class="choice-btn" onclick="game.modeTrueFalse_check(false)">❌ Faux</button>
+      </div>
+      <p>Score : ${this.correctAnswersCount || 0} / ${this.totalQuestions - 1}</p>
+    `;
+    document.getElementById('game-content').innerHTML = html;
+  },
+  modeTrueFalse_check(userAnswer) {
+    const { emergency, symptom, isTrue } = this.currentTF;
+    const isCorrect = userAnswer === isTrue;
+    if (isCorrect) this.correctAnswersCount = (this.correctAnswersCount || 0) + 1;
+    // Sauvegarde dans l'historique
+    saveToHistory({
+      type: 'truefalse',
+      emergency: emergency.name,
+      symptom: symptom,
+      userAnswer: userAnswer,
+      correctAnswer: isTrue,
+      isCorrect: isCorrect
+    });
+    const message = isCorrect
+      ? "✅ Bonne réponse !"
+      : "❌ Mauvaise réponse.";
+    const html = `
+      <p>${message}</p>
+      <button id="next-true-false" class="choice-btn">Question suivante</button>
+      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+    `;
+    document.getElementById('game-content').innerHTML += html;
+    document.getElementById('next-true-false').addEventListener('click', () => {
+      this.modeTrueFalse_next();
+    });
+  },// ================= FIN MODE : Vrai / Faux =================
+
+  // ================= MODE : Guess the Emergency =================
+  modeGuessEmergency_start() {
+    this.correctAnswersCount = 0;
+    this.totalQuestions = 0;
+    this.modeGuessEmergency_next();
+  },
+  modeGuessEmergency_next() {
+    this.totalQuestions++;
+    const emergency = emergencies[Math.floor(Math.random() * emergencies.length)];
+    const symptomIds = emergency.symptoms.slice(0, 4);
+    const symptomsList = symptomIds.map(id => getSymptomNameById(id)).filter(Boolean);
+    this.currentGuess = { correctId: emergency.id, symptoms: symptomsList };
+
+    const html = `
+      <h3>Devine l'urgence à partir des symptômes suivants :</h3>
+      <div id="game-symptoms" style="margin-bottom: 1em;">
+        <ul>${symptomsList.map(s => `<li>${s}</li>`).join('')}</ul>
+      </div>
+      <div id="game-choices" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
+      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+    `;
+    document.getElementById('game-content').innerHTML = html;
+    this.modeGuessEmergency_displayChoices(emergency.id);
+  },
+  modeGuessEmergency_displayChoices(correctId) {
+    const choices = [correctId];
+    while (choices.length < 4) {
+      const random = emergencies[Math.floor(Math.random() * emergencies.length)].id;
+      if (!choices.includes(random)) choices.push(random);
+    }
+    // Mélanger les choix
+    for (let i = choices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [choices[i], choices[j]] = [choices[j], choices[i]];
+    }
+    const cardsHtml = choices.map(id => {
+      const name = emergencies.find(e => e.id === id).name;
+      return `
+        <div class="emergency-card" style="cursor:pointer; margin:5px; padding:10px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.2); background:#fff; user-select:none;"
+          onclick="game.modeGuessEmergency_check(${id}, ${correctId})">
+          <div class="emergency-title" style="font-weight:bold; font-size:1.1em; color:#2c3e50;">${name}</div>
+        </div>`;
+    }).join('');
+    document.getElementById('game-choices').innerHTML = cardsHtml;
+  },
+  modeGuessEmergency_check(selectedId, correctId) {
+    const isCorrect = selectedId === correctId;
+    const correctName = emergencies.find(e => e.id === correctId).name;
+    const selectedName = emergencies.find(e => e.id === selectedId).name;
+    const symptoms = this.currentGuess?.symptoms || [];
+    // Sauvegarde dans l'historique
+    saveToHistory({
+      type: 'guess',
+      correctEmergency: correctName,
+      selectedEmergency: selectedName,
+      isCorrect: isCorrect,
+      symptoms: symptoms
+    });
+    if (isCorrect) {
+      alert("✅ Bravo ! C'était la bonne urgence !");
+      this.correctAnswersCount++;
+    } else {
+      alert("❌ Mauvaise réponse. C'était : " + correctName);
+    }
+    this.modeGuessEmergency_next();
+  }, // ================= FIN MODE : Guess the Emergency =================
+
+  // ================= MODE : Guess the Emergency =================
+  caseStudy_start() {
+    this.correctAnswersCount = 0;
+    this.totalQuestions = 0;
+    this.caseStudy_next();
+  },
+  caseStudy_next() {
+    this.totalQuestions++;
+    const study = caseStudies[Math.floor(Math.random() * caseStudies.length)];
+    const correctId = study.correctEmergencyId;
+    const scenario = study.scenario;
+
+    this.currentCase = { correctId, scenario };
+
+    const html = `
+      <h3>Étude de cas :</h3>
+      <p style="font-style: italic;">"${scenario}"</p>
+      <div id="case-choices" style="margin-top:1em; display:flex; flex-wrap:wrap; gap:10px;"></div>
+      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+    `;
+    document.getElementById('game-content').innerHTML = html;
+
+    this.caseStudy_displayChoices(correctId);
+  },
+  caseStudy_displayChoices(correctId) {
+    const choices = [correctId];
+    while (choices.length < 4) {
+      const random = emergencies[Math.floor(Math.random() * emergencies.length)].id;
+      if (!choices.includes(random)) choices.push(random);
+    }
+
+    // Shuffle
+    for (let i = choices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [choices[i], choices[j]] = [choices[j], choices[i]];
+    }
+
+    const buttons = choices.map(id => {
+      const name = emergencies.find(e => e.id === id).name;
+      return `<button class="choice-btn" onclick="game.caseStudy_check(${id}, ${correctId})">${name}</button>`;
+    }).join('');
+
+    document.getElementById('case-choices').innerHTML = buttons;
+  },
+  caseStudy_check(selectedId, correctId) {
+    const correctName = emergencies.find(e => e.id === correctId).name;
+    const selectedName = emergencies.find(e => e.id === selectedId).name;
+    const scenario = this.currentCase?.scenario || '';
+
+    const isCorrect = selectedId === correctId;
+    if (isCorrect) this.correctAnswersCount++;
+
+    // Sauvegarde dans l'historique
+    saveToHistory({
+      type: 'casestudy',
+      scenario: scenario,
+      correctEmergency: correctName,
+      selectedEmergency: selectedName,
+      isCorrect: isCorrect
+    });
+
+    const message = isCorrect
+      ? "✅ Bonne réponse !"
+      : `❌ Mauvaise réponse. C'était : ${correctName}`;
+
+    const html = `
+      <p>${message}</p>
+      <button id="next-case-study" class="choice-btn">Question suivante</button>
+      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+    `;
+    document.getElementById('game-content').innerHTML += html;
+
+    document.getElementById('next-case-study').addEventListener('click', () => {
+      this.caseStudy_next();
+    });
+  },  // ================= MODE : Guess the Emergency =================
+
+
+  // ================= MODE : History =================  
+  modeHistory_show() {
+    this.clearContent();
+    const history = JSON.parse(localStorage.getItem('gameHistory') || '[]');
+    const html = `
+      <h3>📖 Historique de vos parties</h3>
+      ${history.length === 0 ? "<p>Aucun historique pour le moment.</p>" : `
+        <ul style="list-style:none;padding:0;">
+          ${history.map(entry => `
+            <li style="margin-bottom:1em;padding:0.5em;border-left:4px solid #3498db;background:#f9f9f9;">
+              <strong>${entry.mode}</strong> — ${entry.score} / ${entry.total} (${entry.date})
+            </li>
+          `).join('')}
+        </ul>
+      `}
+      <button class="choice-btn" id="clear-history-btn">🗑️ Effacer l'historique</button>
+    `;
+    document.getElementById('game-content').innerHTML = html;
+    document.getElementById('clear-history-btn').addEventListener('click', () => {
+      if (confirm("Effacer tout l'historique ?")) {
+        localStorage.removeItem('gameHistory');
+        this.modeHistory_show();
+      }
+    });
+  },  // ================= FIN MODE : History ================= 
 }
-*/
-// -> fin Kit Premier Soins--------------------------------------------------------------------------------------------------------------
+
+// Utilitaires communs
+function getSymptomNameById(id) {
+  const sym = symptoms.find(s => s.id === id);
+  return sym ? sym.name : null;
+}
+
+game.init();
+
+function saveToHistory(entry) {
+  const history = JSON.parse(localStorage.getItem('history') || '[]');
+  history.push({ timestamp: Date.now(), ...entry });
+  localStorage.setItem('history', JSON.stringify(history));
+}
+
+// -------------------- Profile page logic --------------------
+function loadProfile() {
+  const profile = JSON.parse(localStorage.getItem('userProfile')) || {};
+  document.getElementById('firstName').value = profile.firstName || '';
+  document.getElementById('lastName').value = profile.lastName || '';
+  document.getElementById('isCertified').value = profile.isCertified || '';
+  document.getElementById('certNumber').value = profile.certNumber || '';
+  document.getElementById('issueDate').value = profile.issueDate || '';
+  document.getElementById('expiryDate').value = profile.expiryDate || '';
+  document.getElementById('issuedIn').value = profile.issuedIn || '';
+}
+
+document.getElementById('profileForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const profile = {
+    firstName: document.getElementById('firstName').value.trim(),
+    lastName: document.getElementById('lastName').value.trim(),
+    isCertified: document.getElementById('isCertified').value.trim(),
+    certNumber: document.getElementById('certNumber').value.trim(),
+    issueDate: document.getElementById('issueDate').value,
+    expiryDate: document.getElementById('expiryDate').value,
+    issuedIn: document.getElementById('issuedIn').value.trim(),
+  };
+  localStorage.setItem('userProfile', JSON.stringify(profile));
+  alert('Profil sauvegardé.');
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadProfile(); // Charge les données du profil sauvegardé
+});
+
+// -------------------- FIN Profile page logic --------------------
+
+// Principalement pour la partie KIT qui a des caracteres speciaux
+function sanitizeId(name) {
+  return name.replace(/[^a-zA-Z0-9]/g, '_'); // remplace tout sauf lettres et chiffres
+}
+
 
 </script>
 
