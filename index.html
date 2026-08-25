@@ -1720,6 +1720,11 @@ function navigate(page, push = true) {
         <span class="mode-card-title">Case Study</span>
         <span class="mode-card-desc">Analyse un scénario complet</span>
       </button>
+      <button type="button" class="mode-card" data-mode="protocol-order">
+        <span class="mode-card-icon">🧭</span>
+        <span class="mode-card-title">Emergency Steps</span>
+        <span class="mode-card-desc">Par quoi commencer, quelle étape vient après, quand remplir le SOAP</span>
+      </button>
       <button type="button" class="mode-card" data-mode="speed-challenge">
         <span class="mode-card-icon">⏱️</span>
         <span class="mode-card-title">Chrono / Rapidité</span>
@@ -1732,6 +1737,7 @@ function navigate(page, push = true) {
       <option value="true-false">True or False</option>
       <!-- <option value="history">Historique & Profil (bientôt)</option> -->
       <option value="case-study">Case Study (for test)</option>
+      <option value="protocol-order">Emergency Steps</option>
       <option value="speed-challenge">Chrono / Rapidité</option>
     </select>
     <button id="start-game-btn" class="custom-btn primary">Démarrer</button>
@@ -4180,6 +4186,52 @@ function buildCaseStudyScenario(symptomNames) {
   return template(list);
 }
 
+// Séquence de référence pour le mode "Emergency Steps" — reprend l'ordre suivi
+// par l'app elle-même (Safe & Secure -> Responsiveness -> ABC -> Signs & Symptoms -> SOAP).
+const PROTOCOL_STEPS = [
+  { title: "Sécuriser la scène (Safe & Secure)" },
+  { title: "Vérifier la réactivité de la personne (Responsiveness)" },
+  { title: "Appeler le 911 si la situation le nécessite" },
+  { title: "Vérifier les voies respiratoires (ABC - Airway)" },
+  { title: "Vérifier la respiration (ABC - Breathing)" },
+  { title: "Vérifier la circulation / les saignements (ABC - Circulation)" },
+  { title: "Débuter la RCR / utiliser le DEA si nécessaire" },
+  { title: "Faire l'évaluation secondaire : Signs & Symptoms" },
+  { title: "Remplir la fiche SOAP" },
+  { title: "Répéter l'évaluation secondaire (SOAP) régulièrement" },
+];
+
+// Questions dédiées au moment / à la fréquence de la fiche SOAP.
+const SOAP_TIMING_QUESTIONS = [
+  {
+    question: "Quand doit-on commencer à remplir la fiche SOAP ?",
+    correct: "Une fois la scène sécurisée et l'ABC stabilisé, lors de l'évaluation secondaire",
+    distractors: [
+      "Avant même de vérifier si la scène est sûre",
+      "Uniquement après le départ complet des secours",
+      "Ce n'est jamais nécessaire en milieu isolé",
+    ],
+  },
+  {
+    question: "À quelle fréquence faut-il refaire l'évaluation secondaire (SOAP) pour une urgence CRITIQUE ?",
+    correct: "Toutes les 5 à 10 minutes",
+    distractors: [
+      "Toutes les 10 à 60 minutes",
+      "Une seule fois, au tout début",
+      "Uniquement si la personne le redemande",
+    ],
+  },
+  {
+    question: "À quelle fréquence faut-il refaire l'évaluation secondaire (SOAP) pour une urgence MAJEURE ?",
+    correct: "Toutes les 10 à 60 minutes",
+    distractors: [
+      "Toutes les 5 à 10 minutes",
+      "Une seule fois, au tout début",
+      "Uniquement au retour de la connexion internet",
+    ],
+  },
+];
+
 
 displayTechnicsList(technics);
 
@@ -5400,6 +5452,9 @@ const game = {
       case 'case-study':
         this.caseStudy_start();
         break;
+      case 'protocol-order':
+        this.protocolSteps_start();
+        break;
       case 'speed-challenge':
         this.modeSpeedChallenge_start();
         break;
@@ -5696,6 +5751,102 @@ const game = {
       this.caseStudy_next();
     });
   },  // ================= MODE : Guess the Emergency =================
+
+  // ================= MODE : Emergency Steps (ordre du protocole + SOAP) =================
+  protocolSteps_start() {
+    this.correctAnswersCount = 0;
+    this.totalQuestions = 0;
+    this.protocolSteps_next();
+  },
+  protocolSteps_next() {
+    this.totalQuestions++;
+    const question = this.protocolSteps_buildQuestion();
+    this.currentProtocolQuestion = question;
+
+    const html = `
+      <h3>🧭 Emergency Steps</h3>
+      <p>${question.prompt}</p>
+      <div id="protocol-choices" style="margin-top:1em; display:flex; flex-wrap:wrap; gap:10px;"></div>
+      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+    `;
+    document.getElementById('game-content').innerHTML = html;
+    this.protocolSteps_displayChoices(question);
+  },
+  protocolSteps_buildQuestion() {
+    const types = ['first', 'next', 'before', 'soap-timing'];
+    const type = types[Math.floor(Math.random() * types.length)];
+
+    if (type === 'soap-timing') {
+      const bank = SOAP_TIMING_QUESTIONS[Math.floor(Math.random() * SOAP_TIMING_QUESTIONS.length)];
+      return { prompt: bank.question, correct: bank.correct, pool: [bank.correct, ...bank.distractors] };
+    }
+
+    const stepsCount = PROTOCOL_STEPS.length;
+    let prompt, correct;
+
+    if (type === 'first') {
+      prompt = "Quelle est la PREMIÈRE étape à réaliser face à une situation d'urgence ?";
+      correct = PROTOCOL_STEPS[0].title;
+    } else if (type === 'next') {
+      const i = Math.floor(Math.random() * (stepsCount - 1)); // 0..len-2
+      prompt = `Tu viens de terminer : "${PROTOCOL_STEPS[i].title}". Quelle est la PROCHAINE étape ?`;
+      correct = PROTOCOL_STEPS[i + 1].title;
+    } else { // before
+      const i = 1 + Math.floor(Math.random() * (stepsCount - 1)); // 1..len-1
+      prompt = `Avant de passer à "${PROTOCOL_STEPS[i].title}", quelle étape doit déjà être terminée ?`;
+      correct = PROTOCOL_STEPS[i - 1].title;
+    }
+
+    const distractors = PROTOCOL_STEPS
+      .map(s => s.title)
+      .filter(titleText => titleText !== correct)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3);
+
+    return { prompt, correct, pool: [correct, ...distractors] };
+  },
+  protocolSteps_displayChoices(question) {
+    const choices = question.pool.slice().sort(() => Math.random() - 0.5);
+    const container = document.getElementById('protocol-choices');
+    container.innerHTML = choices.map((text, idx) =>
+      `<button type="button" class="choice-btn" data-choice-index="${idx}">${text}</button>`
+    ).join('');
+    container.querySelectorAll('button').forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
+        this.protocolSteps_check(choices[idx], question.correct, question.prompt);
+      });
+    });
+  },
+  protocolSteps_check(selected, correct, prompt) {
+    const isCorrect = selected === correct;
+    if (isCorrect) {
+      this.correctAnswersCount++;
+      progress.award(10);
+    }
+
+    saveToHistory({
+      type: 'protocol-order',
+      question: prompt,
+      selectedAnswer: selected,
+      correctAnswer: correct,
+      isCorrect: isCorrect
+    });
+
+    const message = isCorrect
+      ? "✅ Bonne réponse !"
+      : `❌ Mauvaise réponse. La bonne réponse était : "${correct}"`;
+
+    const html = `
+      <p>${message}</p>
+      <button id="next-protocol-order" class="choice-btn">Question suivante</button>
+      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+    `;
+    document.getElementById('game-content').innerHTML += html;
+
+    document.getElementById('next-protocol-order').addEventListener('click', () => {
+      this.protocolSteps_next();
+    });
+  }, // ================= FIN MODE : Emergency Steps =================
 
   // ================= MODE : Chrono / Rapidité =================
   modeSpeedChallenge_start() {
