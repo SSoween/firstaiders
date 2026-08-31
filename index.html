@@ -25,34 +25,34 @@
   
   <style>
   :root {
-    --font-main: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    --font-title: 'Rubik', sans-serif;
-  /* --color-bg-light: #fdfdfd; */
-    --color-bg-light: rgba(255, 0, 0, 0.2); /* rouge très pâle */
-    --color-text-dark: #212529;
-    --color-accent: #0d6efd;
-    --color-accent-bg: #e9f5ff;
-    --color-accent-border: #b6e0fe;
-    --color-muted-border: #ced4da;
+    /* ===== Système "santé chaleureuse" — rouge/rose = identité de marque, pas seulement alerte ===== */
+    --font-main: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    --font-title: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    --color-bg-light: #f6f2f1; /* fond neutre chaud — remplace le voile rouge accidentel */
+    --color-text-dark: #1c1c1e;
+    --color-accent: #d6294f;       /* rose-rouge marque santé (texte/icônes/bordures, lisible sur blanc) */
+    --color-accent-bg: #ffe9ec;
+    --color-accent-border: #ffc7d0;
+    --color-muted-border: #e3e3e6;
     --color-muted-bg: #f8f9fa;
-    --color-shadow: rgba(0, 0, 0, 0.16);
-    --color-danger: #dc3545;
-    --color-danger-hover: #b02a37;
+    --color-shadow: rgba(20, 10, 15, 0.14);
+    --color-danger: #d7263d;
+    --color-danger-hover: #a91d30;
     --color-warning-bg: #fff3cd;
     --color-warning-border: #ffeeba;
     --color-warning-text: #5c4300;
-    --color-critical: #a4161a;
+    --color-critical: #d7263d;
     --color-major: #ee8a1f;
     --color-minor: #2b9348;
-    --color-card-accent: #0f9b8e;
+    --color-card-accent: #ff6f59;   /* corail chaud — accent de carte unifié */
     --radius-pill: 2rem;
-    --radius-card: 1rem;
-    --radius-section: 10px;
-    --radius-btn: 0.65rem;
+    --radius-card: 1.375rem;
+    --radius-section: 14px;
+    --radius-btn: 0.9rem;
     --shadow-light: 0 4px 8px var(--color-shadow);
-    --shadow-sm: 0 2px 6px rgba(20, 10, 10, 0.08);
-    --shadow-md: 0 8px 20px rgba(20, 10, 10, 0.14);
-    --shadow-lg: 0 16px 32px rgba(20, 10, 10, 0.2);
+    --shadow-sm: 0 1px 3px rgba(20, 10, 15, 0.05), 0 3px 8px rgba(20, 10, 15, 0.06);
+    --shadow-md: 0 4px 10px rgba(20, 10, 15, 0.07), 0 10px 22px rgba(20, 10, 15, 0.09);
+    --shadow-lg: 0 8px 18px rgba(20, 10, 15, 0.09), 0 18px 36px rgba(20, 10, 15, 0.14);
     --font-size-title: 1.85rem;
     --font-size-subtitle: 1.25rem;
     --font-size-small: 0.9rem;
@@ -64,14 +64,106 @@
     color: var(--color-text-dark);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+    min-height: 100vh;
+    box-shadow: 0 0 60px rgba(0,0,0,0.06);
   }
+  /* Cette app est pensée mobile : sur grand écran on garde une colonne
+     largeur téléphone plutôt que d'étirer les cartes sur toute la fenêtre. */
+  .container { max-width: 100% !important; }
 
   .menu {
     position: fixed;
     top: 1rem;
-    right: 1rem;
+    right: calc(50% - 240px + 1rem);
     z-index: 1050;
   }
+  @media (max-width: 480px) {
+    .menu { right: 1rem; }
+  }
+
+  .menu-trigger {
+    width: 38px; height: 38px; border-radius: 50%; border: none;
+    background: rgba(120,120,128,0.18); color: var(--color-text-dark);
+    display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer;
+  }
+  body.dark-mode .menu-trigger { background: rgba(120,120,128,0.28); color: #eef1f7; }
+
+  .menu-backdrop {
+    position: fixed; inset: 0; left: calc(50% - 240px); right: calc(50% - 240px);
+    background: rgba(10,10,15,0.45); z-index: 1400;
+  }
+  @media (max-width: 480px) {
+    .menu-backdrop { left: 0; right: 0; }
+  }
+
+  .menu-panel {
+    position: fixed; top: 0; bottom: 0; right: calc(50% - 240px);
+    width: min(82%, 320px); max-width: 320px;
+    background: #fff; z-index: 1401; box-shadow: -8px 0 30px rgba(0,0,0,0.2);
+    border-radius: 18px 0 0 18px;
+    display: flex; flex-direction: column;
+    transition: right 0.28s cubic-bezier(.2,.8,.2,1);
+  }
+  /* -340px (pas un %/translate relatif au panneau) : garanti hors-écran à
+     droite quelle que soit la largeur de la fenêtre. Un translateX(110%)
+     ne déplace le panneau QUE de sa propre largeur — sur un écran large,
+     il restait visible dans la marge à droite de la colonne mobile centrée. */
+  .menu-panel.hidden { right: -340px; display: flex !important; }
+  @media (max-width: 480px) {
+    .menu-panel { right: 0; }
+    .menu-panel.hidden { right: -340px; }
+  }
+  body.dark-mode .menu-panel { background: #12203a; }
+
+  .menu-panel-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 1.1rem 0.7rem; border-bottom: 1px solid var(--color-muted-bg);
+  }
+  body.dark-mode .menu-panel-header { border-bottom-color: #223050; }
+  .menu-panel-title { font-family: var(--font-title); font-weight: 800; font-size: 1.15rem; }
+  .menu-close {
+    width: 32px; height: 32px; border-radius: 50%; border: none;
+    background: rgba(120,120,128,0.14); color: var(--color-text-dark);
+    display: flex; align-items: center; justify-content: center; font-size: 0.95rem; cursor: pointer;
+  }
+  body.dark-mode .menu-close { background: rgba(120,120,128,0.24); color: #eef1f7; }
+
+  .menu-scroll { flex: 1; overflow-y: auto; padding: 0.3rem 1rem 1.5rem; }
+  .menu-scroll .section-label { margin-top: 1.1rem; }
+
+  .menu-row {
+    width: 100%; border: none; background: none; cursor: pointer;
+    display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.2rem;
+    font-size: 0.96rem; font-weight: 600; color: var(--color-text-dark); text-align: left;
+    border-radius: var(--radius-btn);
+  }
+  .menu-row:hover, .menu-row:active { background: rgba(120,120,128,0.08); }
+  body.dark-mode .menu-row { color: #eef1f7; }
+  .menu-row .chev { margin-left: auto; font-size: 0.85rem; color: #6c757d; }
+  .menu-row-ic {
+    width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1rem;
+  }
+  .menu-row-ic.w-brand { background: var(--cat-7); }
+  .menu-row-ic.w-amber { background: var(--cat-2); }
+  .menu-row-ic.w-calm { background: var(--cat-5); }
+  .menu-row-ic.w-green { background: var(--cat-4); }
+  .menu-row-ic.w-violet { background: var(--cat-3); }
+  .menu-row-ic.w-slate { background: #6c757d; }
+
+  .back-btn-global {
+    position: fixed; top: 1rem; left: calc(50% - 240px + 1rem); z-index: 1050;
+    width: 38px; height: 38px; border-radius: 50%; border: none;
+    background: rgba(120,120,128,0.18); color: var(--color-text-dark);
+    display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer;
+  }
+  @media (max-width: 480px) {
+    .back-btn-global { left: 1rem; }
+  }
+  body.dark-mode .back-btn-global { background: rgba(120,120,128,0.28); color: #eef1f7; }
 
   .hidden { display: none !important; }
 
@@ -84,7 +176,7 @@
 
   #selected-symptoms div, #selected-symptoms-group div {
     background: var(--color-accent-bg);
-    border: 1px solid var(--color-accent-border);
+    
     color: var(--color-accent);
     margin: 0.25rem;
     padding: 0.5rem 0.9rem;
@@ -98,7 +190,7 @@
   }
   #selected-symptoms div:hover,
   #selected-symptoms-group div:hover {
-    background-color: #d0eaff;
+    background-color: #ffd3da;
     transform: translateY(-1px);
   }
 
@@ -159,7 +251,7 @@
     align-items: center;
     padding: 0.75rem 1.1rem;
     border-radius: var(--radius-card);
-    border: 1px solid var(--color-accent-border);
+    
     background: #fff;
     color: var(--color-accent);
     font-weight: 600;
@@ -184,7 +276,7 @@
     box-shadow: var(--shadow-md);
     padding: 1.1rem 1.5rem;
     margin-bottom: 1.5rem;
-    border: 1px solid var(--color-accent-border);
+    
     border-top: 4px solid var(--color-card-accent);
     transition: box-shadow 0.3s ease, transform 0.2s ease;
   }
@@ -207,28 +299,23 @@
     box-shadow: var(--shadow-sm);
   }
 
-  #page-emergency h3 {
-    font-size: var(--font-size-subtitle);
-    font-family: var(--font-title);
-    color: var(--color-text-dark);
-    border-bottom: 3px solid var(--color-critical);
-    padding-bottom: 0.35rem;
-    margin: 1.5rem 0 0.9rem;
-    font-weight: 700;
-  }
-
-  section h2 {
+  /* > plutôt que l'espace : cible les titres de page (enfant direct de
+     <section>), sans toucher aux h2 imbriqués dans .decision-wrap qui,
+     eux, sont déjà centrés et n'ont pas besoin de cette marge. */
+  section > h2 {
     font-family: var(--font-title);
     font-size: var(--font-size-title);
     color: var(--color-text-dark);
     border: none;
     padding: 0.5rem 1.2rem;
-    margin: 0 0 1.5rem;
+    margin: 0 0 1.5rem 46px;
     font-weight: 700;
     border-radius: var(--radius-pill);
     background: linear-gradient(135deg, #fff, var(--color-muted-bg));
     box-shadow: var(--shadow-sm);
     display: inline-block;
+    max-width: calc(100% - 104px);
+    box-sizing: border-box;
   }
 
   #emergency-type span {
@@ -299,13 +386,15 @@
   .custom-btn:focus-visible { outline: 3px solid var(--color-accent-border); outline-offset: 2px; }
 
   .custom-btn.primary {
-    background-color: var(--color-accent);
+    background: linear-gradient(135deg, var(--color-accent), var(--color-card-accent));
     color: white;
   }
   .custom-btn.primary:hover {
-    background-color: #0b5ed7;
+    background: linear-gradient(135deg, #b81f42, var(--color-accent));
   }
 
+  /* .danger reste un rouge PLAT (non dégradé) : réservé au 9-1-1 / critique,
+     pour rester visuellement distinct des actions normales en dégradé. */
   .custom-btn.danger {
     background-color: var(--color-danger);
     color: white;
@@ -368,27 +457,27 @@
 
   /* Dark mode — thème "santé" (teal/slate sombre, pas de noir pur) */
   body.dark-mode {
-    background: #0b1917;
-    color: #e9f5f2;
+    background: #0b1220;
+    color: #eef1f7;
   }
   body.dark-mode section {
-    background: #12242a;
+    background: #131c30;
   }
   body.dark-mode .emergency-card,
   body.dark-mode .technic-card,
   body.dark-mode .card-list-item {
-    background: #153035;
+    background: #16203a;
     border-color: rgba(255, 255, 255, 0.1);
-    border-top-color: #2ecab8;
+    border-top-color: #ff5673;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
   }
   body.dark-mode h1, body.dark-mode h2,
   body.dark-mode h3, body.dark-mode h4 {
-    color: #e9f5f2;
+    color: #eef1f7;
   }
   body.dark-mode #emergency-details li,
   body.dark-mode #emergency-care li {
-    color: #e9f5f2;
+    color: #eef1f7;
   }
   body.dark-mode .suggested-emergency {
     background: #3c2f00;
@@ -396,19 +485,19 @@
     border-color: #ffeeba;
   }
   body.dark-mode .group-button {
-    background: #153035;
-    color: #7fd8cf;
-    border-color: #2f6f75;
+    background: #16203a;
+    color: #ff9db0;
+    border-color: #223050;
   }
   body.dark-mode #searchInput {
-    background: #153035;
-    color: #e9f5f2;
-    border-color: #2f6f75;
+    background: #16203a;
+    color: #eef1f7;
+    border-color: #223050;
   }
   body.dark-mode section h2 {
-    background: linear-gradient(135deg, #173338, #12242a) !important;
-    color: #e9f5f2 !important;
-    border-color: #2f6f75;
+    background: linear-gradient(135deg, #182746, #131c30) !important;
+    color: #eef1f7 !important;
+    border-color: #223050;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   }
   body.dark-mode .custom-btn,
@@ -417,37 +506,51 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
   }
   body.dark-mode #selectedSymptomsTitle {
-    color: #9fd6cf;
-    border-bottom-color: #2f6f75;
+    color: #93a0b8;
+    border-bottom-color: #223050;
   }
   body.dark-mode .sub-title {
-    color: #9fd6cf;
+    color: #93a0b8;
   }
   body.dark-mode .footer-note {
-    color: #6fae9f;
+    color: #7c8aa0;
   }
   body.dark-mode #game-content h2 {
-    color: #e9f5f2 !important;
+    color: #eef1f7 !important;
   }
   body.dark-mode #game-content li {
-    background: #153035;
+    background: #16203a;
+  }
+  /* Les champs Bootstrap (.form-control/.form-select) gardent leur bordure
+     grise par défaut tant qu'on ne la retire pas explicitement — c'était le
+     liseré restant sur les barres de recherche (urgences/techniques) et
+     tous les champs SOAP/Profil. */
+  .form-control, .form-select {
+    border: none;
+    background: rgba(120,120,128,0.1);
+    border-radius: var(--radius-btn);
+  }
+  .form-control:focus, .form-select:focus {
+    background: rgba(120,120,128,0.12);
+    box-shadow: 0 0 0 3px var(--color-accent-bg);
+    outline: none;
   }
   body.dark-mode .form-control,
   body.dark-mode .form-select,
   body.dark-mode select {
-    background-color: #153035;
-    color: #e9f5f2;
-    border-color: #2f6f75;
+    background-color: rgba(120,120,128,0.22);
+    color: #eef1f7;
+    border: none;
   }
   body.dark-mode .form-control::placeholder {
-    color: #7fa8a2;
+    color: #7c8aa0;
   }
   body.dark-mode label {
-    color: #cfe8e6;
+    color: #cbd5e6;
   }
   body.dark-mode .dropdown-toggle {
-    background-color: #153035 !important;
-    border-color: #2f6f75 !important;
+    background-color: #16203a !important;
+    border-color: #223050 !important;
   }
 
   .button-group-row {
@@ -501,14 +604,29 @@
     box-shadow: var(--shadow-sm);
   }
 
-  #page-technic h3 {
+  /* Règle générique par classe de carte plutôt qu'une liste d'id à rallonger
+     à chaque nouvelle page : tout <h3> dans une carte devient un petit
+     libellé discret. Exception : #page-abc (A/B/C), qui doit rester
+     proéminent — voir plus bas. */
+  .emergency-card h3, .technic-card h3, .gauge-card h3, .soap-card h3 {
+    font-size: 0.78rem;
+    font-family: var(--font-main);
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: none;
+    padding-bottom: 0;
+    margin: 0 0 0.7rem;
+    font-weight: 800;
+  }
+  #page-abc h3 {
     font-size: var(--font-size-subtitle);
     font-family: var(--font-title);
     color: var(--color-text-dark);
-    border-bottom: 3px solid var(--color-critical);
-    padding-bottom: 0.35rem;
-    margin: 1.5rem 0 0.9rem;
+    text-transform: none;
+    letter-spacing: normal;
     font-weight: 700;
+    margin: 0 0 0.5rem;
   }
 
   .technic-card {
@@ -516,7 +634,7 @@
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-md);
     padding: 1.1rem 1.5rem;
-    border: 1px solid var(--color-accent-border);
+    
     border-top: 4px solid var(--color-card-accent);
     transition: box-shadow 0.3s ease, transform 0.2s ease;
   }
@@ -548,16 +666,20 @@
     }
   }
 
-  body.dark-mode #page-emergency h3,
-  body.dark-mode #page-technic h3 {
-    color: #e9f5f2;
-    border-bottom-color: var(--color-critical);
+  body.dark-mode .emergency-card h3,
+  body.dark-mode .technic-card h3,
+  body.dark-mode .gauge-card h3,
+  body.dark-mode .soap-card h3 {
+    color: #93a0b8;
+  }
+  body.dark-mode #page-abc h3 {
+    color: #eef1f7;
   }
 
   body.dark-mode #technic-steps li,
   body.dark-mode #technic-truc li,
   body.dark-mode #technic-related-emergencies li {
-    color: #e9f5f2;
+    color: #eef1f7;
   }
 
   /*Nouveaux boutons de ABC */
@@ -623,7 +745,7 @@
   box-shadow: var(--shadow-md);
   padding: 0.75rem 1.5rem;
   margin-bottom: 1rem;
-  border: 1px solid var(--color-accent-border);
+  
   border-top: 4px solid var(--color-card-accent);
   transition: box-shadow 0.3s ease, transform 0.2s ease;
   cursor: pointer;
@@ -681,7 +803,7 @@ button.choice-btn {
 }
 
 button.choice-btn:hover {
-  background: #0b5ed7;
+  background: #b81f42;
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
@@ -723,15 +845,15 @@ button.incorrect {
   color: var(--color-accent);
 }
 body.dark-mode .dropdown-menu {
-  background-color: #12242a;
+  background-color: #131c30;
 }
 body.dark-mode .dropdown-menu .dropdown-item {
-  color: #e9f5f2;
+  color: #eef1f7;
 }
 body.dark-mode .dropdown-menu .dropdown-item:hover,
 body.dark-mode .dropdown-menu .dropdown-item:focus {
-  background-color: #1c3d3f;
-  color: #7fd8cf;
+  background-color: #1c2742;
+  color: #ff9db0;
 }
 
 /* ========== BOUTONS - langage visuel unifié ========== */
@@ -794,7 +916,7 @@ button.choice-btn:active {
 #page-signs .btn-outline-secondary,
 #page-group .btn-outline-secondary {
   background: #fff;
-  border: 1px solid var(--color-accent-border);
+  
   border-radius: var(--radius-card);
   color: var(--color-text-dark);
   font-weight: 600;
@@ -820,18 +942,18 @@ button.choice-btn:active {
 body.dark-mode #page-signs .btn-outline-primary,
 body.dark-mode #page-signs .btn-outline-secondary,
 body.dark-mode #page-group .btn-outline-secondary {
-  background: #153035;
-  color: #e9f5f2;
-  border-color: #2f6f75;
+  background: #16203a;
+  color: #eef1f7;
+  border-color: #223050;
 }
 body.dark-mode #page-signs .btn-outline-primary {
-  border-top-color: #2ecab8;
+  border-top-color: #ff5673;
 }
 body.dark-mode #page-signs .btn-outline-primary:hover,
 body.dark-mode #page-signs .btn-outline-secondary:hover,
 body.dark-mode #page-group .btn-outline-secondary:hover {
-  background: #1c3d3f;
-  color: #e9f5f2;
+  background: #1c2742;
+  color: #eef1f7;
 }
 
 /* ========== LISTE DES NOTES SOAP ========== */
@@ -842,7 +964,7 @@ body.dark-mode #page-group .btn-outline-secondary:hover {
 }
 #soap-list .list-group-item {
   background: #fff;
-  border: 1px solid var(--color-accent-border);
+  
   border-radius: var(--radius-card);
   padding: 0.9rem 1.1rem;
   box-shadow: var(--shadow-sm);
@@ -861,18 +983,18 @@ body.dark-mode #page-group .btn-outline-secondary:hover {
   font-weight: 700;
 }
 body.dark-mode #soap-list .list-group-item {
-  background: #153035;
+  background: #16203a;
   border-color: rgba(255, 255, 255, 0.12);
-  color: #e9f5f2;
+  color: #eef1f7;
 }
 body.dark-mode #soap-list .list-group-item strong {
-  color: #6fe0cf;
+  color: #ff9db0;
 }
 
 /* ========== GAMIFICATION — XP / Niveaux / Chrono ========== */
 .xp-panel {
   background: #fff;
-  border: 1px solid var(--color-accent-border);
+  
   border-top: 4px solid var(--color-card-accent);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-sm);
@@ -911,15 +1033,15 @@ body.dark-mode #soap-list .list-group-item strong {
   transition: width 0.4s ease;
 }
 body.dark-mode .xp-panel {
-  background: #153035;
+  background: #16203a;
   border-color: rgba(255, 255, 255, 0.1);
-  border-top-color: #2ecab8;
+  border-top-color: #ff5673;
 }
 body.dark-mode .xp-count {
-  color: #9fd6cf;
+  color: #93a0b8;
 }
 body.dark-mode .xp-bar-track {
-  background: #0b1917;
+  background: #0b1220;
 }
 
 .level-up-toast {
@@ -986,12 +1108,12 @@ body.dark-mode .xp-bar-track {
   text-decoration: underline;
 }
 body.dark-mode .xp-panel-link {
-  color: #7fd8cf;
+  color: #ff9db0;
 }
 
 .explorer-card {
   background: #fff;
-  border: 1px solid var(--color-accent-border);
+  
   border-top: 4px solid var(--color-card-accent);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-sm);
@@ -1030,14 +1152,14 @@ body.dark-mode .xp-panel-link {
   line-height: 1.5;
 }
 body.dark-mode .explorer-card {
-  background: #153035;
+  background: #16203a;
   border-color: rgba(255, 255, 255, 0.1);
 }
 body.dark-mode .explorer-card.locked {
   border-top-color: rgba(255, 255, 255, 0.15);
 }
 body.dark-mode .explorer-badge {
-  color: #9fd6cf;
+  color: #93a0b8;
 }
 
 .speed-header {
@@ -1088,7 +1210,7 @@ body.dark-mode .explorer-badge {
   align-items: flex-start;
   gap: 0.35rem;
   background: #fff;
-  border: 1px solid var(--color-accent-border);
+  
   border-top: 4px solid var(--color-muted-border);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-sm);
@@ -1119,16 +1241,273 @@ body.dark-mode .explorer-badge {
   line-height: 1.4;
 }
 body.dark-mode .mode-card {
-  background: #153035;
+  background: #16203a;
   border-color: rgba(255, 255, 255, 0.1);
   border-top-color: rgba(255, 255, 255, 0.15);
 }
 body.dark-mode .mode-card.selected {
-  border-top-color: #2ecab8;
+  border-top-color: #ff5673;
 }
 body.dark-mode .mode-card-desc {
-  color: #9fd6cf;
+  color: #93a0b8;
 }
+
+/* ================================================================
+   V2 — SOS bar, écrans de décision, accordéon catégories, détail
+   urgence/technic à bandeau. Purement présentation : aucune des
+   fonctions ci-dessous ne touche findBestMatchingEmergency ni
+   l'enchaînement ABC — seulement le rendu DOM/CSS.
+   ================================================================ */
+
+/* ---------- catégories : 7 couleurs distinctes réutilisées pour
+   symptômes ET trousse ---------- */
+:root {
+  --cat-1: linear-gradient(135deg, #32c8d1, #5ee7df); /* Respiratory */
+  --cat-2: linear-gradient(135deg, #ff9f0a, #ffcc66); /* Skin & Joints */
+  --cat-3: linear-gradient(135deg, #af52de, #ff6482); /* Circulatory */
+  --cat-4: linear-gradient(135deg, #30d158, #7be495); /* Digestive */
+  --cat-5: linear-gradient(135deg, #0a84ff, #5ac8fa); /* Head & Senses */
+  --cat-6: linear-gradient(135deg, #5e5ce6, #bf5af2); /* Neurological & Mental */
+  --cat-7: linear-gradient(135deg, var(--color-accent), var(--color-card-accent)); /* General */
+
+  --cat-1-solid: #32c8d1;
+  --cat-2-solid: #ff9f0a;
+  --cat-3-solid: #af52de;
+  --cat-4-solid: #30d158;
+  --cat-5-solid: #0a84ff;
+  --cat-6-solid: #5e5ce6;
+  --cat-7-solid: var(--color-accent);
+}
+
+/* ---------- barre SOS persistante ---------- */
+.sos-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0; margin: 0 auto; max-width: 480px;
+  z-index: 1200;
+  padding: 0.6rem 0.9rem calc(0.6rem + env(safe-area-inset-bottom));
+  background: var(--color-bg-light);
+  border-top: 1px solid var(--color-muted-border);
+  box-shadow: 0 -6px 16px rgba(0,0,0,0.08);
+}
+.sos-bar .custom-btn {
+  width: 100%;
+  min-height: 52px;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  font-size: 1.05rem;
+}
+.sos-bar .pulse-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #fff;
+  animation: sosPulse 1.6s infinite;
+}
+@keyframes sosPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255,255,255,.6); }
+  70% { box-shadow: 0 0 0 8px rgba(255,255,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+}
+/* Sélecteur [id^="page-"] plutôt que "section" seul : Bootstrap's .py-4/.py-5
+   utilitaires posent AUSSI padding-bottom en !important avec une spécificité
+   de classe (0,1,0). Un simple "section" (0,0,1) perdait systématiquement,
+   laissant les boutons de fin de page (Save SOAP, Save Quantities...) cachés
+   sous la barre SOS fixe. section[id^="page-"] = (0,1,1), gagne à coup sûr. */
+section[id^="page-"], #soap-report-section, #soap-list-section {
+  padding-bottom: 5.5rem !important;
+}
+body.dark-mode .sos-bar {
+  background: #0b1220;
+  border-top-color: #223050;
+}
+
+/* ---------- accueil : grand titre + carte principale + grille de widgets ---------- */
+.home-pad { padding: 1.2rem 1.1rem 0; }
+.large-title { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; margin: 0.2rem 0 0; }
+.large-sub { color: var(--color-accent); opacity: 0.85; font-size: 0.95rem; margin: 0.2rem 0 1.1rem; font-weight: 600; }
+
+.hero-card {
+  border: none; width: 100%; text-align: left; cursor: pointer;
+  border-radius: var(--radius-card); padding: 1.35rem 1.2rem; margin-bottom: 0.85rem;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-card-accent)); color: #fff;
+  box-shadow: 0 14px 30px rgba(215,38,61,0.28);
+  display: flex; align-items: center; gap: 1rem;
+}
+.hero-card .badge-ic { width: 52px; height: 52px; border-radius: 16px; background: rgba(255,255,255,0.22); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+.hero-card .txt { flex: 1; }
+.hero-card .txt b { display: block; font-size: 1.1rem; font-weight: 800; margin-bottom: 2px; }
+.hero-card .txt span { font-size: 0.85rem; opacity: 0.92; font-weight: 500; }
+.hero-card .chev { font-size: 1.3rem; opacity: 0.85; }
+
+/* Carte "secondaire" : importance intermédiaire entre la carte principale
+   (dégradé) et la grille des actions optionnelles (Trousse/Jeu/Notes). */
+.secondary-card {
+  border: none; width: 100%; text-align: left; cursor: pointer;
+  border-radius: var(--radius-card); padding: 1rem 1.1rem; margin-bottom: 1rem;
+  background: #fff; box-shadow: var(--shadow-sm);
+  display: flex; align-items: center; gap: 0.9rem;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+.secondary-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.secondary-card .badge-ic { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: #fff; flex-shrink: 0; }
+.secondary-card .badge-ic.w-amber { background: var(--cat-2); }
+.secondary-card .txt { flex: 1; }
+.secondary-card .txt b { display: block; font-size: 1rem; font-weight: 800; color: var(--color-text-dark); margin-bottom: 1px; }
+.secondary-card .txt span { font-size: 0.82rem; color: #6c757d; font-weight: 500; }
+.secondary-card .chev { font-size: 1.2rem; color: #6c757d; }
+body.dark-mode .secondary-card { background: #16203a; }
+body.dark-mode .secondary-card .txt b { color: #eef1f7; }
+
+.widget-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem; }
+.widget {
+  border-radius: var(--radius-card); padding: 1rem; background: #fff; 
+  box-shadow: var(--shadow-sm); cursor: pointer; min-height: 112px; display: flex; flex-direction: column; justify-content: space-between;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+.widget:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.widget .ic { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1rem; margin-bottom: 0.6rem; }
+.widget b { font-size: 0.92rem; font-weight: 700; line-height: 1.25; }
+.widget.w-amber .ic { background: var(--cat-2); }
+.widget.w-calm .ic { background: var(--cat-5); }
+.widget.w-green .ic { background: var(--cat-4); }
+.widget.w-violet .ic { background: var(--cat-3); }
+.widget.w-brand .ic { background: var(--cat-7); }
+body.dark-mode .widget { background: #16203a; border-color: #223050; }
+
+/* ---------- écrans de décision : icône + halo + tuiles ---------- */
+.decision-wrap { text-align: center; padding-top: 0.5rem; }
+.halo-wrap { position: relative; width: 120px; height: 120px; margin: 0 auto 1rem; }
+.halo {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: var(--cat-7); filter: blur(24px); opacity: 0.45;
+}
+.halo-ic {
+  position: relative; width: 120px; height: 120px; border-radius: 32px;
+  background: #fff; 
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.4rem; box-shadow: var(--shadow-md);
+}
+.halo-ic i {
+  color: var(--color-accent);
+}
+body.dark-mode .halo-ic { background: #16203a; border-color: #223050; }
+body.dark-mode .decision-wrap p.text-muted { color: #93a0b8 !important; }
+
+.progress-dots { display: flex; gap: 6px; justify-content: center; margin: 0 0 1rem; }
+.progress-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--color-muted-border); }
+.progress-dots span.done { background: var(--color-accent); }
+.progress-dots span.current { background: var(--color-danger); width: 16px; border-radius: 5px; }
+body.dark-mode .progress-dots span { background: #223050; }
+
+.tile-row { display: flex; gap: 0.75rem; max-width: 420px; margin: 0 auto; }
+.tile {
+  flex: 1; border-radius: var(--radius-card); padding: 1.25rem 0.75rem; border: 1.5px solid;
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  font-weight: 800; font-size: 1rem; cursor: pointer; background: none;
+  transition: transform .12s ease;
+}
+.tile:active { transform: scale(0.96); }
+.tile .tic { font-size: 1.6rem; }
+.tile-yes { background: linear-gradient(180deg, rgba(43,147,72,.14), rgba(43,147,72,.05)); border-color: rgba(43,147,72,.35); color: #1e7a37; }
+.tile-no { background: linear-gradient(180deg, rgba(215,38,61,.12), rgba(215,38,61,.04)); border-color: rgba(215,38,61,.32); color: var(--color-danger); }
+body.dark-mode .tile-yes { background: linear-gradient(180deg, rgba(43,147,72,.22), rgba(43,147,72,.08)); }
+body.dark-mode .tile-no { background: linear-gradient(180deg, rgba(215,38,61,.24), rgba(215,38,61,.08)); }
+
+/* ---------- CPR BPM ---------- */
+.bpm-tile { flex-direction: row; justify-content: center; gap: 0.4rem; border-color: var(--color-muted-border); background: #fff; color: var(--color-text-dark); }
+.bpm-tile .tic { font-size: 1.3rem; font-weight: 800; }
+.bpm-tile.active { background: linear-gradient(135deg, var(--color-accent), var(--color-card-accent)); color: #fff; border-color: transparent; }
+body.dark-mode .bpm-tile { background: #16203a; color: #eef1f7; border-color: #223050; }
+.halo-ic.pulse-beat { animation: bpmBeat 0.15s ease-out; }
+@keyframes bpmBeat { 0% { transform: scale(1); } 35% { transform: scale(1.12); } 100% { transform: scale(1); } }
+#bpm-counter-card { text-align: center; }
+#bpm-count { font-size: 2.6rem; font-weight: 800; line-height: 1; color: var(--color-text-dark); }
+body.dark-mode #bpm-count { color: #eef1f7; }
+
+/* ---------- barre de recherche + libellés de section (symptômes) ---------- */
+.search-box {
+  width: 100%; border: none; background: rgba(120,120,128,0.12); border-radius: 14px;
+  padding: 0.7rem 0.9rem; font-size: 0.98rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.search-box i { color: #6c757d; }
+.search-box input { border: none; background: none; outline: none; font-size: 0.98rem; width: 100%; color: var(--color-text-dark); }
+body.dark-mode .search-box { background: rgba(120,120,128,0.24); }
+body.dark-mode .search-box input { color: #eef1f7; }
+
+.section-label { font-size: 0.82rem; font-weight: 800; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em; margin: 0.9rem 0 0.5rem; }
+body.dark-mode .section-label { color: #93a0b8; }
+
+.gauge-card { background: #fff; border-radius: var(--radius-card); padding: 1rem 1.1rem; margin-bottom: 1.1rem; box-shadow: var(--shadow-sm); }
+.gauge-card .lbl { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 0.6rem; }
+.gauge-suggest-prefix { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #6c757d; }
+body.dark-mode .gauge-suggest-prefix { color: #93a0b8; }
+.gauge-suggest-name { font-size: 1.1rem; font-weight: 800; color: var(--color-text-dark); flex-basis: 100%; }
+body.dark-mode .gauge-suggest-name { color: #eef1f7; }
+.gauge-track { height: 10px; border-radius: 999px; background: linear-gradient(90deg, var(--color-minor) 0%, var(--color-major) 50%, var(--color-critical) 100%); position: relative; margin-bottom: 0.4rem; }
+.gauge-dot { position: absolute; top: 50%; width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 3px solid var(--color-critical); transform: translate(-50%,-50%); box-shadow: 0 2px 6px rgba(0,0,0,0.25); transition: left 0.3s ease; }
+.gauge-foot { display: flex; justify-content: space-between; font-size: 0.72rem; color: #6c757d; font-weight: 600; }
+body.dark-mode .gauge-card { background: #16203a; border-color: #223050; }
+body.dark-mode .gauge-foot { color: #93a0b8; }
+
+/* ---------- accordéon générique (symptômes + trousse) ---------- */
+.cat { background: #fff; border-radius: var(--radius-card); margin-bottom: 0.6rem; overflow: hidden; box-shadow: var(--shadow-sm); }
+.cat-head { width: 100%; border: none; background: none; display: flex; align-items: center; gap: 0.7rem; padding: 0.8rem 0.9rem; cursor: pointer; text-align: left; }
+.cat-head .cat-ic { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff; font-size: 1.05rem; }
+.cat-title { font-weight: 700; font-size: 0.96rem; color: var(--color-text-dark); flex: 1; }
+.cat-count { background: var(--color-danger); color: #fff; font-size: 0.72rem; font-weight: 800; min-width: 19px; height: 19px; border-radius: 999px; display: flex; align-items: center; justify-content: center; padding: 0 6px; }
+.cat-chevron { color: #6c757d; transition: transform .25s ease; flex-shrink: 0; }
+.cat.open .cat-chevron { transform: rotate(180deg); }
+.cat-body { max-height: 0; opacity: 0; overflow: hidden; transition: max-height .28s ease, opacity .2s ease, padding .28s ease; }
+.cat.open .cat-body { max-height: 900px; opacity: 1; padding: 0 0.9rem 1rem; }
+.cat-chip-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.cat-chip {
+  border: 1.5px solid var(--color-muted-border); background: #fff; color: var(--color-text-dark);
+  border-radius: 999px; padding: 0.5rem 0.9rem; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+}
+.cat-chip.selected { border-color: transparent; color: #fff; }
+.cat-chip.hidden-by-search { display: none; }
+.cat.hidden-by-search-cat { display: none; }
+body.dark-mode .cat { background: #16203a; border-color: #223050; }
+body.dark-mode .cat-title { color: #eef1f7; }
+body.dark-mode .cat-chip { background: #16203a; color: #eef1f7; border-color: #223050; }
+
+/* kit items rendus dans l'accordéon */
+.cat-body .kit-item { background: transparent; }
+
+/* ---------- détail urgence / technic : bandeau + anneau de sévérité ---------- */
+.detail-band {
+  height: 100px; border-radius: var(--radius-card); position: relative; margin: 0 0 40px;
+  background: linear-gradient(160deg, #ee8a1f, #d97706);
+}
+.detail-band.critical { background: linear-gradient(160deg, #ff5b6e, #a4161a); }
+.detail-band.major { background: linear-gradient(160deg, #ffb04f, #d97706); }
+.detail-band.minor { background: linear-gradient(160deg, #6fd88a, #2b9348); }
+.detail-band.brand { background: linear-gradient(160deg, var(--color-accent), var(--color-card-accent)); }
+.dring-ic.brand { color: var(--color-accent); }
+.dring-wrap { position: absolute; left: 20px; bottom: -36px; width: 78px; height: 78px; }
+.dring-wrap svg { transform: rotate(-90deg); }
+.dring-bg { fill: none; stroke: rgba(0,0,0,0.08); stroke-width: 6; }
+.dring-fg { fill: none; stroke-width: 6; stroke-linecap: round; }
+.dring-fg.critical { stroke: var(--color-critical); }
+.dring-fg.major { stroke: var(--color-major); }
+.dring-fg.minor { stroke: var(--color-minor); }
+.dring-ic { position: absolute; inset: 13px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: var(--shadow-sm); }
+.dring-ic.critical { color: var(--color-critical); }
+.dring-ic.major { color: var(--color-major); }
+.dring-ic.minor { color: var(--color-minor); }
+.severity-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 0.74rem; font-weight: 800; padding: 5px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.03em; margin: 0 0 0.5rem 92px; }
+#emergency-title, #technic-title { display: block !important; }
+.severity-pill.critical { background: #fdeef0; color: var(--color-critical); }
+.severity-pill.major { background: #fff2e2; color: var(--color-major); }
+.severity-pill.minor { background: #e8f6ec; color: var(--color-minor); }
+.severity-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+body.dark-mode .severity-pill.critical { background: rgba(215,38,61,0.18); }
+body.dark-mode .severity-pill.major { background: rgba(238,138,31,0.18); }
+body.dark-mode .severity-pill.minor { background: rgba(43,147,72,0.18); }
+
+.icon-list {
+  list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: 0.55rem;
+}
+.icon-list li { display: flex; gap: 0.55rem; align-items: flex-start; }
+.icon-list li i { margin-top: 0.2rem; font-size: 0.8rem; flex-shrink: 0; color: var(--color-accent); }
+#emergency-details.icon-list li i, #technic-related-emergencies.icon-list li i { color: var(--color-critical); }
+#emergency-care.icon-list li i, #technic-steps.icon-list li i, #technic-truc.icon-list li i { color: var(--color-minor); }
 
   </style>
 
@@ -1151,6 +1530,45 @@ body.dark-mode .mode-card-desc {
       }
     };
 
+// call911() était appelée par tous les boutons "9-1-1" mais n'était définie
+// nulle part dans le fichier : le bouton ne faisait donc rien. Correction minimale.
+function call911() {
+  window.location.href = 'tel:911';
+}
+
+// Menu : panneau latéral (remplace le dropdown Bootstrap).
+function openMenu() {
+  document.getElementById('menu-backdrop').classList.remove('hidden');
+  document.getElementById('menu-panel').classList.remove('hidden');
+}
+function closeMenu() {
+  document.getElementById('menu-backdrop').classList.add('hidden');
+  document.getElementById('menu-panel').classList.add('hidden');
+}
+function toggleMenu() {
+  document.getElementById('menu-panel').classList.contains('hidden') ? openMenu() : closeMenu();
+}
+// Navigue puis referme le panneau : évite de répéter navigate(...); closeMenu() partout.
+function go(page) {
+  navigate(page);
+  closeMenu();
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeMenu();
+});
+
+// Sévérité : purement visuel (couleurs/jauge), dérivé du champ `type`
+// existant des urgences. Aucun impact sur findBestMatchingEmergency.
+const SEVERITY_ORDER = { C: 3, M: 2, m: 1 };
+const SEVERITY_CLASS = { C: 'critical', M: 'major', m: 'minor' };
+const SEVERITY_FILL = { C: 0.9, M: 0.6, m: 0.3 };
+function worstSeverityCode(typeArr) {
+  return (typeArr || []).reduce(
+    (worst, code) => (SEVERITY_ORDER[code] || 0) > (SEVERITY_ORDER[worst] || 0) ? code : worst,
+    typeArr?.[0] || 'm'
+  );
+}
+
 function navigate(page, push = true) {
   // Masquer toutes les sections
   document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
@@ -1160,6 +1578,10 @@ function navigate(page, push = true) {
   if (target) {
     target.classList.remove('hidden');
   }
+
+  // Bouton retour global : masqué seulement sur l'accueil.
+  const backBtn = document.getElementById('global-back-btn');
+  if (backBtn) backBtn.classList.toggle('hidden', page === 'index');
 
   // Gestion de l'historique (évite les doublons sur back/forward)
   if (push) {
@@ -1200,53 +1622,98 @@ function navigate(page, push = true) {
 
 <body>
 
+  <!-- Barre SOS persistante : toujours accessible, sur tous les écrans -->
+  <div class="sos-bar">
+    <button class="custom-btn danger" onclick="call911()">
+      <span class="pulse-dot"></span> Appeler le 9-1-1
+    </button>
+  </div>
+
+  <!-- Bouton retour global : masqué sur l'accueil, visible partout ailleurs -->
+  <button class="back-btn-global hidden" id="global-back-btn" onclick="history.back()" aria-label="Back">
+    <i class="bi bi-chevron-left"></i>
+  </button>
+
   <!-- Bouton de navigation haut / droit, le menu -->
   <nav class="menu" aria-label="Principal Menu">
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Navigation Menu">
-        ☰
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end">
-        <li><a class="dropdown-item" href="#" onclick="navigate('index'); return false;">Welcome Screen</a></li>
-        <li><a class="dropdown-item" href="#" onclick="navigate('safe'); return false;">1st Assessment</a></li>
-        <li><a class="dropdown-item" href="#" onclick="navigate('soap'); return false;">SOAP Note</a></li>         
-        <li><a class="dropdown-item" href="#" onclick="navigate('signs'); return false;">2nd Assessment</a></li>
-        <li><a class="dropdown-item" href="#" onclick="navigate('emergencies'); return false;">List of Emergencies</a></li>
-        <li><a class="dropdown-item" href="#" onclick="navigate('technics'); return false;">List of Technics</a></li>
-        <li><a class="dropdown-item" href="#" onclick="navigate('legal'); return false;">Legal</a></li>
-        <li><hr class="dropdown-divider"></li> <!-- Optionnel : séparation -->
-        <li><a class="dropdown-item" href="#" onclick="navigate('bpm'); return false;">💓 CPR BPM</a></li>
-        <button id="darkModeToggle" class="dropdown-item d-flex align-items-center" type="button"> 🌙 Toggle Dark Mode </button>
-        <button id="langToggle" class="dropdown-item d-flex align-items-center" type="button"> 🌐 <span id="langToggle-label">EN / FR</span> </button>
-        <li><a class="dropdown-item" href="#" onclick="navigate('kit'); return false;">🧰 Kit First Aid</a></li>
-        <li><a class="dropdown-item" href="#" onclick="navigate('install'); return false;">📲 Install App</a></li>
-        <li><a class="dropdown-item" href="#" onclick="navigate('game'); return false;">🧩 Training Game</a></li>
-        <li><a class="dropdown-item" href="#" onclick="navigate('explorers'); return false;">🧭 Explorers</a></li>
-        <li><a class="dropdown-item" href="#" onclick="navigate('tips'); return false;">💡 Tips</a></li>
-        <li><a class="dropdown-item" href="#" onclick="navigate('profile'); return false;">🪪 My Profile</a></li>
-      </ul>
-    </div>
+    <button class="menu-trigger" type="button" onclick="toggleMenu()" aria-label="Navigation Menu" aria-haspopup="true" id="menu-trigger-btn">
+      <i class="bi bi-list"></i>
+    </button>
   </nav>
 
-  <!-- Page index, donc le index.html -->
-  <section id="page-index" class="container text-center py-5">
-    <h1 class="main-title">FIRST AIDers</h1>
-    <h2 class="sub-title">Wilderness & Remote</h2>
-    <h2 class="sub-title">Field Guide</h2>
-    <div class="button-group-row">
-      <button class="custom-btn primary" onclick="navigate('safe')">
-        <img src="icons/abc.png" alt="ABC icon" class="icon-btn-lg">
-        First Assessment</button> 
-      <button class="custom-btn primary" onclick="navigate('signs')">
-        <img src="icons/soap.png" alt="soap icon" class="icon-btn-lg">
-        Second Assessment (SOAP)</button>
-      <button class="custom-btn danger" onclick="call911()">
-        <img src="icons/911.png" alt="911 icon" class="icon-btn-lg">
-        9-1-1</button>
-      <div class="mb-4"></div>
-      <button onclick="showSOAPList()" class="custom-btn primary">📝 View SOAP Notes</button>
+  <div class="menu-backdrop hidden" id="menu-backdrop" onclick="closeMenu()"></div>
+  <aside class="menu-panel hidden" id="menu-panel" aria-label="Navigation">
+    <div class="menu-panel-header">
+      <span class="menu-panel-title">Menu</span>
+      <button class="menu-close" type="button" onclick="closeMenu()" aria-label="Close menu"><i class="bi bi-x-lg"></i></button>
     </div>
-    <footer class="footer-note">
+    <div class="menu-scroll">
+      <div class="section-label">Assessment</div>
+      <button class="menu-row" onclick="go('index')"><span class="menu-row-ic w-amber"><i class="bi bi-house-fill"></i></span><span>Welcome Screen</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('safe')"><span class="menu-row-ic w-brand"><i class="bi bi-heart-pulse-fill"></i></span><span>1st Assessment</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('signs')"><span class="menu-row-ic w-amber"><i class="bi bi-clipboard2-pulse-fill"></i></span><span>2nd Assessment</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('soap')"><span class="menu-row-ic w-calm"><i class="bi bi-journal-medical"></i></span><span>SOAP Note</span><i class="bi bi-chevron-right chev"></i></button>
+
+      <div class="section-label">Reference</div>
+      <button class="menu-row" onclick="go('emergencies')"><span class="menu-row-ic w-violet"><i class="bi bi-exclamation-triangle-fill"></i></span><span>List of Emergencies</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('technics')"><span class="menu-row-ic w-violet"><i class="bi bi-tools"></i></span><span>List of Technics</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('legal')"><span class="menu-row-ic w-slate"><i class="bi bi-file-earmark-text-fill"></i></span><span>Legal</span><i class="bi bi-chevron-right chev"></i></button>
+
+      <div class="section-label">Tools</div>
+      <button class="menu-row" onclick="go('bpm')"><span class="menu-row-ic w-brand"><i class="bi bi-activity"></i></span><span>CPR BPM</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('kit')"><span class="menu-row-ic w-green"><i class="bi bi-bag-heart-fill"></i></span><span>Kit First Aid</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('install')"><span class="menu-row-ic w-slate"><i class="bi bi-phone-fill"></i></span><span>Install App</span><i class="bi bi-chevron-right chev"></i></button>
+
+      <div class="section-label">More</div>
+      <button class="menu-row" onclick="go('game')"><span class="menu-row-ic w-violet"><i class="bi bi-controller"></i></span><span>Training Game</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('explorers')"><span class="menu-row-ic w-calm"><i class="bi bi-compass-fill"></i></span><span>Explorers</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('tips')"><span class="menu-row-ic w-amber"><i class="bi bi-lightbulb-fill"></i></span><span>Tips</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('profile')"><span class="menu-row-ic w-slate"><i class="bi bi-person-vcard-fill"></i></span><span>My Profile</span><i class="bi bi-chevron-right chev"></i></button>
+
+      <div class="section-label">Preferences</div>
+      <button id="darkModeToggle" class="menu-row" type="button"><span class="menu-row-ic w-slate"><i class="bi bi-moon-stars-fill"></i></span><span>Dark Mode</span></button>
+      <button id="langToggle" class="menu-row" type="button"><span class="menu-row-ic w-slate"><i class="bi bi-translate"></i></span><span id="langToggle-label">EN / FR</span></button>
+    </div>
+  </aside>
+
+  <!-- Page index, donc le index.html -->
+  <section id="page-index" class="home-pad">
+    <div class="large-title">FIRSTAIDers</div>
+    <div class="large-sub">Wilderness &amp; Remote Field Guide</div>
+
+    <button class="hero-card" onclick="navigate('safe')">
+      <div class="badge-ic"><i class="bi bi-heart-pulse-fill"></i></div>
+      <div class="txt"><b>First Assessment</b><span>Start the ABC evaluation</span></div>
+      <div class="chev"><i class="bi bi-chevron-right"></i></div>
+    </button>
+
+    <button class="secondary-card" onclick="navigate('signs')">
+      <div class="badge-ic w-amber"><i class="bi bi-clipboard2-pulse-fill"></i></div>
+      <div class="txt"><b>Second Assessment (SOAP)</b><span>Signs &amp; symptoms</span></div>
+      <div class="chev"><i class="bi bi-chevron-right"></i></div>
+    </button>
+
+    <div class="section-label">More</div>
+    <div class="widget-grid">
+      <div class="widget w-calm" onclick="showSOAPList()">
+        <div class="ic"><i class="bi bi-journal-medical"></i></div>
+        <b>View SOAP Notes</b>
+      </div>
+      <div class="widget w-green" onclick="navigate('kit')">
+        <div class="ic"><i class="bi bi-bag-heart-fill"></i></div>
+        <b>First Aid Kit</b>
+      </div>
+      <div class="widget w-brand" onclick="navigate('bpm')">
+        <div class="ic"><i class="bi bi-activity"></i></div>
+        <b>CPR BPM</b>
+      </div>
+      <div class="widget w-violet" onclick="navigate('game')">
+        <div class="ic"><i class="bi bi-controller"></i></div>
+        <b>Training Game</b>
+      </div>
+    </div>
+
+    <footer class="footer-note text-center">
       <span>Built with care by Gaëtan H. — <a href="mailto:1stAid@soween.com">1stAid@soween.com</a></span>
     </footer>
   </section>
@@ -1254,107 +1721,89 @@ function navigate(page, push = true) {
 
   <!-- Page pour Safe & Secure -->
   <section id="page-safe" class="hidden container py-4">
-    <h2>Safe & Secure</h2>
-    <div class="my-4">
-      <img src="icons/safe-icon.png" alt="Safe Icon" class="icon-hero">
-    </div>  
-    <div class="alert alert-secondary">
-      <p>
-        Your safety comes first — Is the area safe and secure?<br>
-        ✅ Yes = you can act safely<br>
-        ❌ No = get more info about safety
-      </p>
+    <div class="decision-wrap">
+      <div class="progress-dots"><span class="current"></span><span></span><span></span><span></span></div>
+      <div class="halo-wrap"><div class="halo"></div><div class="halo-ic"><i class="bi bi-shield-fill-check"></i></div></div>
+      <h2>Safe &amp; Secure</h2>
+      <p class="text-muted">Your safety comes first — is the area safe and secure?</p>
     </div>
-    <div class="button-group-row">
-      <button class="custom-btn primary" onclick="navigate('responsive')">✅ Yes</button>    
-      <button class="custom-btn primary" onclick="navigate('unsafe')">❌ No</button>
-      <button class="custom-btn danger" onclick="call911()">
-        <img src="icons/911.png" alt="911 icon" class="icon-btn-lg">
-        9-1-1</button>
-    </div>  
+    <div class="tile-row mb-3">
+      <button class="tile tile-yes" onclick="navigate('responsive')"><span class="tic">✅</span>Yes</button>
+      <button class="tile tile-no" onclick="navigate('unsafe')"><span class="tic">❌</span>No</button>
+    </div>
   </section>
 
   <!-- Page pour unsafe -->
   <section id="page-unsafe" class="hidden container py-4">
-    <h2>Unsafe</h2>
-    <div class="alert alert-secondary">
-      <p>When you recognize an emergency, your first step is to assess the scene. Ask yourself:</p>
-      <ul>
-        <li>Is the scene safe?</li>
-        <li>Are there any hazards?</li>
-        <li>What happened?</li>
-        <li>How did it happen?</li>
+    <div class="decision-wrap">
+      <div class="halo-wrap"><div class="halo"></div><div class="halo-ic"><i class="bi bi-exclamation-triangle-fill"></i></div></div>
+      <h2>Unsafe</h2>
+      <p class="text-muted">Assess the scene before doing anything else.</p>
+    </div>
+    <div class="emergency-card mb-3">
+      <h3>Ask yourself</h3>
+      <ul class="icon-list">
+        <li><i class="bi bi-record-fill"></i>Is the scene safe?</li>
+        <li><i class="bi bi-record-fill"></i>Are there any hazards?</li>
+        <li><i class="bi bi-record-fill"></i>What happened?</li>
+        <li><i class="bi bi-record-fill"></i>How did it happen?</li>
       </ul>
-      <p>Only proceed if the scene is safe. If it's not possible to secure it, do not intervene -> call 9-1-1 immediately.</p>
+      <p class="text-muted mb-0" style="margin-top:0.8rem;">Only proceed if the scene is safe. If it can't be secured, do not intervene — call 9-1-1 immediately.</p>
     </div>
     <div class="button-group-row">
-      <button class="custom-btn primary" onclick="navigate('safe')">✅ Area is Safe & Secure</button>    
-      <button class="custom-btn danger" onclick="call911()">
-        <img src="icons/911.png" alt="911 icon" class="icon-btn-lg">
-        9-1-1</button>
-    </div>  
+      <button class="custom-btn primary" onclick="navigate('responsive')">✅ Area is Safe &amp; Secure</button>
+    </div>
   </section>
 
   <!-- Page pour (un)responsive -->
   <section id="page-responsive" class="hidden container py-4">
-    <h2>Responsiveness</h2>
-    <div class="my-4">
-      <img src="icons/responsive-icon.png" alt="Responsive Icon" class="icon-hero">
-    </div>  
-    <div class="alert alert-secondary">
-      <p>
-        Check if the person is responsive.<br>
-        ✅ Yes = responsive<br>
-        ❌ No = unresponsive
-      </p>
+    <div class="decision-wrap">
+      <div class="progress-dots"><span class="done"></span><span class="current"></span><span></span><span></span></div>
+      <div class="halo-wrap"><div class="halo"></div><div class="halo-ic"><i class="bi bi-person-check-fill"></i></div></div>
+      <h2>Responsiveness</h2>
+      <p class="text-muted">Check if the person is responsive.</p>
     </div>
-    <div class="button-group-row">
-      <button class="custom-btn primary" onclick="navigate('breathing')">✅ Yes</button>    
-      <button class="custom-btn primary" onclick="navigate('abc')">❌ No</button>
-      <button class="custom-btn danger" onclick="call911()">
-        <img src="icons/911.png" alt="911 icon" class="icon-btn-lg">
-        9-1-1</button>
-    </div>  
+    <div class="tile-row mb-3">
+      <button class="tile tile-yes" onclick="navigate('breathing')"><span class="tic">✅</span>Yes</button>
+      <button class="tile tile-no" onclick="navigate('abc')"><span class="tic">❌</span>No</button>
+    </div>
   </section>
 
   <!-- Page pour (un)breathing -->
   <section id="page-breathing" class="hidden container py-4">
-    <h2>Breathing</h2>
-    <div class="my-4">
-      <img src="icons/breathing-icon.png" alt="Breathing Icon" class="icon-hero">
-    </div>  
-    <div class="alert alert-secondary">
-      <p>
-        Check if the person is breathing.<br>
-        ✅ Yes = breathing<br>
-        ❌ No = not breathing
-      </p>
+    <div class="decision-wrap">
+      <div class="progress-dots"><span class="done"></span><span class="done"></span><span class="current"></span><span></span></div>
+      <div class="halo-wrap"><div class="halo"></div><div class="halo-ic"><i class="bi bi-wind"></i></div></div>
+      <h2>Breathing</h2>
+      <p class="text-muted">Check if the person is breathing.</p>
     </div>
-    <div class="button-group-row">
-      <button class="custom-btn primary" onclick="navigate('signs')">✅ Yes</button>    
-      <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CHOCKING'))">❌ No</button>      
-      <button class="custom-btn danger" onclick="call911()">
-        <img src="icons/911.png" alt="911 icon" class="icon-btn-lg">
-        9-1-1</button>
-    </div>  
+    <div class="tile-row mb-3">
+      <button class="tile tile-yes" onclick="navigate('signs')"><span class="tic">✅</span>Yes</button>
+      <button class="tile tile-no" onclick="displayTechnicObject(getTechnicByName('CHOCKING'))"><span class="tic">❌</span>No</button>
+    </div>
   </section>
 
   <!-- Page Technic Detail -->
   <section id="page-technic" class="hidden container py-4">
-    <h2 id="technic-title">Detail of the Technic</h2>
+    <div class="detail-band brand">
+      <div class="dring-wrap" style="bottom:-30px;">
+        <div class="dring-ic brand" style="position:static; width:66px; height:66px;"><i class="bi bi-tools"></i></div>
+      </div>
+    </div>
+    <h2 id="technic-title" style="margin-top:0;">Detail of the Technic</h2>
     <div class="technic-card mb-3" id="technic-description"></div>
     <div>
       <div class="technic-card mb-3">
         <h3>Technic Steps</h3>
-        <ul id="technic-steps"></ul>
+        <ul id="technic-steps" class="icon-list"></ul>
       </div>
       <div class="technic-card mb-3">
         <h3>Technic Truc</h3>
-        <ul id="technic-truc"></ul>
+        <ul id="technic-truc" class="icon-list"></ul>
       </div>
       <div class="technic-card mb-3">
         <h3>Related Emergencies</h3>
-        <ul id="technic-related-emergencies"></ul>
+        <ul id="technic-related-emergencies" class="icon-list"></ul>
       </div>
     </div>
   </section>
@@ -1366,63 +1815,88 @@ function navigate(page, push = true) {
 
   <!-- Page for ABC -->
   <section id="page-abc" class="page hidden">
-    <h2>ABC - Airway, Breathing, Circulation</h2>
+    <div class="decision-wrap" style="padding-bottom:0;">
+      <div class="progress-dots"><span class="done"></span><span class="done"></span><span class="done"></span><span class="current"></span></div>
+      <div class="halo-wrap" style="width:88px;height:88px;"><div class="halo"></div><div class="halo-ic" style="width:88px;height:88px;font-size:1.9rem;"><i class="bi bi-heart-pulse-fill"></i></div></div>
+      <h2>ABC — Airway, Breathing, Circulation</h2>
+    </div>
     <div class="emergency-card mb-3">
-      <h3>A - Airway</h3>
+      <h3><i class="bi bi-wind" style="color:var(--color-accent);margin-right:6px;"></i>A — Airway</h3>
       <p>Verify that the airway is not obstructed (check mouth and throat).</p>
-      <div class="button-group-row">   
-        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CHECKING ABC'))">How to do it?</button>           
+      <div class="button-group-row">
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CHECKING ABC'))">How to do it?</button>
         <button class="custom-btn primary" onclick="goToBreathing()">Airway is clear</button>
       </div>
     </div>
     <div id="abc-b" class="emergency-card mb-3 d-none">
-      <h3>B - Breathing</h3>
+      <h3><i class="bi bi-lungs-fill" style="color:var(--color-accent);margin-right:6px;"></i>B — Breathing</h3>
       <p>Is the person breathing normally?</p>
-      <div class="button-group-row">         
+      <div class="button-group-row">
         <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('RECOVERY POSITION'))">Yes → Place in recovery position</button>
         <button class="custom-btn danger" onclick="goToCirculation()">No → Check circulation</button>
       </div>
     </div>
     <div id="abc-c" class="emergency-card mb-3 d-none">
-      <h3>C - Circulation</h3>
+      <h3><i class="bi bi-droplet-fill" style="color:var(--color-accent);margin-right:6px;"></i>C — Circulation</h3>
       <p>Are there any signs of circulation: intense bleeding? If yes, it has to be stopped before CPR.</p>
-      <div class="button-group-row">   
+      <div class="button-group-row">
         <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CPR'))">No → Begin chest compressions</button>
         <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('AED'))">AED available</button>
       </div>
-    </div>    
+    </div>
   </section>
 
   <!-- Page for BPM buttons -->
   <section id="page-bpm" class="hidden container py-4">
-    <h2>CPR Rhythm</h2>
-    <div class="emergency-card mb-3">
-      <p class="mb-2 text-muted">Select a BPM to match the required CPR rhythm:</p>
-      <div class="button-group-row">
-        <button class="custom-btn primary" onclick="startCPRBeep(100)">100 BPM</button>
-        <button class="custom-btn primary" onclick="startCPRBeep(110)">110 BPM</button>
-        <button class="custom-btn primary" onclick="startCPRBeep(120)">120 BPM</button>
-      </div>
-      <div class="mb-4"></div>
-      <div>
-        <button class="custom-btn danger" onclick="stopCPRBeep()">🛑 Stop</button>
-      </div>
+    <div class="decision-wrap">
+      <div class="halo-wrap" id="bpm-halo"><div class="halo"></div><div class="halo-ic"><i class="bi bi-activity"></i></div></div>
+      <h2>CPR Rhythm</h2>
+      <p class="text-muted">Pick a rate and follow the beat for chest compressions.</p>
+    </div>
+
+    <div class="tile-row mb-3">
+      <button class="tile bpm-tile" data-bpm="100" onclick="startCPRBeep(100)"><span class="tic">100</span>BPM</button>
+      <button class="tile bpm-tile" data-bpm="110" onclick="startCPRBeep(110)"><span class="tic">110</span>BPM</button>
+      <button class="tile bpm-tile" data-bpm="120" onclick="startCPRBeep(120)"><span class="tic">120</span>BPM</button>
+    </div>
+
+    <div class="gauge-card mb-3 hidden" id="bpm-counter-card">
+      <div id="bpm-count">0</div>
+      <div class="text-muted" style="font-size:0.85rem;">compressions — <span id="bpm-cycle-hint">30 then 2 rescue breaths</span></div>
+    </div>
+
+    <button class="custom-btn danger mb-3" style="width:100%;" onclick="stopCPRBeep()">🛑 Stop</button>
+
+    <div class="emergency-card">
+      <h3>Depth by age — rate stays 100–120/min for everyone</h3>
+      <ul class="icon-list">
+        <li><i class="bi bi-record-fill"></i>Adult: ~5–6&nbsp;cm, two hands</li>
+        <li><i class="bi bi-record-fill"></i>Child: ~5&nbsp;cm (1/3 chest depth), one or two hands</li>
+        <li><i class="bi bi-record-fill"></i>Infant: ~4&nbsp;cm (1/3 chest depth), two fingers</li>
+      </ul>
     </div>
   </section>
 
   <!-- Page for signs & Symptoms-->
   <section id="page-signs" class="hidden container py-4">
-    <h2>Signs & Symptoms</h2>
-    <input id="search-bar" class="form-control" type="text" placeholder="Search symptoms..." oninput="filterGroups()" aria-label="Search symptoms">
-    <div class="mb-4"></div>
-    <!-- Sticky container -->
+    <h2>Signs &amp; Symptoms</h2>
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input id="search-bar" type="text" placeholder="Search symptoms..." oninput="filterGroups()" aria-label="Search symptoms">
+    </div>
+    <div class="section-label" id="selectedSymptomsTitle">Selected Symptoms</div>
     <div class="sticky-selected-symptoms">
-      <h5>Selected Symptoms</h5>
       <div id="selected-symptoms"></div>
     </div>
-    <footer class="mt-3">
-      <div class="alert alert-warning text-center" id="emergency-suggestion"></div>
-    </footer>
+    <div class="gauge-card hidden" id="emergency-gauge-card">
+      <div class="lbl">
+        <i class="bi bi-exclamation-triangle-fill" id="emergency-gauge-icon" style="color:var(--color-critical)"></i>
+        <span class="gauge-suggest-prefix">Suggested</span>
+        <span class="gauge-suggest-name" id="emergency-suggestion"></span>
+      </div>
+      <div class="gauge-track"><div class="gauge-dot" id="emergency-gauge-dot" style="left:50%"></div></div>
+      <div class="gauge-foot"><span>Minor</span><span>Major</span><span>Critical</span></div>
+    </div>
     <div>
       <div id="group-list"></div>
     </div>
@@ -1464,16 +1938,26 @@ function navigate(page, push = true) {
 
   <!-- Detail of one Emergency -->
   <section id="page-emergency" class="hidden container py-4">
+    <div class="detail-band" id="emergency-band">
+      <div class="dring-wrap">
+        <svg width="78" height="78" viewBox="0 0 78 78">
+          <circle class="dring-bg" cx="39" cy="39" r="33"></circle>
+          <circle class="dring-fg" id="emergency-ring" cx="39" cy="39" r="33" stroke-dasharray="207.3" stroke-dashoffset="207.3"></circle>
+        </svg>
+        <div class="dring-ic" id="emergency-ring-ic"><i class="bi bi-heart-pulse-fill"></i></div>
+      </div>
+    </div>
+    <span class="severity-pill" id="emergency-severity-pill"><span class="dot"></span><span id="emergency-severity-label"></span></span>
     <h2 id="emergency-title"></h2>
     <div class="emergency-card mb-3" id="emergency-description"></div>
     <div>
       <div class="emergency-card mb-3">
         <h3>Emergency Symptoms</h3>
-        <ul id="emergency-details"></ul>
+        <ul id="emergency-details" class="icon-list"></ul>
       </div>
       <div class="emergency-card mb-3">
         <h3>Emergency Care</h3>
-        <ul id="emergency-care"></ul>
+        <ul id="emergency-care" class="icon-list"></ul>
       </div>
     </div>
     <div class="emergency-card mb-3">
@@ -1503,21 +1987,28 @@ function navigate(page, push = true) {
 
   <!-- Page legal -->
   <section id="page-legal" class="hidden container py-4" aria-labelledby="legal-title">
-    <h2 id="legal-title">Legalities of First Aid</h2>
-    <div class="alert alert-secondary">
-      <h3>First aiders must:</h3>
-      <ul>
-        <li>Get permission, if possible, before providing care.</li>
-        <li>Only provide the care they were trained to give.</li>
-        <li>Continue providing care until another trained person takes over, they are too exhausted to continue, the scene becomes unsafe, or the person's condition improves and care is no longer needed.</li>
+    <div class="decision-wrap" style="padding-bottom:0;">
+      <div class="halo-wrap" style="width:88px;height:88px;"><div class="halo"></div><div class="halo-ic" style="width:88px;height:88px;font-size:1.9rem;"><i class="bi bi-shield-fill-check"></i></div></div>
+      <h2 id="legal-title">Legalities of First Aid</h2>
+    </div>
+
+    <div class="emergency-card mb-3">
+      <h3>As a first aider, you must</h3>
+      <ul class="icon-list">
+        <li><i class="bi bi-check-circle-fill"></i>Ask for permission before providing care, whenever possible.</li>
+        <li><i class="bi bi-check-circle-fill"></i>Only provide care within the limits of your training.</li>
+        <li><i class="bi bi-check-circle-fill"></i>Continue care until a more qualified responder takes over, you become too exhausted to continue, the scene becomes unsafe, or the person no longer needs care.</li>
       </ul>
-      <h3>Getting Permission to Help:</h3>
-      <p>You must get permission (consent) before providing care.</p>
-      <ul>
-        <li>For an unresponsive person, the law assumes you have permission.</li>
-        <li>For a young child without a caregiver, provide care.</li>
-        <li>If a person refuses care, call EMS/9-1-1.</li>
-        <li>If you are unable to call, first ensure your own safety and then offer to provide care.</li>
+    </div>
+
+    <div class="emergency-card">
+      <h3>Getting permission to help</h3>
+      <p class="text-muted" style="margin-bottom:0.8rem;">You must obtain the person's consent before providing care.</p>
+      <ul class="icon-list">
+        <li><i class="bi bi-check-circle-fill"></i>For an unresponsive person, consent is legally assumed (implied consent).</li>
+        <li><i class="bi bi-check-circle-fill"></i>For a young child with no guardian present, you may proceed with care.</li>
+        <li><i class="bi bi-check-circle-fill"></i>If a conscious person refuses care, call 9-1-1 / EMS.</li>
+        <li><i class="bi bi-check-circle-fill"></i>If you can't call for help yourself, secure your own safety first, then offer care.</li>
       </ul>
     </div>
   </section>
@@ -1620,17 +2111,18 @@ function navigate(page, push = true) {
 <!-- conteneur caché pour afficher un rapport HTML -->
 <section id="soap-report-section" class="hidden container py-4">
   <h2>Saved SOAP Note</h2>
-  <div id="soap-report-content"></div>
-  <button class="btn btn-primary" onclick="saveSOAPasPDF()">Save to PDF</button>
-  <button class="btn btn-primary" onclick="closeSOAPReport()">Close</button>
+  <div id="soap-report-content" class="emergency-card mb-3"></div>
+  <div class="button-group-row">
+    <button class="custom-btn primary" onclick="saveSOAPasPDF(currentViewedSOAP)">Save to PDF</button>
+    <button class="custom-btn secondary" onclick="closeSOAPReport()">Close</button>
+  </div>
 </section>
 
 <!--Voir la liste des rapports SOAP dans un container cache -->
 <section id="soap-list-section" class="hidden container py-4">
   <h2>Saved SOAP Notes</h2>
-  <ul id="soap-list" class="list-group mb-4"></ul>
-  <button class="btn btn-primary" onclick="saveSOAPasPDF()">Save to PDF</button>
-  <button class="btn btn-secondary" onclick="closeSOAPList()">Close</button>
+  <div id="soap-list" class="mb-3"></div>
+  <button class="custom-btn secondary" style="width:100%;" onclick="closeSOAPList()">Close</button>
 </section>
 
 <!--Page affichage Kit Premier Soin-->
@@ -1643,39 +2135,76 @@ function navigate(page, push = true) {
 </section>
 
 <section id="page-install" class="hidden container py-4">
-  <h2>📲 Install FIRST AIDers as an App</h2>
-  <p>This application can work 100% offline once installed on your device.</p>
-  <h3>📱 On iPhone (Safari)</h3>
-  <ol>
-    <li>Tap the <strong>Share</strong> button (bottom center of Safari).</li>
-    <li>Choose <strong>"Add to Home Screen"</strong>.</li>
-    <li>Tap <strong>"Add"</strong> in the top-right corner.</li>
-  </ol>
-  <h3>📱 On Android (Chrome)</h3>
-  <ol>
-    <li>Tap the <strong>three-dot menu</strong> (top-right corner).</li>
-    <li>Select <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong>.</li>
-    <li>Confirm by tapping <strong>"Install"</strong>.</li>
-  </ol>
-  <p>Once installed, launch it like any other app — even when offline.</p>
-  <p>The SOAP you record while being offline are saved as PDF in your phone.</p>
+  <div class="decision-wrap" style="padding-bottom:0;">
+    <div class="halo-wrap" style="width:88px;height:88px;"><div class="halo"></div><div class="halo-ic" style="width:88px;height:88px;font-size:1.9rem;"><i class="bi bi-download"></i></div></div>
+    <h2>Install FIRSTAIDers</h2>
+    <p class="text-muted">Works 100% offline once installed on your device.</p>
+  </div>
+
+  <div class="emergency-card mb-3">
+    <h3><i class="bi bi-apple"></i>&nbsp;On iPhone (Safari)</h3>
+    <ul class="icon-list">
+      <li><i class="bi bi-1-circle-fill"></i>Tap the <strong>Share</strong> button (bottom center of Safari).</li>
+      <li><i class="bi bi-2-circle-fill"></i>Choose <strong>"Add to Home Screen"</strong>.</li>
+      <li><i class="bi bi-3-circle-fill"></i>Tap <strong>"Add"</strong> in the top-right corner.</li>
+    </ul>
+  </div>
+
+  <div class="emergency-card mb-3">
+    <h3><i class="bi bi-android2"></i>&nbsp;On Android (Chrome)</h3>
+    <ul class="icon-list">
+      <li><i class="bi bi-1-circle-fill"></i>Tap the <strong>three-dot menu</strong> (top-right corner).</li>
+      <li><i class="bi bi-2-circle-fill"></i>Select <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong>.</li>
+      <li><i class="bi bi-3-circle-fill"></i>Confirm by tapping <strong>"Install"</strong>.</li>
+    </ul>
+  </div>
+
+  <div class="emergency-card">
+    <h3>Good to know</h3>
+    <ul class="icon-list">
+      <li><i class="bi bi-check-circle-fill"></i>Once installed, launch it like any other app — even offline.</li>
+      <li><i class="bi bi-check-circle-fill"></i>SOAP notes recorded offline are saved as PDF on your phone.</li>
+    </ul>
+  </div>
 </section>
 
 <section id="page-tips" class="hidden container py-4">
-  <h2>Tips for First Aiders</h2>
-  <p>Below a list of tips to apply when being a First Aider.</p>
-  <h3>How to be</h3>
-  <ol>
-    <li><strong>Present</strong> yourself.</li>
-    <li>Be <strong>Present</strong>.</li>
-    <li>Detail <strong>Steps</strong>.</li>
-    <li>Get <strong>Permission</strong>.</li>
-  </ol>
-  <h3>What to avoid</h3>
-  <ol>
-    <li>Do not <strong>Declare Death</strong>.</li>
-    <li>Take <strong>Photos</strong>.</li>
-  </ol>
+  <div class="decision-wrap" style="padding-bottom:0;">
+    <div class="halo-wrap" style="width:88px;height:88px;"><div class="halo"></div><div class="halo-ic" style="width:88px;height:88px;font-size:1.9rem;"><i class="bi bi-lightbulb-fill"></i></div></div>
+    <h2>Tips for First Aiders</h2>
+    <p class="text-muted">Practical reminders to apply on top of the technical steps.</p>
+  </div>
+
+  <div class="emergency-card mb-3">
+    <h3>How to present yourself</h3>
+    <ul class="icon-list">
+      <li><i class="bi bi-check-circle-fill"></i>Introduce yourself and your training level before helping ("Hi, I'm trained in first aid, can I help?").</li>
+      <li><i class="bi bi-check-circle-fill"></i>Be present: stay calm and focused — your composure helps the person stay calm too.</li>
+      <li><i class="bi bi-check-circle-fill"></i>Narrate each step before you do it, so the person knows what to expect.</li>
+      <li><i class="bi bi-check-circle-fill"></i>Always ask permission before touching or treating a conscious person.</li>
+    </ul>
+  </div>
+
+  <div class="emergency-card mb-3">
+    <h3>What to avoid</h3>
+    <ul class="icon-list">
+      <li><i class="bi bi-x-circle-fill"></i>Never declare someone dead — that call belongs to medical/legal authorities only.</li>
+      <li><i class="bi bi-x-circle-fill"></i>Don't take photos or videos of the patient.</li>
+      <li><i class="bi bi-x-circle-fill"></i>Don't give food, drink, or medication unless you're specifically trained or instructed to.</li>
+      <li><i class="bi bi-x-circle-fill"></i>Don't move someone with a suspected spinal injury unless there's immediate danger.</li>
+    </ul>
+  </div>
+
+  <div class="emergency-card">
+    <h3>While you wait for help</h3>
+    <ul class="icon-list">
+      <li><i class="bi bi-check-circle-fill"></i>Keep talking to the person, even if unresponsive — it helps you keep reassessing them.</li>
+      <li><i class="bi bi-check-circle-fill"></i>Note the time the incident/symptoms started — useful for EMS and your SOAP note.</li>
+      <li><i class="bi bi-check-circle-fill"></i>Delegate clearly: point at a specific bystander and give one task at a time ("You, call 9-1-1").</li>
+      <li><i class="bi bi-check-circle-fill"></i>Look after yourself too — stay warm, hydrated and safe. You can't help if you become a second casualty.</li>
+      <li><i class="bi bi-check-circle-fill"></i>In remote settings, plan for delayed evacuation: reassess and update your SOAP note regularly.</li>
+    </ul>
+  </div>
 </section>
 
 <!-- Test pour game 
@@ -1749,39 +2278,48 @@ function navigate(page, push = true) {
 </section>
 
 <section id="page-profile" class="hidden container py-4">
-  <h2>🪪 My Profile</h2>
+  <div class="decision-wrap" style="padding-bottom:0;">
+    <div class="halo-wrap" style="width:88px;height:88px;"><div class="halo"></div><div class="halo-ic" style="width:88px;height:88px;font-size:1.9rem;"><i class="bi bi-person-vcard-fill"></i></div></div>
+    <h2>My Profile</h2>
+  </div>
   <form id="profileForm">
-    <div class="mb-2">
-      <label for="firstName" class="form-label">First Name</label>
-      <input type="text" id="firstName" class="form-control">
+    <div class="emergency-card mb-3">
+      <h3>Identity</h3>
+      <div class="mb-2">
+        <label for="firstName" class="form-label">First Name</label>
+        <input type="text" id="firstName" class="form-control">
+      </div>
+      <div class="mb-2">
+        <label for="lastName" class="form-label">Last Name</label>
+        <input type="text" id="lastName" class="form-control">
+      </div>
     </div>
-    <div class="mb-2">
-      <label for="lastName" class="form-label">Last Name</label>
-      <input type="text" id="lastName" class="form-control">
+    <div class="emergency-card mb-3">
+      <h3>Certification</h3>
+      <div class="mb-2">
+        <label for="isCertified" class="form-label">Certification</label>
+        <input type="text" id="isCertified" class="form-control" placeholder="Ex: Wilderness First Aid & CPR/AED Level C">
+      </div>
+      <div class="mb-2">
+        <label for="certNumber" class="form-label">Certificate Number</label>
+        <input type="text" id="certNumber" class="form-control">
+      </div>
+      <div class="mb-2">
+        <label for="issueDate" class="form-label">Issue Date</label>
+        <input type="date" id="issueDate" class="form-control">
+      </div>
+      <div class="mb-2">
+        <label for="expiryDate" class="form-label">Expiry Date</label>
+        <input type="date" id="expiryDate" class="form-control">
+      </div>
+      <div class="mb-2">
+        <label for="issuedIn" class="form-label">Issued In</label>
+        <input type="text" id="issuedIn" class="form-control">
+      </div>
     </div>
-    <div class="mb-2">
-      <label for="isCertified" class="form-label">Certification</label>
-      <input type="text" id="isCertified" class="form-control" placeholder="Ex: Wilderness First Aid & CPR/AED Level C">
-    </div>
-    <div class="mb-2">
-      <label for="certNumber" class="form-label">Certificat Number</label>
-      <input type="text" id="certNumber" class="form-control">
-    </div>
-    <div class="mb-2">
-      <label for="issueDate" class="form-label">Issue Date</label>
-      <input type="date" id="issueDate" class="form-control">
-    </div>
-    <div class="mb-2">
-      <label for="expiryDate" class="form-label">Expiry Date</label>
-      <input type="date" id="expiryDate" class="form-control">
-    </div>
-    <div class="mb-2">
-      <label for="issuedIn" class="form-label">Issued In</label>
-      <input type="text" id="issuedIn" class="form-control">
-    </div>
-    <button type="submit" class="btn btn-primary mt-2">Save</button>
+    <button type="submit" class="custom-btn primary" style="width:100%;">Save</button>
   </form>
-  <p class="mt-4 text-muted small">
+  <p class="mt-4 text-muted small text-center">
     To validate a certificate, go to <a href="https://myrc.redcross.ca" target="_blank">myrc.redcross.ca</a> and click on "Validate Certificate".
   </p>
 </section>
@@ -4253,93 +4791,138 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Function to display Groups of symptoms
-function displayGroups(filter = '') {
+// Rendu "accordéon" : chaque groupe est une catégorie repliable, ses symptômes
+// des chips cliquables. Remplace l'ancienne navigation à 2 pages (page-signs ->
+// page-group) par un seul écran, pour sélectionner plus vite d'un bout à
+// l'autre sans naviguer. La logique de sélection (addSymptom/unselectSymptom/
+// findBestMatchingEmergency) n'est pas touchée : on ne fait qu'appeler ces
+// fonctions existantes depuis les nouveaux chips.
+function catGradientVar(groupId) {
+  return `var(--cat-${((groupId - 1) % 7) + 1})`;
+}
+function catSolidVar(groupId) {
+  return `var(--cat-${((groupId - 1) % 7) + 1}-solid)`;
+}
+
+const GROUP_ICONS = {
+  1: 'bi-wind',              // Respiratory
+  2: 'bi-bandaid-fill',      // Skin & Joints
+  3: 'bi-heart-pulse-fill',  // Circulatory
+  4: 'bi-capsule',           // Digestive
+  5: 'bi-eye-fill',          // Head & Senses
+  6: 'bi-lightbulb-fill',    // Neurological & Mental
+  7: 'bi-person-fill',       // General
+};
+
+function displayGroups() {
   const container = document.getElementById('group-list');
   container.innerHTML = '';
 
-  groups
-    .filter(g => g.name.toLowerCase().includes(filter.toLowerCase()))
-    .forEach(group => {
-      const col = document.createElement('div');
-      col.className = 'col-12 col-md-6 col-lg-4 mb-3';
+  groups.forEach((group, idx) => {
+    const cat = document.createElement('div');
+    cat.className = 'cat' + (idx === 0 ? ' open' : '');
+    cat.dataset.groupId = group.id;
+    cat.style.borderTop = `3px solid ${catSolidVar(group.id)}`;
 
-      const btn = document.createElement('button');
-      btn.className = 'btn btn-outline-primary w-100 d-flex align-items-center justify-content-start gap-2';
+    const head = document.createElement('button');
+    head.type = 'button';
+    head.className = 'cat-head';
+    head.onclick = () => cat.classList.toggle('open');
 
-      // Remplacer l'emoji par une image PNG
-      const iconImg = document.createElement('img');
-      iconImg.src = group.iconUrl; // utilise le champ iconUrl (ex: "icons/heart.png")
-      iconImg.alt = trGroupName(group.id);
-      iconImg.style.width = '24px';
-      iconImg.style.height = '24px';
-      iconImg.style.objectFit = 'contain';
-      iconImg.setAttribute('aria-hidden', 'true');
+    const icBadge = document.createElement('span');
+    icBadge.className = 'cat-ic';
+    icBadge.style.background = catGradientVar(group.id);
+    const icI = document.createElement('i');
+    icI.className = 'bi ' + (GROUP_ICONS[group.id] || 'bi-clipboard2-pulse-fill');
+    icBadge.appendChild(icI);
+    head.appendChild(icBadge);
 
-      btn.appendChild(iconImg);
+    const title = document.createElement('span');
+    title.className = 'cat-title';
+    title.textContent = trGroupName(group.id);
+    head.appendChild(title);
 
-      const textSpan = document.createElement('span');
-      textSpan.textContent = ' ' + trGroupName(group.id);
-      btn.appendChild(textSpan);
+    const chevron = document.createElement('i');
+    chevron.className = 'bi bi-chevron-down cat-chevron';
+    head.appendChild(chevron);
 
-      btn.onclick = () => displaySymptomsGroup(group.id);
+    cat.appendChild(head);
 
-      col.appendChild(btn);
-      container.appendChild(col);
-    });
+    const body = document.createElement('div');
+    body.className = 'cat-body';
+    const chipGroup = document.createElement('div');
+    chipGroup.className = 'cat-chip-group';
+
+    symptoms
+      .filter(s => s.groupId === group.id)
+      .forEach(symptom => {
+        const chip = document.createElement('div');
+        chip.className = 'cat-chip';
+        chip.textContent = trSymptomName(symptom.id);
+        chip.dataset.symptomName = symptom.name;
+        chip.onclick = () => {
+          if (symptomsSelected.includes(symptom.name)) {
+            unselectSymptom(symptom.name);
+          } else {
+            addSymptom(symptom.name);
+          }
+        };
+        chipGroup.appendChild(chip);
+      });
+
+    body.appendChild(chipGroup);
+    cat.appendChild(body);
+    container.appendChild(cat);
+  });
+
+  syncGroupChips();
 }
 
+// Met à jour l'état visuel (chip sélectionnée + badge de compte par catégorie)
+// sans reconstruire le DOM, pour ne pas perdre l'état ouvert/fermé ni le scroll.
+function syncGroupChips() {
+  document.querySelectorAll('#group-list .cat').forEach(cat => {
+    const groupId = Number(cat.dataset.groupId);
+    let selectedCount = 0;
+    cat.querySelectorAll('.cat-chip').forEach(chip => {
+      const isSelected = symptomsSelected.includes(chip.dataset.symptomName);
+      chip.classList.toggle('selected', isSelected);
+      chip.style.background = isSelected ? catGradientVar(groupId) : '';
+      if (isSelected) selectedCount++;
+    });
+
+    const head = cat.querySelector('.cat-head');
+    let badge = head.querySelector('.cat-count');
+    if (selectedCount > 0) {
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'cat-count';
+        head.querySelector('.cat-title').insertAdjacentElement('afterend', badge);
+      }
+      badge.textContent = selectedCount;
+    } else if (badge) {
+      badge.remove();
+    }
+  });
+}
 
 function filterGroups() {
   const term = document.getElementById('search-bar').value.trim().toLowerCase();
-  const container = document.getElementById('group-list');
-  container.innerHTML = '';
 
-  if (term === '') {
-    displayGroups();
-    return;
-  }
-
-  const matchedSymptoms = symptoms.filter(symptom =>
-    symptom.name.toLowerCase().includes(term) ||
-    trSymptomName(symptom.id).toLowerCase().includes(term)
-  );
-
-  if (matchedSymptoms.length === 0) {
-    container.innerHTML = `<div class="text-muted">${t('signs.noSymptomFound')}</div>`;
-    return;
-  }
-
-  matchedSymptoms.forEach(symptom => {
-    const group = groups.find(g => g.id === symptom.groupId);
-    const btn = document.createElement('button');
-    btn.className = 'btn btn-outline-secondary m-2 d-flex align-items-center';
-
-    // Remplacement du span emoji par une image PNG
-    if (group?.iconUrl) {
-      const iconImg = document.createElement('img');
-      iconImg.src = group.iconUrl;
-      iconImg.alt = trGroupName(group.id);
-      iconImg.style.width = '20px';
-      iconImg.style.height = '20px';
-      iconImg.style.objectFit = 'contain';
-      iconImg.style.marginRight = '6px';
-      btn.appendChild(iconImg);
-    } else {
-      // fallback si pas d'icône (optionnel)
-      const fallbackSpan = document.createElement('span');
-      fallbackSpan.textContent = group?.icon || '';
-      fallbackSpan.style.fontSize = '1.3rem';
-      fallbackSpan.style.marginRight = '6px';
-      btn.appendChild(fallbackSpan);
+  document.querySelectorAll('#group-list .cat').forEach(cat => {
+    if (!term) {
+      cat.classList.remove('hidden-by-search-cat');
+      cat.querySelectorAll('.cat-chip').forEach(chip => chip.classList.remove('hidden-by-search'));
+      return;
     }
-
-    const label = document.createElement('span');
-    label.textContent = trSymptomName(symptom.id);
-
-    btn.appendChild(label);
-
-    btn.onclick = () => addSymptom(symptom.name);
-    container.appendChild(btn);
+    let anyMatch = false;
+    cat.querySelectorAll('.cat-chip').forEach(chip => {
+      const match = chip.textContent.toLowerCase().includes(term);
+      chip.classList.toggle('hidden-by-search', !match);
+      if (match) anyMatch = true;
+    });
+    cat.classList.toggle('hidden-by-search-cat', !anyMatch);
+    if (anyMatch) cat.classList.add('open');
   });
 }
 
@@ -4462,14 +5045,21 @@ function addSymptom(symptoms) {
 
 // ????
 function majSymptoms() {
+  syncGroupChips();
   const conteneurs = [document.getElementById('selected-symptoms'), document.getElementById('selected-symptoms-group')];
   conteneurs.forEach(c => c.innerHTML = '');
   symptomsSelected.forEach(s => {
+    const symptomObj = symptoms.find(sym => sym.name === s);
     conteneurs.forEach(c => {
       const div = document.createElement('div');
       div.textContent = trSymptomNameByEnglishName(s);
       div.title = t('signs.clickToUnselect');
       div.onclick = () => unselectSymptom(s);
+      if (symptomObj) {
+        div.style.background = catGradientVar(symptomObj.groupId);
+        div.style.color = '#fff';
+        div.style.borderColor = 'transparent';
+      }
       c.appendChild(div);
     });
   });
@@ -4498,6 +5088,20 @@ function majSymptoms() {
       box.onkeypress = null;
     }
   });
+
+  // Jauge visuelle mineur/majeur/critique — purement présentation, dérivée
+  // de urg.type via les mêmes helpers de sévérité que le détail d'urgence.
+  const gaugeCard = document.getElementById('emergency-gauge-card');
+  if (gaugeCard) {
+    gaugeCard.classList.toggle('hidden', !urg);
+    if (urg) {
+      const code = worstSeverityCode(urg.type);
+      const dot = document.getElementById('emergency-gauge-dot');
+      dot.style.left = ((SEVERITY_FILL[code] || 0.3) * 100) + '%';
+      dot.style.borderColor = `var(--color-${SEVERITY_CLASS[code] || 'minor'})`;
+      document.getElementById('emergency-gauge-icon').style.color = `var(--color-${SEVERITY_CLASS[code] || 'minor'})`;
+    }
+  }
 }
 
 // Unselect symptom
@@ -4590,18 +5194,23 @@ function displayEmergencyObject(urgency) {
   careList.innerHTML = '';
   const careField = trEmergencyField(urgency.id, 'care');
 
+  function iconLi(iconClass, text) {
+    const li = document.createElement('li');
+    const i = document.createElement('i');
+    i.className = iconClass;
+    li.appendChild(i);
+    li.appendChild(document.createTextNode(text));
+    return li;
+  }
+
   if (Array.isArray(careField) && careField.length) {
     careField.forEach(line => {
-      const li = document.createElement('li');
-      li.textContent = line.trim();
-      careList.appendChild(li);
+      careList.appendChild(iconLi('bi bi-check-circle-fill', line.trim()));
     });
   } else if (typeof careField === 'string' && careField.trim() !== '') {
     // Si c'est une chaîne, on peut diviser par saut de ligne
     careField.split('\n').forEach(line => {
-      const li = document.createElement('li');
-      li.textContent = line.trim();
-      careList.appendChild(li);
+      careList.appendChild(iconLi('bi bi-check-circle-fill', line.trim()));
     });
   } else {
     // Pas de care ou vide
@@ -4614,9 +5223,7 @@ function displayEmergencyObject(urgency) {
   urgency.symptoms.forEach(id => {
     const s = symptoms.find(sym => sym.id === id);
     if (s) {
-      const li = document.createElement('li');
-      li.textContent = trSymptomName(s.id);
-      detailsList.appendChild(li);
+      detailsList.appendChild(iconLi('bi bi-record-fill', trSymptomName(s.id)));
     }
   });
 
@@ -4643,19 +5250,46 @@ function displayEmergencyObject(urgency) {
 
     document.getElementById('emergency-meds').textContent = trEmergencyField(urgency.id, 'meds') || '—';
     document.getElementById('emergency-technic').textContent = trEmergencyField(urgency.id, 'technic') || '—';
+
+    // Bandeau + anneau + pastille de sévérité : purement visuel, dérivé de
+    // urgency.type existant (priorité Critique > Majeur > Mineur), aucun
+    // impact sur le moteur de correspondance symptômes/urgence.
+    const RING_CIRCUMFERENCE = 207.3;
+    const worstCode = worstSeverityCode(urgency.type);
+    const sevClass = SEVERITY_CLASS[worstCode] || 'minor';
+    const sevInfo = trEmergencyTypeInfo(worstCode);
+
+    const band = document.getElementById('emergency-band');
+    band.className = 'detail-band ' + sevClass;
+    const ring = document.getElementById('emergency-ring');
+    ring.setAttribute('class', 'dring-fg ' + sevClass);
+    ring.setAttribute('stroke-dashoffset', String(RING_CIRCUMFERENCE * (1 - (SEVERITY_FILL[worstCode] || 0.3))));
+    const ringIc = document.getElementById('emergency-ring-ic');
+    ringIc.setAttribute('class', 'dring-ic ' + sevClass);
+    const pill = document.getElementById('emergency-severity-pill');
+    pill.className = 'severity-pill ' + sevClass;
+    document.getElementById('emergency-severity-label').textContent = sevInfo ? sevInfo.name : worstCode;
   }
 
+  // Ne touche que le texte/l'icône du bouton, pas tout son innerHTML :
+  // le bouton contient désormais un badge d'icône + un libellé (menu v2).
   const toggle = document.getElementById('darkModeToggle');
+  function setDarkModeToggleLabel(isDark) {
+    const icon = toggle.querySelector('.menu-row-ic i');
+    const label = toggle.querySelector('span:last-child');
+    if (icon) icon.className = isDark ? 'bi bi-brightness-high-fill' : 'bi bi-moon-stars-fill';
+    if (label) label.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+  }
   toggle.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
 
     // Save preference
     if (document.body.classList.contains('dark-mode')) {
       localStorage.setItem('theme', 'dark');
-      toggle.innerHTML = '☀️ Light Mode';
+      setDarkModeToggleLabel(true);
     } else {
       localStorage.setItem('theme', 'light');
-      toggle.innerHTML = '🌙 Dark Mode';
+      setDarkModeToggleLabel(false);
     }
   });
 
@@ -4663,7 +5297,7 @@ function displayEmergencyObject(urgency) {
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('theme') === 'dark') {
       document.body.classList.add('dark-mode');
-      toggle.innerHTML = '☀️ Light Mode';
+      setDarkModeToggleLabel(true);
     }
   });
 
@@ -4800,14 +5434,21 @@ function displayTechnicObject(technic) {
   document.getElementById("technic-title").textContent = trTechnicField(technic.id, 'name');
   document.getElementById("technic-description").textContent = trTechnicField(technic.id, 'detail');
 
+  function iconLi(iconClass, node) {
+    const li = document.createElement("li");
+    const i = document.createElement("i");
+    i.className = iconClass;
+    li.appendChild(i);
+    li.appendChild(typeof node === 'string' ? document.createTextNode(node) : node);
+    return li;
+  }
+
   const stepsUl = document.getElementById("technic-steps");
   stepsUl.innerHTML = "";
   const stepsField = trTechnicField(technic.id, 'steps');
   if (stepsField && stepsField.length) {
     stepsField.forEach(step => {
-      const li = document.createElement("li");
-      li.textContent = step;
-      stepsUl.appendChild(li);
+      stepsUl.appendChild(iconLi('bi bi-check-circle-fill', step));
     });
   } else {
     stepsUl.innerHTML = "<li>—</li>";
@@ -4817,9 +5458,7 @@ function displayTechnicObject(technic) {
   trucUl.innerHTML = "";
   if (technic.truc && technic.truc.length) {
     technic.truc.forEach(t => {
-      const li = document.createElement("li");
-      li.textContent = t;
-      trucUl.appendChild(li);
+      trucUl.appendChild(iconLi('bi bi-lightbulb-fill', t));
     });
   } else {
     trucUl.innerHTML = "<li>—</li>";
@@ -4833,7 +5472,6 @@ function displayTechnicObject(technic) {
     technic.emergencies.forEach(emId => {
       const emergency = emergencies.find(e => e.id === emId);
       if (emergency) {
-        const li = document.createElement("li");
         const a = document.createElement("a");
         a.href = "#";
         a.textContent = trEmergencyField(emergency.id, 'name');
@@ -4841,8 +5479,7 @@ function displayTechnicObject(technic) {
           e.preventDefault();
           displayEmergencyObject(emergency);
         };
-        li.appendChild(a);
-        relatedUl.appendChild(li);
+        relatedUl.appendChild(iconLi('bi bi-record-fill', a));
       }
     });
   } else {
@@ -4866,33 +5503,112 @@ function goToCirculation() {
 }
 
 //Function for a 100bpm for use with CPR
-let bpmInterval, audioCtx;
+let cprTimer, audioCtx, cprActive = false;
+
+function playCompressionBeep() {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "square"; // son court et sec
+  osc.frequency.setValueAtTime(1000, audioCtx.currentTime); // 1000 Hz
+
+  gain.gain.setValueAtTime(0.1, audioCtx.currentTime); // volume léger
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.1);
+}
+
+// Souffle synthétisé (bruit blanc filtré passe-bas + enveloppe de volume) :
+// pas d'échantillon audio à charger, ça reste léger pour la PWA hors-ligne.
+function playBreathSound(startDelay) {
+  const duration = 0.9;
+  const when = audioCtx.currentTime + startDelay;
+  const bufferSize = Math.floor(audioCtx.sampleRate * duration);
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+  const noise = audioCtx.createBufferSource();
+  noise.buffer = buffer;
+
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.value = 500;
+
+  const gain = audioCtx.createGain();
+  gain.gain.setValueAtTime(0, when);
+  gain.gain.linearRampToValueAtTime(0.16, when + 0.15);
+  gain.gain.linearRampToValueAtTime(0.16, when + duration - 0.3);
+  gain.gain.linearRampToValueAtTime(0, when + duration);
+
+  noise.connect(filter);
+  filter.connect(gain);
+  gain.connect(audioCtx.destination);
+  noise.start(when);
+  noise.stop(when + duration);
+}
 
 function startCPRBeep(bpm = 100) {
   stopCPRBeep(); // Au cas où ça tourne déjà
+  cprActive = true;
   audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   const interval = 60000 / bpm;
 
-  bpmInterval = setInterval(() => {
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
+  document.querySelectorAll('.bpm-tile').forEach(t => t.classList.toggle('active', Number(t.dataset.bpm) === bpm));
+  const counterCard = document.getElementById('bpm-counter-card');
+  const countEl = document.getElementById('bpm-count');
+  const hintEl = document.getElementById('bpm-cycle-hint');
+  const halo = document.getElementById('bpm-halo');
+  const haloIc = halo?.querySelector('.halo-ic');
+  if (counterCard) counterCard.classList.remove('hidden');
 
-    osc.type = "square"; // son court et sec
-    osc.frequency.setValueAtTime(1000, audioCtx.currentTime); // 1000 Hz
+  // 30 compressions puis une vraie pause avec 2 sons de respiration (pas
+  // juste le compteur qui repart tout de suite à 1 — c'était le souci :
+  // rien ne distinguait "fin du cycle" de "cycle suivant").
+  function runCompressionSet(n) {
+    if (!cprActive) return;
 
-    gain.gain.setValueAtTime(0.1, audioCtx.currentTime); // volume léger
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+    if (n > 30) {
+      if (countEl) countEl.textContent = '—';
+      if (hintEl) hintEl.textContent = '2 rescue breaths…';
+      playBreathSound(0.1);
+      playBreathSound(0.1 + 0.9 + 0.6);
+      // Le temps réel de faire l'aller-retour mains/bouche + reprendre son
+      // souffle entre les 2 insufflations tourne autour de 6 à 8s — pas une
+      // pause fixe de 4s, trop courte à l'usage.
+      const pauseDuration = 6000 + Math.random() * 2000;
+      cprTimer = setTimeout(() => {
+        if (!cprActive) return;
+        if (hintEl) hintEl.textContent = '30 then 2 rescue breaths';
+        runCompressionSet(1);
+      }, pauseDuration);
+      return;
+    }
 
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.1);
-  }, interval);
+    playCompressionBeep();
+    if (haloIc) {
+      haloIc.classList.remove('pulse-beat');
+      void haloIc.offsetWidth; // force le reflow pour rejouer l'animation
+      haloIc.classList.add('pulse-beat');
+    }
+    if (navigator.vibrate) navigator.vibrate(40);
+    if (countEl) countEl.textContent = String(n);
+    cprTimer = setTimeout(() => runCompressionSet(n + 1), interval);
+  }
+
+  runCompressionSet(1);
 }
 
 function stopCPRBeep() {
-  if (bpmInterval) clearInterval(bpmInterval);
+  cprActive = false;
+  if (cprTimer) clearTimeout(cprTimer);
   if (audioCtx) audioCtx.close();
+  document.querySelectorAll('.bpm-tile').forEach(t => t.classList.remove('active'));
+  document.getElementById('bpm-counter-card')?.classList.add('hidden');
+  cprCompressionCount = 0;
 }
 
 
@@ -4942,6 +5658,43 @@ function saveSOAP() {
   alert("SOAP saved offline!");
 }
 
+// Rendu partagé (résumé courant + notes passées) : avant, deux templates
+// HTML dupliqués et divergents avec des <h3>/<h4> à emoji à l'ancienne.
+function renderSOAPReportHtml(data) {
+  const nl2br = (s) => (s || '—').toString().replace(/\n/g, "<br>");
+  return `
+    <div class="section-label">Victim information</div>
+    <p><strong>Name:</strong> ${data.name || '—'}</p>
+    <p><strong>Age:</strong> ${data.age || '—'} &nbsp;·&nbsp; <strong>Gender:</strong> ${data.gender || '—'}</p>
+    <p><strong>Date &amp; time:</strong> ${data.date || (data.timestamp ? new Date(data.timestamp).toLocaleString() : '—')}</p>
+
+    <div class="section-label">Subjective</div>
+    <p>${nl2br(data.subjective)}</p>
+
+    <div class="section-label">Objective</div>
+    <p>${nl2br(data.objective)}</p>
+
+    <div class="section-label">Pain assessment (OPQRST)</div>
+    <ul class="icon-list">
+      <li><i class="bi bi-record-fill"></i><strong>Onset:</strong>&nbsp;${data.opqrst?.onset || "—"}</li>
+      <li><i class="bi bi-record-fill"></i><strong>Provocation:</strong>&nbsp;${data.opqrst?.provocation || "—"}</li>
+      <li><i class="bi bi-record-fill"></i><strong>Quality:</strong>&nbsp;${data.opqrst?.quality || "—"}</li>
+      <li><i class="bi bi-record-fill"></i><strong>Region/Radiation:</strong>&nbsp;${data.opqrst?.region || "—"}</li>
+      <li><i class="bi bi-record-fill"></i><strong>Severity:</strong>&nbsp;${data.opqrst?.severity || "—"}</li>
+      <li><i class="bi bi-record-fill"></i><strong>Time:</strong>&nbsp;${data.opqrst?.time || "—"}</li>
+    </ul>
+
+    <div class="section-label">Assessment</div>
+    <p>${nl2br(data.assessment)}</p>
+
+    <div class="section-label">Plan</div>
+    <p>${nl2br(data.plan)}</p>
+
+    <div class="section-label">First aider</div>
+    <p>${data.rescuer || '—'}</p>
+  `;
+}
+
 function showSOAPSummary() {
   const summary = document.getElementById("soap-summary");
   const output = document.getElementById("soap-output");
@@ -4952,31 +5705,12 @@ function showSOAPSummary() {
     return;
   }
 
-  output.innerHTML = `
-    <h3>🧍 Victim Information</h3>
-    <p><strong>Name:</strong> ${data.name || '—'}</p>
-    <p><strong>Age:</strong> ${data.age || '—'}</p>
-    <p><strong>Gender:</strong> ${data.gender || '—'}</p>
-    <p><strong>🕒 Date & Time:</strong> ${data.date || new Date(data.timestamp).toLocaleString()}</p>
-
-    <h3>Détails SOAP</h3>
-    <p><strong>🧠 Subjectif:</strong><br>${data.subjective.replace(/\n/g, "<br>")}</p>
-    <p><strong>👁️ Objectif:</strong><br>${data.objective.replace(/\n/g, "<br>")}</p>
-    <h4>🩺 Pain Assessment (OPQRST)</h4>
-      <ul>
-        <li><strong>Onset:</strong> ${data.opqrst?.onset || "—"}</li>
-        <li><strong>Provocation:</strong> ${data.opqrst?.provocation || "—"}</li>
-        <li><strong>Quality:</strong> ${data.opqrst?.quality || "—"}</li>
-        <li><strong>Region/Radiation:</strong> ${data.opqrst?.region || "—"}</li>
-        <li><strong>Severity:</strong> ${data.opqrst?.severity || "—"}</li>
-        <li><strong>Time:</strong> ${data.opqrst?.time || "—"}</li>
-      </ul>
-    <p><strong>🔎 Assessment:</strong><br>${data.assessment.replace(/\n/g, "<br>")}</p>
-    <p><strong>🛠️ Plan:</strong><br>${data.plan.replace(/\n/g, "<br>")}</p>
-    <p><strong>✍️ First Aiders:</strong> ${data.rescuer}</p>
-  `;
+  output.innerHTML = renderSOAPReportHtml(data);
 
   summary.classList.remove("d-none");
+  // Sans ça, le contenu apparaît sous le bouton : si l'utilisateur avait déjà
+  // scrollé jusqu'en bas pour cliquer, rien ne semblait se passer.
+  summary.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 const openBtn = document.getElementById('open-soap-report');
@@ -5036,17 +5770,22 @@ function showSOAPList() {
   const reports = JSON.parse(localStorage.getItem("soapReports") || "[]");
 
   if (reports.length === 0) {
-    list.innerHTML = "<li class='list-group-item'>No SOAP reports found.</li>";
+    list.innerHTML = "<p class='text-muted'>No SOAP reports found.</p>";
   } else {
     list.innerHTML = "";
     reports.forEach((report, index) => {
-      const li = document.createElement("li");
-      li.className = "list-group-item";
-      li.innerHTML = `
-        <strong>${report.name || "Unknown"}</strong> – ${new Date(report.timestamp).toLocaleString()}
-        <button class="btn btn-sm btn-link float-end" onclick="viewSOAP(${index})">View</button>
+      const row = document.createElement("div");
+      row.className = "card-list-item";
+      row.style.display = "flex";
+      row.style.alignItems = "center";
+      row.style.justifyContent = "space-between";
+      row.style.gap = "0.75rem";
+      row.onclick = () => viewSOAP(index);
+      row.innerHTML = `
+        <span><strong>${report.name || "Unknown"}</strong><br><span class="text-muted" style="font-size:0.82rem;">${new Date(report.timestamp).toLocaleString()}</span></span>
+        <i class="bi bi-chevron-right" style="color:#6c757d;"></i>
       `;
-      list.appendChild(li);
+      list.appendChild(row);
     });
   }
 
@@ -5054,38 +5793,18 @@ function showSOAPList() {
 }
 
 // Pour afficher un rapport en détail
+// Note actuellement affichée par viewSOAP() : permet à "Save to PDF" (dans
+// #soap-report-section) d'exporter CETTE note précise, pas juste la dernière
+// sauvegardée (soapReport au singulier) — c'était le bug : PDF ≠ note ouverte.
+let currentViewedSOAP = null;
+
 function viewSOAP(index) {
   const reports = JSON.parse(localStorage.getItem("soapReports") || "[]");
   const data = reports[index];
   if (!data) return alert("Report not found.");
+  currentViewedSOAP = data;
 
-  const html = `
-    <h3>🧍 Victim Information</h3>
-    <p><strong>Name:</strong> ${data.name || '—'}</p>
-    <p><strong>Age:</strong> ${data.age || '—'}</p>
-    <p><strong>Gender:</strong> ${data.gender || '—'}</p>
-    <p><strong>🕒 Date & Time:</strong> ${data.date || new Date(data.timestamp).toLocaleString()}</p>
-
-    <h3>📋 SOAP Report</h3>
-    <p><strong>🧠 Subjective:</strong><br>${data.subjective?.replace(/\n/g, "<br>") || '—'}</p>
-    <p><strong>👁️ Objective:</strong><br>${data.objective?.replace(/\n/g, "<br>") || '—'}</p>
-
-    <h4>🩺 Pain Assessment (OPQRST)</h4>
-    <ul>
-      <li><strong>Onset:</strong> ${data.opqrst?.onset || "—"}</li>
-      <li><strong>Provocation:</strong> ${data.opqrst?.provocation || "—"}</li>
-      <li><strong>Quality:</strong> ${data.opqrst?.quality || "—"}</li>
-      <li><strong>Region/Radiation:</strong> ${data.opqrst?.region || "—"}</li>
-      <li><strong>Severity:</strong> ${data.opqrst?.severity || "—"}</li>
-      <li><strong>Time:</strong> ${data.opqrst?.time || "—"}</li>
-    </ul>
-
-    <p><strong>🔎 Assessment:</strong><br>${data.assessment?.replace(/\n/g, "<br>") || '—'}</p>
-    <p><strong>🛠️ Plan:</strong><br>${data.plan?.replace(/\n/g, "<br>") || '—'}</p>
-    <p><strong>✍️ Rescuer:</strong> ${data.rescuer || '—'}</p>
-  `;
-
-  document.getElementById("soap-report-content").innerHTML = html;
+  document.getElementById("soap-report-content").innerHTML = renderSOAPReportHtml(data);
   document.getElementById("soap-report-section").classList.remove("hidden");
   document.getElementById("soap-list-section").classList.add("hidden");
 }
@@ -5094,11 +5813,11 @@ function closeSOAPList() {
   document.getElementById("soap-list-section").classList.add("hidden");
 }
 
-function saveSOAPasPDF() {
+function saveSOAPasPDF(dataOverride) {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
-  const data = JSON.parse(localStorage.getItem("soapReport") || "{}");
+  const data = dataOverride || JSON.parse(localStorage.getItem("soapReport") || "{}");
   if (!data.subjective) {
     alert("Aucun rapport SOAP sauvegardé.");
     return;
@@ -5159,7 +5878,11 @@ function saveSOAPasPDF() {
   doc.text(`First Aider: ${data.rescuer || '—'}`, 10, y);
   y += 10;
 
-  doc.save(`SOAP_Report_${data.name || "unknown"}_${new Date().toISOString()}.pdf`);
+  // Un nom de fichier avec ":" (présent dans toISOString()) peut être refusé
+  // ou tronqué silencieusement par certains systèmes de fichiers.
+  const safeName = (data.name || "unknown").replace(/[^a-z0-9]+/gi, "_");
+  const safeStamp = (data.timestamp ? new Date(data.timestamp) : new Date()).toISOString().replace(/[:.]/g, "-");
+  doc.save(`SOAP_Report_${safeName}_${safeStamp}.pdf`);
 }
 
 // First aid kit logic
@@ -5214,26 +5937,91 @@ const kitItems = [
   ]}
 ];
 
+const KIT_CATEGORY_ICONS = {
+  'Wound Care': 'bi-bandaid-fill',
+  'Fracture/Sprain': 'bi-x-diamond-fill',
+  'Emergency Tools': 'bi-tools',
+  'Sanitation Supplies': 'bi-droplet-fill',
+  'Survival Tools': 'bi-compass-fill',
+  'Storage': 'bi-archive-fill',
+};
+
+// Rend la trousse en accordéon (même composant .cat que les symptômes),
+// sans changer les id des <input> (utilisés tels quels par saveKitQuantities()).
 function renderKitItems() {
   const saved = JSON.parse(localStorage.getItem("kitQuantities") || "{}");
   const container = document.getElementById('kit-items');
   container.innerHTML = '';
 
-  kitItems.forEach(group => {
-    const section = document.createElement('div');
-    section.innerHTML = `<h3>${group.category}</h3>`;
+  kitItems.forEach((group, idx) => {
+    const cat = document.createElement('div');
+    cat.className = 'cat' + (idx === 0 ? ' open' : '');
+    cat.dataset.kitCatIdx = idx;
+    cat.style.borderTop = `3px solid ${catSolidVar(idx + 1)}`;
+
+    const head = document.createElement('button');
+    head.type = 'button';
+    head.className = 'cat-head';
+    head.onclick = () => cat.classList.toggle('open');
+
+    const icBadge = document.createElement('span');
+    icBadge.className = 'cat-ic';
+    icBadge.style.background = catGradientVar(idx + 1);
+    const icI = document.createElement('i');
+    icI.className = 'bi ' + (KIT_CATEGORY_ICONS[group.category] || 'bi-bag-fill');
+    icBadge.appendChild(icI);
+    head.appendChild(icBadge);
+
+    const title = document.createElement('span');
+    title.className = 'cat-title';
+    title.textContent = group.category;
+    head.appendChild(title);
+
+    // Le badge affiche la SOMME des quantités de la catégorie (pas le nombre
+    // de produits, qui ne bougeait jamais quand on modifiait une quantité).
+    const count = document.createElement('span');
+    count.className = 'cat-count';
+    count.style.background = catSolidVar(idx + 1);
+    head.appendChild(count);
+
+    const chevron = document.createElement('i');
+    chevron.className = 'bi bi-chevron-down cat-chevron';
+    head.appendChild(chevron);
+
+    cat.appendChild(head);
+
+    const body = document.createElement('div');
+    body.className = 'cat-body';
     group.items.forEach(item => {
       const value = saved[item.name] ?? item.qty;
-
       const itemRow = document.createElement('div');
       itemRow.className = 'kit-item';
       itemRow.innerHTML = `
         <span class="item-name">${item.name}</span>
         <input type="number" min="0" id="kit-${sanitizeId(item.name)}" value="${value}" class="qty-input">
       `;
-      section.appendChild(itemRow);
+      body.appendChild(itemRow);
     });
-    container.appendChild(section);
+    cat.appendChild(body);
+
+    container.appendChild(cat);
+  });
+
+  updateKitCategoryCounts();
+}
+
+// Recalcule le badge de chaque catégorie à partir des valeurs actuellement
+// affichées dans les champs (pas depuis les données statiques kitItems).
+function updateKitCategoryCounts() {
+  document.querySelectorAll('#kit-items .cat').forEach(cat => {
+    const group = kitItems[Number(cat.dataset.kitCatIdx)];
+    if (!group) return;
+    const total = group.items.reduce((sum, item) => {
+      const input = document.getElementById(`kit-${sanitizeId(item.name)}`);
+      return sum + (parseInt(input?.value) || 0);
+    }, 0);
+    const badge = cat.querySelector('.cat-count');
+    if (badge) badge.textContent = total;
   });
 }
 
@@ -5246,6 +6034,7 @@ function saveKitQuantities() {
     });
   });
   localStorage.setItem("kitQuantities", JSON.stringify(data));
+  updateKitCategoryCounts();
   alert("✅ Quantities saved.");
 }
 // -> fin Kit Premier Soins----------------------------------------------------------------------
@@ -5387,7 +6176,7 @@ function renderExplorersList() {
   if (!container) return;
   container.innerHTML = XP_LEVELS.map(level => {
     const unlocked = progress.xp >= level.threshold;
-    const bioHtml = level.bio ? `<ul>${level.bio.map(line => `<li>${line}</li>`).join('')}</ul>` : '';
+    const bioHtml = level.bio ? `<ul class="icon-list">${level.bio.map(line => `<li><i class="bi bi-record-fill"></i>${line}</li>`).join('')}</ul>` : '';
     return `
       <div class="explorer-card ${unlocked ? 'unlocked' : 'locked'}">
         <div class="explorer-card-header">
