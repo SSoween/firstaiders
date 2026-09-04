@@ -1,7 +1,7 @@
 // Service worker — cache local pour usage 100% hors-ligne.
 // Stratégie : stale-while-revalidate (sert le cache immédiatement, revalide en tâche de fond).
 // CACHE_NAME est versionné : le changer force le renouvellement du cache au prochain déploiement.
-const CACHE_NAME = 'firstaiders-v1';
+const CACHE_NAME = 'firstaiders-v2';
 
 const urlsToCache = [
   './',
@@ -10,6 +10,11 @@ const urlsToCache = [
   'sw.js',
   'apple-touch-icon.png',
   'js/jspdf.umd.min.js',
+  'vendor/bootstrap.min.css',
+  'vendor/bootstrap.bundle.min.js',
+  'vendor/bootstrap-icons.css',
+  'vendor/fonts/bootstrap-icons.woff2',
+  'vendor/fonts/bootstrap-icons.woff',
   'icons/911.png',
   'icons/abc.png',
   'icons/aed.png',
