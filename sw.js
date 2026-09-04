@@ -1,7 +1,7 @@
 // Service worker — cache local pour usage 100% hors-ligne.
 // Stratégie : stale-while-revalidate (sert le cache immédiatement, revalide en tâche de fond).
 // CACHE_NAME est versionné : le changer force le renouvellement du cache au prochain déploiement.
-const CACHE_NAME = 'firstaiders-v2';
+const CACHE_NAME = 'firstaiders-v3';
 
 const urlsToCache = [
   './',
@@ -15,26 +15,9 @@ const urlsToCache = [
   'vendor/bootstrap-icons.css',
   'vendor/fonts/bootstrap-icons.woff2',
   'vendor/fonts/bootstrap-icons.woff',
-  'icons/911.png',
-  'icons/abc.png',
-  'icons/aed.png',
-  'icons/brain.png',
-  'icons/breathing-icon.png',
-  'icons/chocking.png',
-  'icons/cpr.png',
-  'icons/hand.png',
-  'icons/head.png',
-  'icons/heart.png',
   'icons/icon-192.png',
   'icons/icon-512.png',
-  'icons/kit.png',
-  'icons/lungs.png',
-  'icons/person.png',
-  'icons/pls.png',
-  'icons/responsive-icon.png',
-  'icons/safe-icon.png',
-  'icons/soap.png',
-  'icons/stomach.png'
+  'icons/kit.png'
 ];
 
 // Installation : mise en cache initiale de tous les fichiers locaux de l'app.
