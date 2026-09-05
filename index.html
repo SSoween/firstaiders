@@ -494,7 +494,7 @@
   body.dark-mode .footer-note {
     color: #7c8aa0;
   }
-  body.dark-mode #game-content h2 {
+  body.dark-mode #game-content h2, body.dark-mode #game-content h3 {
     color: #eef1f7 !important;
   }
   body.dark-mode #game-content li {
@@ -2119,6 +2119,12 @@ function navigate(page, push = true) {
     <p class="text-muted" data-i18n="install_subtitle">Works 100% offline once installed on your device.</p>
   </div>
 
+  <div class="emergency-card mb-3" style="text-align:center;">
+    <h3 data-i18n="install_qr_title">Scan to install</h3>
+    <img src="icons/qr-install.png" alt="QR code linking to the FIRSTAIDers app" style="width:100%;max-width:220px;height:auto;border-radius:14px;">
+    <p class="text-muted" style="margin-top:0.6rem;margin-bottom:0;font-size:0.85rem;word-break:break-all;">ssoween.github.io/firstaiders</p>
+  </div>
+
   <div class="emergency-card mb-3">
     <h3><i class="bi bi-apple"></i>&nbsp;<span data-i18n="install_iphone_title">On iPhone (Safari)</span></h3>
     <ul class="icon-list">
@@ -2416,6 +2422,7 @@ function navigate(page, push = true) {
       kit_intro: "This checklist helps you manage and track your emergency kit contents.",
       kit_btn_save: "Save Quantities",
       install_title: "Install FIRSTAIDers", install_subtitle: "Works 100% offline once installed on your device.",
+      install_qr_title: "Scan to install",
       install_iphone_title: "On iPhone (Safari)",
       install_iphone_1: "Tap the <strong>Share</strong> button (bottom center of Safari).",
       install_iphone_2: "Choose <strong>\"Add to Home Screen\"</strong>.",
@@ -2464,6 +2471,26 @@ function navigate(page, push = true) {
       profile_cert_number: "Certificate Number", profile_issue_date: "Issue Date",
       profile_expiry_date: "Expiry Date", profile_issued_in: "Issued In", profile_btn_save: "Save",
       profile_validate_note: "To validate a certificate, go to <a href=\"https://myrc.redcross.ca\" target=\"_blank\">myrc.redcross.ca</a> and click on \"Validate Certificate\".",
+      // Training Game — dynamic gameplay strings
+      game_score_label: "Score:", game_next_question: "Next Question", game_finish_btn: "Finish",
+      game_correct: "✅ Correct answer!", game_incorrect_was: "❌ Wrong answer. It was:",
+      game_symptoms_prompt: "What are the symptoms of the emergency:", game_symptoms_validate_btn: "Validate",
+      game_symptoms_correct_label: "Correct symptoms:", game_symptoms_missed_label: "Missing:",
+      game_symptoms_wrong_label: "Incorrect:", game_symptoms_correct: "✅ Correct answer!",
+      game_symptoms_incorrect: "❌ Incorrect answer.",
+      game_guess_prompt: "Guess the emergency from the following symptoms:",
+      game_guess_correct: "✅ Well done! That was the correct emergency!",
+      game_tf_emergency_label: "Emergency:", game_tf_question: "Is this symptom associated?",
+      game_true: "True", game_false: "False", game_tf_incorrect: "❌ Incorrect answer.",
+      game_case_study_title: "Case Study:",
+      game_protocol_incorrect_was: "❌ Wrong answer. The correct answer was:",
+      game_protocol_q_first: "What is the FIRST step to take when facing an emergency situation?",
+      game_protocol_q_next: (step) => `You just finished: "${step}". What is the NEXT step?`,
+      game_protocol_q_before: (step) => `Before moving on to "${step}", which step must already be complete?`,
+      game_speed_prompt: "Emergency associated with:", game_speed_time_up: "⏱️ Time's up!",
+      game_speed_result: (n) => `You found <strong>${n}</strong> correct answer(s) in 60 seconds.`,
+      game_speed_again: "Play Again", game_speed_quit: "Back to Menu",
+      game_unknown_mode: "Unknown mode.",
     },
     fr: {
       sos_call: "Appeler le 9-1-1",
@@ -2559,6 +2586,7 @@ function navigate(page, push = true) {
       kit_intro: "Cette liste vous aide à gérer et suivre le contenu de votre trousse d'urgence.",
       kit_btn_save: "Enregistrer les quantités",
       install_title: "Installer FIRSTAIDers", install_subtitle: "Fonctionne 100 % hors ligne une fois installée sur votre appareil.",
+      install_qr_title: "Scanner pour installer",
       install_iphone_title: "Sur iPhone (Safari)",
       install_iphone_1: "Appuyez sur le bouton <strong>Partager</strong> (en bas au centre de Safari).",
       install_iphone_2: "Choisissez <strong>« Sur l'écran d'accueil »</strong>.",
@@ -2607,6 +2635,26 @@ function navigate(page, push = true) {
       profile_cert_number: "Numéro de certificat", profile_issue_date: "Date d'émission",
       profile_expiry_date: "Date d'expiration", profile_issued_in: "Émis à", profile_btn_save: "Enregistrer",
       profile_validate_note: "Pour valider un certificat, rendez-vous sur <a href=\"https://myrc.redcross.ca\" target=\"_blank\">myrc.redcross.ca</a> et cliquez sur « Valider le certificat ».",
+      // Training Game — dynamic gameplay strings
+      game_score_label: "Score :", game_next_question: "Question suivante", game_finish_btn: "Terminer",
+      game_correct: "✅ Bonne réponse !", game_incorrect_was: "❌ Mauvaise réponse. C'était :",
+      game_symptoms_prompt: "Quels sont les symptômes de l'urgence :", game_symptoms_validate_btn: "Valider",
+      game_symptoms_correct_label: "Symptômes corrects :", game_symptoms_missed_label: "Manquants :",
+      game_symptoms_wrong_label: "Erronés :", game_symptoms_correct: "✅ Bravo, bonne réponse !",
+      game_symptoms_incorrect: "❌ Réponse incorrecte.",
+      game_guess_prompt: "Devine l'urgence à partir des symptômes suivants :",
+      game_guess_correct: "✅ Bravo ! C'était la bonne urgence !",
+      game_tf_emergency_label: "Urgence :", game_tf_question: "Ce symptôme est-il associé ?",
+      game_true: "Vrai", game_false: "Faux", game_tf_incorrect: "❌ Mauvaise réponse.",
+      game_case_study_title: "Étude de cas :",
+      game_protocol_incorrect_was: "❌ Mauvaise réponse. La bonne réponse était :",
+      game_protocol_q_first: "Quelle est la PREMIÈRE étape à réaliser face à une situation d'urgence ?",
+      game_protocol_q_next: (step) => `Tu viens de terminer : "${step}". Quelle est la PROCHAINE étape ?`,
+      game_protocol_q_before: (step) => `Avant de passer à "${step}", quelle étape doit déjà être terminée ?`,
+      game_speed_prompt: "Urgence associée à :", game_speed_time_up: "⏱️ Temps écoulé !",
+      game_speed_result: (n) => `Tu as trouvé <strong>${n}</strong> bonne(s) réponse(s) en 60 secondes.`,
+      game_speed_again: "Rejouer", game_speed_quit: "Retour au menu",
+      game_unknown_mode: "Mode inconnu.",
     },
   };
   const GROUPS_FR = {
@@ -4975,63 +5023,132 @@ const technics = [
 // de chaque urgence (tableau `emergencies`) pour couvrir automatiquement les 60 urgences,
 // au lieu d'une liste figée de quelques exemples écrits à la main.
 const CASE_STUDY_TEMPLATES = [
-  symptoms => `En pleine randonnée, un membre de ton groupe présente soudainement les signes suivants : ${symptoms}.`,
-  symptoms => `Alors que vous campez en pleine nature, une personne du groupe se plaint de : ${symptoms}.`,
-  symptoms => `Tu croises un randonneur seul sur le sentier. Il semble en détresse et présente : ${symptoms}.`,
-  symptoms => `Pendant une sortie en kayak, ton compagnon d'expédition manifeste : ${symptoms}.`,
-  symptoms => `De retour au refuge après une longue journée, tu remarques qu'un des membres du groupe a : ${symptoms}.`,
-  symptoms => `Au sommet, après un effort intense, une personne du groupe présente : ${symptoms}.`,
+  {
+    fr: symptoms => `En pleine randonnée, un membre de ton groupe présente soudainement les signes suivants : ${symptoms}.`,
+    en: symptoms => `While out hiking, a member of your group suddenly presents the following signs: ${symptoms}.`,
+  },
+  {
+    fr: symptoms => `Alors que vous campez en pleine nature, une personne du groupe se plaint de : ${symptoms}.`,
+    en: symptoms => `While camping in the backcountry, someone in your group complains of: ${symptoms}.`,
+  },
+  {
+    fr: symptoms => `Tu croises un randonneur seul sur le sentier. Il semble en détresse et présente : ${symptoms}.`,
+    en: symptoms => `You come across a lone hiker on the trail. They seem to be in distress and present: ${symptoms}.`,
+  },
+  {
+    fr: symptoms => `Pendant une sortie en kayak, ton compagnon d'expédition manifeste : ${symptoms}.`,
+    en: symptoms => `During a kayaking trip, your expedition partner shows: ${symptoms}.`,
+  },
+  {
+    fr: symptoms => `De retour au refuge après une longue journée, tu remarques qu'un des membres du groupe a : ${symptoms}.`,
+    en: symptoms => `Back at the shelter after a long day, you notice one of the group members has: ${symptoms}.`,
+  },
+  {
+    fr: symptoms => `Au sommet, après un effort intense, une personne du groupe présente : ${symptoms}.`,
+    en: symptoms => `At the summit, after an intense effort, someone in the group presents: ${symptoms}.`,
+  },
+  {
+    fr: symptoms => `Après un accident de motoneige impliquant deux personnes, l'une des deux victimes présente : ${symptoms}.`,
+    en: symptoms => `Following a snowmobile accident involving two people, one of the two victims presents: ${symptoms}.`,
+  },
+  {
+    fr: symptoms => `Lors d'une sortie d'escalade, un grimpeur fait une chute et présente ensuite : ${symptoms}.`,
+    en: symptoms => `During a climbing trip, a climber takes a fall and then presents: ${symptoms}.`,
+  },
+  {
+    fr: symptoms => `En rentrant d'une sortie de pêche sur glace, tu remarques qu'un compagnon présente : ${symptoms}.`,
+    en: symptoms => `Coming back from an ice-fishing trip, you notice a companion presents: ${symptoms}.`,
+  },
 ];
 
 function buildCaseStudyScenario(symptomNames) {
-  const template = CASE_STUDY_TEMPLATES[Math.floor(Math.random() * CASE_STUDY_TEMPLATES.length)];
-  const list = symptomNames.length ? symptomNames.join(', ').toLowerCase() : 'des signes inhabituels et inquiétants';
+  const entry = CASE_STUDY_TEMPLATES[Math.floor(Math.random() * CASE_STUDY_TEMPLATES.length)];
+  const template = entry[currentLang] || entry.en;
+  const fallback = currentLang === 'fr' ? 'des signes inhabituels et inquiétants' : 'unusual and concerning signs';
+  const list = symptomNames.length ? symptomNames.join(', ').toLowerCase() : fallback;
   return template(list);
 }
 
 // Séquence de référence pour le mode "Emergency Steps" — reprend l'ordre suivi
 // par l'app elle-même (Safe & Secure -> Responsiveness -> ABC -> Signs & Symptoms -> SOAP).
 const PROTOCOL_STEPS = [
-  { title: "Sécuriser la scène (Safe & Secure)" },
-  { title: "Vérifier la réactivité de la personne (Responsiveness)" },
-  { title: "Appeler le 911 si la situation le nécessite" },
-  { title: "Vérifier les voies respiratoires (ABC - Airway)" },
-  { title: "Vérifier la respiration (ABC - Breathing)" },
-  { title: "Vérifier la circulation / les saignements (ABC - Circulation)" },
-  { title: "Débuter la RCR / utiliser le DEA si nécessaire" },
-  { title: "Faire l'évaluation secondaire : Signs & Symptoms" },
-  { title: "Remplir la fiche SOAP" },
-  { title: "Répéter l'évaluation secondaire (SOAP) régulièrement" },
+  { en: "Secure the scene (Safe & Secure)", fr: "Sécuriser la scène (Safe & Secure)" },
+  { en: "Check the person's responsiveness (Responsiveness)", fr: "Vérifier la réactivité de la personne (Responsiveness)" },
+  { en: "Call 9-1-1 if the situation requires it", fr: "Appeler le 911 si la situation le nécessite" },
+  { en: "Check the airway (ABC - Airway)", fr: "Vérifier les voies respiratoires (ABC - Airway)" },
+  { en: "Check breathing (ABC - Breathing)", fr: "Vérifier la respiration (ABC - Breathing)" },
+  { en: "Check circulation / bleeding (ABC - Circulation)", fr: "Vérifier la circulation / les saignements (ABC - Circulation)" },
+  { en: "Begin CPR / use the AED if needed", fr: "Débuter la RCR / utiliser le DEA si nécessaire" },
+  { en: "Perform the secondary assessment: Signs & Symptoms", fr: "Faire l'évaluation secondaire : Signs & Symptoms" },
+  { en: "Fill out the SOAP note", fr: "Remplir la fiche SOAP" },
+  { en: "Repeat the secondary assessment (SOAP) regularly", fr: "Répéter l'évaluation secondaire (SOAP) régulièrement" },
 ];
+
+function protocolStepsLang() {
+  return PROTOCOL_STEPS.map(s => s[currentLang] || s.en);
+}
 
 // Questions dédiées au moment / à la fréquence de la fiche SOAP.
 const SOAP_TIMING_QUESTIONS = [
   {
-    question: "Quand doit-on commencer à remplir la fiche SOAP ?",
-    correct: "Une fois la scène sécurisée et l'ABC stabilisé, lors de l'évaluation secondaire",
-    distractors: [
-      "Avant même de vérifier si la scène est sûre",
-      "Uniquement après le départ complet des secours",
-      "Ce n'est jamais nécessaire en milieu isolé",
-    ],
+    en: {
+      question: "When should you start filling out the SOAP note?",
+      correct: "Once the scene is secured and ABC is stabilized, during the secondary assessment",
+      distractors: [
+        "Before even checking if the scene is safe",
+        "Only after EMS has fully left",
+        "It's never necessary in a remote setting",
+      ],
+    },
+    fr: {
+      question: "Quand doit-on commencer à remplir la fiche SOAP ?",
+      correct: "Une fois la scène sécurisée et l'ABC stabilisé, lors de l'évaluation secondaire",
+      distractors: [
+        "Avant même de vérifier si la scène est sûre",
+        "Uniquement après le départ complet des secours",
+        "Ce n'est jamais nécessaire en milieu isolé",
+      ],
+    },
   },
   {
-    question: "À quelle fréquence faut-il refaire l'évaluation secondaire (SOAP) pour une urgence CRITIQUE ?",
-    correct: "Toutes les 5 à 10 minutes",
-    distractors: [
-      "Toutes les 10 à 60 minutes",
-      "Une seule fois, au tout début",
-      "Uniquement si la personne le redemande",
-    ],
+    en: {
+      question: "How often should the secondary assessment (SOAP) be redone for a CRITICAL emergency?",
+      correct: "Every 5 to 10 minutes",
+      distractors: [
+        "Every 10 to 60 minutes",
+        "Only once, at the very start",
+        "Only if the person asks again",
+      ],
+    },
+    fr: {
+      question: "À quelle fréquence faut-il refaire l'évaluation secondaire (SOAP) pour une urgence CRITIQUE ?",
+      correct: "Toutes les 5 à 10 minutes",
+      distractors: [
+        "Toutes les 10 à 60 minutes",
+        "Une seule fois, au tout début",
+        "Uniquement si la personne le redemande",
+      ],
+    },
   },
   {
-    question: "À quelle fréquence faut-il refaire l'évaluation secondaire (SOAP) pour une urgence MAJEURE ?",
-    correct: "Toutes les 10 à 60 minutes",
-    distractors: [
-      "Toutes les 5 à 10 minutes",
-      "Une seule fois, au tout début",
-      "Uniquement au retour de la connexion internet",
-    ],
+    en: {
+      question: "How often should the secondary assessment (SOAP) be redone for a MAJOR emergency?",
+      correct: "Every 10 to 60 minutes",
+      distractors: [
+        "Every 5 to 10 minutes",
+        "Only once, at the very start",
+        "Only once internet connection is back",
+      ],
+    },
+    fr: {
+      question: "À quelle fréquence faut-il refaire l'évaluation secondaire (SOAP) pour une urgence MAJEURE ?",
+      correct: "Toutes les 10 à 60 minutes",
+      distractors: [
+        "Toutes les 5 à 10 minutes",
+        "Une seule fois, au tout début",
+        "Uniquement au retour de la connexion internet",
+      ],
+    },
   },
 ];
 
@@ -6513,7 +6630,7 @@ const game = {
         this.modeSpeedChallenge_start();
         break;
       default:
-        this.showMessage('Mode inconnu.');
+        this.showMessage(t('game_unknown_mode'));
     }
   },
 
@@ -6547,17 +6664,17 @@ const game = {
       .map(s => trSymptomName(s.id));
     const allSymptoms = trueSymptoms.concat(falseSymptoms).sort(() => Math.random() - 0.5);
     const html = `
-      <h3>Quels sont les symptômes de l'urgence : <em>${trEmergencyField(emergency.id, 'name')}</em> ?</h3>
+      <h3>${t('game_symptoms_prompt')} <em>${trEmergencyField(emergency.id, 'name')}</em> ?</h3>
       <form id="symptoms-form">
         <ul>
           ${allSymptoms.map(sym => `
             <li><label><input type="checkbox" name="symptom" value="${sym}"> ${sym}</label></li>
           `).join('')}
         </ul>
-        <button type="submit" class="choice-btn">Valider</button>
+        <button type="submit" class="choice-btn">${t('game_symptoms_validate_btn')}</button>
       </form>
       <div id="symptoms-feedback" style="margin-top:1em;"></div>
-      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+      <p>${t('game_score_label')} ${this.correctAnswersCount} / ${this.totalQuestions}</p>
     `;
     document.getElementById('game-content').innerHTML = html;
     document.getElementById('symptoms-form').addEventListener('submit', e => {
@@ -6578,18 +6695,18 @@ const game = {
     if (isCorrect) progress.award(10);
 
     let feedback = `
-      <p>${isCorrect ? '✅ Bravo, bonne réponse !' : '❌ Réponse incorrecte.'}</p>
-      <p><strong>Symptômes corrects :</strong> ${trueSymptoms.join(', ')}</p>
-      <p>${missed.length ? 'Manquants : ' + missed.join(', ') : ''}</p>
-      <p>${wrong.length ? 'Erronés : ' + wrong.join(', ') : ''}</p>
-      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+      <p>${isCorrect ? t('game_symptoms_correct') : t('game_symptoms_incorrect')}</p>
+      <p><strong>${t('game_symptoms_correct_label')}</strong> ${trueSymptoms.join(', ')}</p>
+      <p>${missed.length ? t('game_symptoms_missed_label') + ' ' + missed.join(', ') : ''}</p>
+      <p>${wrong.length ? t('game_symptoms_wrong_label') + ' ' + wrong.join(', ') : ''}</p>
+      <p>${t('game_score_label')} ${this.correctAnswersCount} / ${this.totalQuestions}</p>
     `;
     // Si le jeu est terminé
     if (this.totalQuestions >= this.maxQuestionsPerSession) {
       this.saveToHistory(); // 💾 Historique
-      feedback += `<button id="quit-btn" class="choice-btn">Terminer</button>`;
+      feedback += `<button id="quit-btn" class="choice-btn">${t('game_finish_btn')}</button>`;
     } else {
-      feedback += `<button id="next-question-btn" class="choice-btn">Question suivante</button>`;
+      feedback += `<button id="next-question-btn" class="choice-btn">${t('game_next_question')}</button>`;
     }
     document.getElementById('symptoms-feedback').innerHTML = feedback;
     if (this.totalQuestions >= this.maxQuestionsPerSession) {
@@ -6616,14 +6733,14 @@ const game = {
     // Stocke temporairement les données de la question
     this.currentTF = { emergency, symptom, isTrue };
     const html = `
-      <h3>Urgence : <em>${trEmergencyField(emergency.id, 'name')}</em></h3>
-      <p>Ce symptôme est-il associé ?</p>
+      <h3>${t('game_tf_emergency_label')} <em>${trEmergencyField(emergency.id, 'name')}</em></h3>
+      <p>${t('game_tf_question')}</p>
       <h2 style="color:#2c3e50;">${symptom}</h2>
       <div style="margin:1em 0;">
-        <button class="choice-btn" onclick="game.modeTrueFalse_check(true)">✅ Vrai</button>
-        <button class="choice-btn" onclick="game.modeTrueFalse_check(false)">❌ Faux</button>
+        <button class="choice-btn" onclick="game.modeTrueFalse_check(true)">✅ ${t('game_true')}</button>
+        <button class="choice-btn" onclick="game.modeTrueFalse_check(false)">❌ ${t('game_false')}</button>
       </div>
-      <p>Score : ${this.correctAnswersCount || 0} / ${this.totalQuestions - 1}</p>
+      <p>${t('game_score_label')} ${this.correctAnswersCount || 0} / ${this.totalQuestions - 1}</p>
     `;
     document.getElementById('game-content').innerHTML = html;
   },
@@ -6642,12 +6759,12 @@ const game = {
       isCorrect: isCorrect
     });
     const message = isCorrect
-      ? "✅ Bonne réponse !"
-      : "❌ Mauvaise réponse.";
+      ? t('game_correct')
+      : t('game_tf_incorrect');
     const html = `
       <p>${message}</p>
-      <button id="next-true-false" class="choice-btn">Question suivante</button>
-      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+      <button id="next-true-false" class="choice-btn">${t('game_next_question')}</button>
+      <p>${t('game_score_label')} ${this.correctAnswersCount} / ${this.totalQuestions}</p>
     `;
     document.getElementById('game-content').innerHTML += html;
     document.getElementById('next-true-false').addEventListener('click', () => {
@@ -6669,12 +6786,12 @@ const game = {
     this.currentGuess = { correctId: emergency.id, symptoms: symptomsList };
 
     const html = `
-      <h3>Devine l'urgence à partir des symptômes suivants :</h3>
+      <h3>${t('game_guess_prompt')}</h3>
       <div id="game-symptoms" style="margin-bottom: 1em;">
         <ul>${symptomsList.map(s => `<li>${s}</li>`).join('')}</ul>
       </div>
       <div id="game-choices" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
-      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+      <p>${t('game_score_label')} ${this.correctAnswersCount} / ${this.totalQuestions}</p>
     `;
     document.getElementById('game-content').innerHTML = html;
     this.modeGuessEmergency_displayChoices(emergency.id);
@@ -6714,13 +6831,20 @@ const game = {
       symptoms: symptoms
     });
     if (isCorrect) {
-      alert("✅ Bravo ! C'était la bonne urgence !");
       this.correctAnswersCount++;
       progress.award(10);
-    } else {
-      alert("❌ Mauvaise réponse. C'était : " + trEmergencyField(correctId, 'name'));
     }
-    this.modeGuessEmergency_next();
+    const message = isCorrect
+      ? t('game_guess_correct')
+      : t('game_incorrect_was') + ' ' + trEmergencyField(correctId, 'name');
+    const html = `
+      <p>${message}</p>
+      <button id="next-guess-emergency" class="choice-btn">${t('game_next_question')}</button>
+    `;
+    document.getElementById('game-content').innerHTML += html;
+    document.getElementById('next-guess-emergency').addEventListener('click', () => {
+      this.modeGuessEmergency_next();
+    });
   }, // ================= FIN MODE : Guess the Emergency =================
 
   // ================= MODE : Guess the Emergency =================
@@ -6743,10 +6867,10 @@ const game = {
     this.currentCase = { correctId, scenario };
 
     const html = `
-      <h3>Étude de cas :</h3>
+      <h3>${t('game_case_study_title')}</h3>
       <p style="font-style: italic;">"${scenario}"</p>
       <div id="case-choices" style="margin-top:1em; display:flex; flex-wrap:wrap; gap:10px;"></div>
-      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+      <p>${t('game_score_label')} ${this.correctAnswersCount} / ${this.totalQuestions}</p>
     `;
     document.getElementById('game-content').innerHTML = html;
 
@@ -6791,13 +6915,13 @@ const game = {
     });
 
     const message = isCorrect
-      ? "✅ Bonne réponse !"
-      : `❌ Mauvaise réponse. C'était : ${trEmergencyField(correctId, 'name')}`;
+      ? t('game_correct')
+      : `${t('game_incorrect_was')} ${trEmergencyField(correctId, 'name')}`;
 
     const html = `
       <p>${message}</p>
-      <button id="next-case-study" class="choice-btn">Question suivante</button>
-      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+      <button id="next-case-study" class="choice-btn">${t('game_next_question')}</button>
+      <p>${t('game_score_label')} ${this.correctAnswersCount} / ${this.totalQuestions}</p>
     `;
     document.getElementById('game-content').innerHTML += html;
 
@@ -6818,10 +6942,10 @@ const game = {
     this.currentProtocolQuestion = question;
 
     const html = `
-      <h3>🧭 Emergency Steps</h3>
+      <h3>🧭 ${t('game_mode_protocol_title')}</h3>
       <p>${question.prompt}</p>
       <div id="protocol-choices" style="margin-top:1em; display:flex; flex-wrap:wrap; gap:10px;"></div>
-      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+      <p>${t('game_score_label')} ${this.correctAnswersCount} / ${this.totalQuestions}</p>
     `;
     document.getElementById('game-content').innerHTML = html;
     this.protocolSteps_displayChoices(question);
@@ -6831,28 +6955,29 @@ const game = {
     const type = types[Math.floor(Math.random() * types.length)];
 
     if (type === 'soap-timing') {
-      const bank = SOAP_TIMING_QUESTIONS[Math.floor(Math.random() * SOAP_TIMING_QUESTIONS.length)];
+      const entry = SOAP_TIMING_QUESTIONS[Math.floor(Math.random() * SOAP_TIMING_QUESTIONS.length)];
+      const bank = entry[currentLang] || entry.en;
       return { prompt: bank.question, correct: bank.correct, pool: [bank.correct, ...bank.distractors] };
     }
 
-    const stepsCount = PROTOCOL_STEPS.length;
+    const steps = protocolStepsLang();
+    const stepsCount = steps.length;
     let prompt, correct;
 
     if (type === 'first') {
-      prompt = "Quelle est la PREMIÈRE étape à réaliser face à une situation d'urgence ?";
-      correct = PROTOCOL_STEPS[0].title;
+      prompt = t('game_protocol_q_first');
+      correct = steps[0];
     } else if (type === 'next') {
       const i = Math.floor(Math.random() * (stepsCount - 1)); // 0..len-2
-      prompt = `Tu viens de terminer : "${PROTOCOL_STEPS[i].title}". Quelle est la PROCHAINE étape ?`;
-      correct = PROTOCOL_STEPS[i + 1].title;
+      prompt = t('game_protocol_q_next')(steps[i]);
+      correct = steps[i + 1];
     } else { // before
       const i = 1 + Math.floor(Math.random() * (stepsCount - 1)); // 1..len-1
-      prompt = `Avant de passer à "${PROTOCOL_STEPS[i].title}", quelle étape doit déjà être terminée ?`;
-      correct = PROTOCOL_STEPS[i - 1].title;
+      prompt = t('game_protocol_q_before')(steps[i]);
+      correct = steps[i - 1];
     }
 
-    const distractors = PROTOCOL_STEPS
-      .map(s => s.title)
+    const distractors = steps
       .filter(titleText => titleText !== correct)
       .sort(() => Math.random() - 0.5)
       .slice(0, 3);
@@ -6887,13 +7012,13 @@ const game = {
     });
 
     const message = isCorrect
-      ? "✅ Bonne réponse !"
-      : `❌ Mauvaise réponse. La bonne réponse était : "${correct}"`;
+      ? t('game_correct')
+      : `${t('game_protocol_incorrect_was')} "${correct}"`;
 
     const html = `
       <p>${message}</p>
-      <button id="next-protocol-order" class="choice-btn">Question suivante</button>
-      <p>Score : ${this.correctAnswersCount} / ${this.totalQuestions}</p>
+      <button id="next-protocol-order" class="choice-btn">${t('game_next_question')}</button>
+      <p>${t('game_score_label')} ${this.correctAnswersCount} / ${this.totalQuestions}</p>
     `;
     document.getElementById('game-content').innerHTML += html;
 
@@ -6944,9 +7069,9 @@ const game = {
     const html = `
       <div class="speed-header">
         <span id="speed-timer" class="speed-timer">⏱️ ${this.speedTimeLeft}s</span>
-        <span class="speed-score">Score : ${this.correctAnswersCount}</span>
+        <span class="speed-score">${t('game_score_label')} ${this.correctAnswersCount}</span>
       </div>
-      <h3>Urgence associée à :</h3>
+      <h3>${t('game_speed_prompt')}</h3>
       <ul>${symptomsList.map(s => `<li>${s}</li>`).join('')}</ul>
       <div class="speed-choices">${buttons}</div>
     `;
@@ -6966,10 +7091,10 @@ const game = {
     this.speedChallengeInterval = null;
     const html = `
       <div class="speed-result">
-        <h3>⏱️ Temps écoulé !</h3>
-        <p>Tu as trouvé <strong>${this.correctAnswersCount}</strong> bonne(s) réponse(s) en 60 secondes.</p>
-        <button id="speed-again-btn" class="custom-btn primary">Rejouer</button>
-        <button id="speed-quit-btn" class="custom-btn secondary">Retour au menu</button>
+        <h3>${t('game_speed_time_up')}</h3>
+        <p>${t('game_speed_result')(this.correctAnswersCount)}</p>
+        <button id="speed-again-btn" class="custom-btn primary">${t('game_speed_again')}</button>
+        <button id="speed-quit-btn" class="custom-btn secondary">${t('game_speed_quit')}</button>
       </div>
     `;
     document.getElementById('game-content').innerHTML = html;
