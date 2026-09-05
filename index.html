@@ -340,26 +340,6 @@
     margin-bottom: 0.4rem;
   }
 
-  #call-911 {
-    width: 100%;
-    font-size: 1.3rem;
-    padding: 0.85rem;
-    border-radius: var(--radius-btn);
-    font-weight: 800;
-    letter-spacing: 0.02em;
-    margin-top: 1rem;
-    box-shadow: 0 6px 14px rgba(220, 53, 69, 0.4);
-    background: var(--color-danger);
-    color: white;
-    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-  }
-  #call-911:hover, #call-911:focus {
-    background: var(--color-danger-hover);
-    box-shadow: 0 10px 20px rgba(176, 42, 55, 0.5);
-    transform: translateY(-1px);
-    outline: none;
-  }
-
   .button-group {
     display: flex;
     flex-direction: column;
@@ -1624,7 +1604,7 @@ function navigate(page, push = true) {
   <!-- Barre SOS persistante : toujours accessible, sur tous les écrans -->
   <div class="sos-bar">
     <button class="custom-btn danger" onclick="call911()">
-      <span class="pulse-dot"></span> Appeler le 9-1-1
+      <span class="pulse-dot"></span> <span data-i18n="sos_call">Appeler le 9-1-1</span>
     </button>
   </div>
 
@@ -1643,34 +1623,34 @@ function navigate(page, push = true) {
   <div class="menu-backdrop hidden" id="menu-backdrop" onclick="closeMenu()"></div>
   <aside class="menu-panel hidden" id="menu-panel" aria-label="Navigation">
     <div class="menu-panel-header">
-      <span class="menu-panel-title">Menu</span>
+      <span class="menu-panel-title" data-i18n="menu_title">Menu</span>
       <button class="menu-close" type="button" onclick="closeMenu()" aria-label="Close menu"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="menu-scroll">
-      <div class="section-label">Assessment</div>
-      <button class="menu-row" onclick="go('index')"><span class="menu-row-ic w-amber"><i class="bi bi-house-fill"></i></span><span>Welcome Screen</span><i class="bi bi-chevron-right chev"></i></button>
-      <button class="menu-row" onclick="go('safe')"><span class="menu-row-ic w-brand"><i class="bi bi-heart-pulse-fill"></i></span><span>1st Assessment</span><i class="bi bi-chevron-right chev"></i></button>
-      <button class="menu-row" onclick="go('signs')"><span class="menu-row-ic w-amber"><i class="bi bi-clipboard2-pulse-fill"></i></span><span>2nd Assessment</span><i class="bi bi-chevron-right chev"></i></button>
-      <button class="menu-row" onclick="go('soap')"><span class="menu-row-ic w-calm"><i class="bi bi-journal-medical"></i></span><span>SOAP Note</span><i class="bi bi-chevron-right chev"></i></button>
+      <div class="section-label" data-i18n="menu_section_assessment">Assessment</div>
+      <button class="menu-row" onclick="go('index')"><span class="menu-row-ic w-amber"><i class="bi bi-house-fill"></i></span><span data-i18n="menu_welcome">Welcome Screen</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('safe')"><span class="menu-row-ic w-brand"><i class="bi bi-heart-pulse-fill"></i></span><span data-i18n="menu_1st_assessment">1st Assessment</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('signs')"><span class="menu-row-ic w-amber"><i class="bi bi-clipboard2-pulse-fill"></i></span><span data-i18n="menu_2nd_assessment">2nd Assessment</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('soap')"><span class="menu-row-ic w-calm"><i class="bi bi-journal-medical"></i></span><span data-i18n="menu_soap_note">SOAP Note</span><i class="bi bi-chevron-right chev"></i></button>
 
-      <div class="section-label">Reference</div>
-      <button class="menu-row" onclick="go('emergencies')"><span class="menu-row-ic w-violet"><i class="bi bi-exclamation-triangle-fill"></i></span><span>List of Emergencies</span><i class="bi bi-chevron-right chev"></i></button>
-      <button class="menu-row" onclick="go('technics')"><span class="menu-row-ic w-violet"><i class="bi bi-tools"></i></span><span>List of Technics</span><i class="bi bi-chevron-right chev"></i></button>
-      <button class="menu-row" onclick="go('legal')"><span class="menu-row-ic w-slate"><i class="bi bi-file-earmark-text-fill"></i></span><span>Legal</span><i class="bi bi-chevron-right chev"></i></button>
+      <div class="section-label" data-i18n="menu_section_reference">Reference</div>
+      <button class="menu-row" onclick="go('emergencies')"><span class="menu-row-ic w-violet"><i class="bi bi-exclamation-triangle-fill"></i></span><span data-i18n="menu_list_emergencies">List of Emergencies</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('technics')"><span class="menu-row-ic w-violet"><i class="bi bi-tools"></i></span><span data-i18n="menu_list_technics">List of Technics</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('legal')"><span class="menu-row-ic w-slate"><i class="bi bi-file-earmark-text-fill"></i></span><span data-i18n="menu_legal">Legal</span><i class="bi bi-chevron-right chev"></i></button>
 
-      <div class="section-label">Tools</div>
-      <button class="menu-row" onclick="go('bpm')"><span class="menu-row-ic w-brand"><i class="bi bi-activity"></i></span><span>CPR BPM</span><i class="bi bi-chevron-right chev"></i></button>
-      <button class="menu-row" onclick="go('kit')"><span class="menu-row-ic w-green"><i class="bi bi-bag-heart-fill"></i></span><span>Kit First Aid</span><i class="bi bi-chevron-right chev"></i></button>
-      <button class="menu-row" onclick="go('install')"><span class="menu-row-ic w-slate"><i class="bi bi-phone-fill"></i></span><span>Install App</span><i class="bi bi-chevron-right chev"></i></button>
+      <div class="section-label" data-i18n="menu_section_tools">Tools</div>
+      <button class="menu-row" onclick="go('bpm')"><span class="menu-row-ic w-brand"><i class="bi bi-activity"></i></span><span data-i18n="menu_cpr_bpm">CPR BPM</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('kit')"><span class="menu-row-ic w-green"><i class="bi bi-bag-heart-fill"></i></span><span data-i18n="menu_kit">Kit First Aid</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('install')"><span class="menu-row-ic w-slate"><i class="bi bi-phone-fill"></i></span><span data-i18n="menu_install">Install App</span><i class="bi bi-chevron-right chev"></i></button>
 
-      <div class="section-label">More</div>
-      <button class="menu-row" onclick="go('game')"><span class="menu-row-ic w-violet"><i class="bi bi-controller"></i></span><span>Training Game</span><i class="bi bi-chevron-right chev"></i></button>
-      <button class="menu-row" onclick="go('explorers')"><span class="menu-row-ic w-calm"><i class="bi bi-compass-fill"></i></span><span>Explorers</span><i class="bi bi-chevron-right chev"></i></button>
-      <button class="menu-row" onclick="go('tips')"><span class="menu-row-ic w-amber"><i class="bi bi-lightbulb-fill"></i></span><span>Tips</span><i class="bi bi-chevron-right chev"></i></button>
-      <button class="menu-row" onclick="go('profile')"><span class="menu-row-ic w-slate"><i class="bi bi-person-vcard-fill"></i></span><span>My Profile</span><i class="bi bi-chevron-right chev"></i></button>
+      <div class="section-label" data-i18n="menu_section_more">More</div>
+      <button class="menu-row" onclick="go('game')"><span class="menu-row-ic w-violet"><i class="bi bi-controller"></i></span><span data-i18n="menu_training_game">Training Game</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('explorers')"><span class="menu-row-ic w-calm"><i class="bi bi-compass-fill"></i></span><span data-i18n="menu_explorers">Explorers</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('tips')"><span class="menu-row-ic w-amber"><i class="bi bi-lightbulb-fill"></i></span><span data-i18n="menu_tips">Tips</span><i class="bi bi-chevron-right chev"></i></button>
+      <button class="menu-row" onclick="go('profile')"><span class="menu-row-ic w-slate"><i class="bi bi-person-vcard-fill"></i></span><span data-i18n="menu_profile">My Profile</span><i class="bi bi-chevron-right chev"></i></button>
 
-      <div class="section-label">Preferences</div>
-      <button id="darkModeToggle" class="menu-row" type="button"><span class="menu-row-ic w-slate"><i class="bi bi-moon-stars-fill"></i></span><span>Dark Mode</span></button>
+      <div class="section-label" data-i18n="menu_section_preferences">Preferences</div>
+      <button id="darkModeToggle" class="menu-row" type="button"><span class="menu-row-ic w-slate"><i class="bi bi-moon-stars-fill"></i></span><span data-i18n="menu_dark_mode">Dark Mode</span></button>
       <button id="langToggle" class="menu-row" type="button"><span class="menu-row-ic w-slate"><i class="bi bi-translate"></i></span><span id="langToggle-label">EN / FR</span></button>
     </div>
   </aside>
@@ -1678,42 +1658,42 @@ function navigate(page, push = true) {
   <!-- Page index, donc le index.html -->
   <section id="page-index" class="home-pad">
     <div class="large-title">FIRSTAIDers</div>
-    <div class="large-sub">Wilderness &amp; Remote Field Guide</div>
+    <div class="large-sub" data-i18n="home_subtitle">Wilderness & Remote Field Guide</div>
 
     <button class="hero-card" onclick="navigate('safe')">
       <div class="badge-ic"><i class="bi bi-heart-pulse-fill"></i></div>
-      <div class="txt"><b>First Assessment</b><span>Start the ABC evaluation</span></div>
+      <div class="txt"><b data-i18n="home_first_title">First Assessment</b><span data-i18n="home_first_sub">Start the ABC evaluation</span></div>
       <div class="chev"><i class="bi bi-chevron-right"></i></div>
     </button>
 
     <button class="secondary-card" onclick="navigate('signs')">
       <div class="badge-ic w-amber"><i class="bi bi-clipboard2-pulse-fill"></i></div>
-      <div class="txt"><b>Second Assessment (SOAP)</b><span>Signs &amp; symptoms</span></div>
+      <div class="txt"><b data-i18n="home_second_title">Second Assessment (SOAP)</b><span data-i18n="home_second_sub">Signs & symptoms</span></div>
       <div class="chev"><i class="bi bi-chevron-right"></i></div>
     </button>
 
-    <div class="section-label">More</div>
+    <div class="section-label" data-i18n="home_more">More</div>
     <div class="widget-grid">
       <div class="widget w-calm" onclick="showSOAPList()">
         <div class="ic"><i class="bi bi-journal-medical"></i></div>
-        <b>View SOAP Notes</b>
+        <b data-i18n="home_view_soap">View SOAP Notes</b>
       </div>
       <div class="widget w-green" onclick="navigate('kit')">
         <div class="ic"><i class="bi bi-bag-heart-fill"></i></div>
-        <b>First Aid Kit</b>
+        <b data-i18n="home_kit">First Aid Kit</b>
       </div>
       <div class="widget w-brand" onclick="navigate('bpm')">
         <div class="ic"><i class="bi bi-activity"></i></div>
-        <b>CPR BPM</b>
+        <b data-i18n="home_cpr_bpm">CPR BPM</b>
       </div>
       <div class="widget w-violet" onclick="navigate('game')">
         <div class="ic"><i class="bi bi-controller"></i></div>
-        <b>Training Game</b>
+        <b data-i18n="home_training_game">Training Game</b>
       </div>
     </div>
 
     <footer class="footer-note text-center">
-      <span>Built with care by Gaëtan H. — <a href="mailto:1stAid@soween.com">1stAid@soween.com</a></span>
+      <span><span data-i18n="home_footer">Built with care by Gaëtan H. —</span> <a href="mailto:1stAid@soween.com">1stAid@soween.com</a></span>
     </footer>
   </section>
 
@@ -1723,12 +1703,12 @@ function navigate(page, push = true) {
     <div class="decision-wrap">
       <div class="progress-dots"><span class="current"></span><span></span><span></span><span></span></div>
       <div class="halo-wrap"><div class="halo"></div><div class="halo-ic"><i class="bi bi-shield-fill-check"></i></div></div>
-      <h2>Safe &amp; Secure</h2>
-      <p class="text-muted">Your safety comes first — is the area safe and secure?</p>
+      <h2 data-i18n="safe_title">Safe & Secure</h2>
+      <p class="text-muted" data-i18n="safe_subtitle">Your safety comes first — is the area safe and secure?</p>
     </div>
     <div class="tile-row mb-3">
-      <button class="tile tile-yes" onclick="navigate('responsive')"><span class="tic">✅</span>Yes</button>
-      <button class="tile tile-no" onclick="navigate('unsafe')"><span class="tic">❌</span>No</button>
+      <button class="tile tile-yes" onclick="navigate('responsive')"><span class="tic">✅</span><span data-i18n="btn_yes">Yes</span></button>
+      <button class="tile tile-no" onclick="navigate('unsafe')"><span class="tic">❌</span><span data-i18n="btn_no">No</span></button>
     </div>
   </section>
 
@@ -1736,21 +1716,21 @@ function navigate(page, push = true) {
   <section id="page-unsafe" class="hidden container py-4">
     <div class="decision-wrap">
       <div class="halo-wrap"><div class="halo"></div><div class="halo-ic"><i class="bi bi-exclamation-triangle-fill"></i></div></div>
-      <h2>Unsafe</h2>
-      <p class="text-muted">Assess the scene before doing anything else.</p>
+      <h2 data-i18n="unsafe_title">Unsafe</h2>
+      <p class="text-muted" data-i18n="unsafe_subtitle">Assess the scene before doing anything else.</p>
     </div>
     <div class="emergency-card mb-3">
-      <h3>Ask yourself</h3>
+      <h3 data-i18n="unsafe_ask">Ask yourself</h3>
       <ul class="icon-list">
-        <li><i class="bi bi-record-fill"></i>Is the scene safe?</li>
-        <li><i class="bi bi-record-fill"></i>Are there any hazards?</li>
-        <li><i class="bi bi-record-fill"></i>What happened?</li>
-        <li><i class="bi bi-record-fill"></i>How did it happen?</li>
+        <li><i class="bi bi-record-fill"></i><span data-i18n="unsafe_q1">Is the scene safe?</span></li>
+        <li><i class="bi bi-record-fill"></i><span data-i18n="unsafe_q2">Are there any hazards?</span></li>
+        <li><i class="bi bi-record-fill"></i><span data-i18n="unsafe_q3">What happened?</span></li>
+        <li><i class="bi bi-record-fill"></i><span data-i18n="unsafe_q4">How did it happen?</span></li>
       </ul>
-      <p class="text-muted mb-0" style="margin-top:0.8rem;">Only proceed if the scene is safe. If it can't be secured, do not intervene — call 9-1-1 immediately.</p>
+      <p class="text-muted mb-0" style="margin-top:0.8rem;" data-i18n="unsafe_note">Only proceed if the scene is safe. If it can't be secured, do not intervene — call 9-1-1 immediately.</p>
     </div>
     <div class="button-group-row">
-      <button class="custom-btn primary" onclick="navigate('responsive')">✅ Area is Safe &amp; Secure</button>
+      <button class="custom-btn primary" onclick="navigate('responsive')">✅ <span data-i18n="unsafe_btn_safe">Area is Safe & Secure</span></button>
     </div>
   </section>
 
@@ -1759,12 +1739,12 @@ function navigate(page, push = true) {
     <div class="decision-wrap">
       <div class="progress-dots"><span class="done"></span><span class="current"></span><span></span><span></span></div>
       <div class="halo-wrap"><div class="halo"></div><div class="halo-ic"><i class="bi bi-person-check-fill"></i></div></div>
-      <h2>Responsiveness</h2>
-      <p class="text-muted">Check if the person is responsive.</p>
+      <h2 data-i18n="responsive_title">Responsiveness</h2>
+      <p class="text-muted" data-i18n="responsive_subtitle">Check if the person is responsive.</p>
     </div>
     <div class="tile-row mb-3">
-      <button class="tile tile-yes" onclick="navigate('breathing')"><span class="tic">✅</span>Yes</button>
-      <button class="tile tile-no" onclick="navigate('abc')"><span class="tic">❌</span>No</button>
+      <button class="tile tile-yes" onclick="navigate('breathing')"><span class="tic">✅</span><span data-i18n="btn_yes">Yes</span></button>
+      <button class="tile tile-no" onclick="navigate('abc')"><span class="tic">❌</span><span data-i18n="btn_no">No</span></button>
     </div>
   </section>
 
@@ -1773,12 +1753,12 @@ function navigate(page, push = true) {
     <div class="decision-wrap">
       <div class="progress-dots"><span class="done"></span><span class="done"></span><span class="current"></span><span></span></div>
       <div class="halo-wrap"><div class="halo"></div><div class="halo-ic"><i class="bi bi-wind"></i></div></div>
-      <h2>Breathing</h2>
-      <p class="text-muted">Check if the person is breathing.</p>
+      <h2 data-i18n="breathing_title">Breathing</h2>
+      <p class="text-muted" data-i18n="breathing_subtitle">Check if the person is breathing.</p>
     </div>
     <div class="tile-row mb-3">
-      <button class="tile tile-yes" onclick="navigate('signs')"><span class="tic">✅</span>Yes</button>
-      <button class="tile tile-no" onclick="displayTechnicObject(getTechnicByName('CHOCKING'))"><span class="tic">❌</span>No</button>
+      <button class="tile tile-yes" onclick="navigate('signs')"><span class="tic">✅</span><span data-i18n="btn_yes">Yes</span></button>
+      <button class="tile tile-no" onclick="displayTechnicObject(getTechnicByName('CHOCKING'))"><span class="tic">❌</span><span data-i18n="btn_no">No</span></button>
     </div>
   </section>
 
@@ -1789,19 +1769,19 @@ function navigate(page, push = true) {
         <div class="dring-ic brand" style="position:static; width:66px; height:66px;"><i class="bi bi-tools"></i></div>
       </div>
     </div>
-    <h2 id="technic-title" style="margin-top:0;">Detail of the Technic</h2>
+    <h2 id="technic-title" style="margin-top:0;" data-i18n="technic_detail_title">Detail of the Technic</h2>
     <div class="technic-card mb-3" id="technic-description"></div>
     <div>
       <div class="technic-card mb-3">
-        <h3>Technic Steps</h3>
+        <h3 data-i18n="technic_steps">Technic Steps</h3>
         <ul id="technic-steps" class="icon-list"></ul>
       </div>
       <div class="technic-card mb-3">
-        <h3>Technic Truc</h3>
+        <h3 data-i18n="technic_truc">Technic Truc</h3>
         <ul id="technic-truc" class="icon-list"></ul>
       </div>
       <div class="technic-card mb-3">
-        <h3>Related Emergencies</h3>
+        <h3 data-i18n="technic_related_emergencies">Related Emergencies</h3>
         <ul id="technic-related-emergencies" class="icon-list"></ul>
       </div>
     </div>
@@ -1809,7 +1789,7 @@ function navigate(page, push = true) {
 
   <!-- Page pour appel 911 -->
   <section id="page-call" class="hidden container py-4">
-    <h2>Call 9-1-1</h2>
+    <h2 data-i18n="sos_call">Call 9-1-1</h2>
   </section>
 
   <!-- Page for ABC -->
@@ -1817,30 +1797,30 @@ function navigate(page, push = true) {
     <div class="decision-wrap" style="padding-bottom:0;">
       <div class="progress-dots"><span class="done"></span><span class="done"></span><span class="done"></span><span class="current"></span></div>
       <div class="halo-wrap" style="width:88px;height:88px;"><div class="halo"></div><div class="halo-ic" style="width:88px;height:88px;font-size:1.9rem;"><i class="bi bi-heart-pulse-fill"></i></div></div>
-      <h2>ABC — Airway, Breathing, Circulation</h2>
+      <h2 data-i18n="abc_title">ABC — Airway, Breathing, Circulation</h2>
     </div>
     <div class="emergency-card mb-3">
-      <h3><i class="bi bi-wind" style="color:var(--color-accent);margin-right:6px;"></i>A — Airway</h3>
-      <p>Verify that the airway is not obstructed (check mouth and throat).</p>
+      <h3><i class="bi bi-wind" style="color:var(--color-accent);margin-right:6px;"></i><span data-i18n="abc_a_title">A — Airway</span></h3>
+      <p data-i18n="abc_a_text">Verify that the airway is not obstructed (check mouth and throat).</p>
       <div class="button-group-row">
-        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CHECKING ABC'))">How to do it?</button>
-        <button class="custom-btn primary" onclick="goToBreathing()">Airway is clear</button>
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CHECKING ABC'))" data-i18n="abc_a_btn_how">How to do it?</button>
+        <button class="custom-btn primary" onclick="goToBreathing()" data-i18n="abc_a_btn_clear">Airway is clear</button>
       </div>
     </div>
     <div id="abc-b" class="emergency-card mb-3 d-none">
-      <h3><i class="bi bi-lungs-fill" style="color:var(--color-accent);margin-right:6px;"></i>B — Breathing</h3>
-      <p>Is the person breathing normally?</p>
+      <h3><i class="bi bi-lungs-fill" style="color:var(--color-accent);margin-right:6px;"></i><span data-i18n="abc_b_title">B — Breathing</span></h3>
+      <p data-i18n="abc_b_text">Is the person breathing normally?</p>
       <div class="button-group-row">
-        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('RECOVERY POSITION'))">Yes → Place in recovery position</button>
-        <button class="custom-btn danger" onclick="goToCirculation()">No → Check circulation</button>
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('RECOVERY POSITION'))" data-i18n="abc_b_btn_yes">Yes → Place in recovery position</button>
+        <button class="custom-btn danger" onclick="goToCirculation()" data-i18n="abc_b_btn_no">No → Check circulation</button>
       </div>
     </div>
     <div id="abc-c" class="emergency-card mb-3 d-none">
-      <h3><i class="bi bi-droplet-fill" style="color:var(--color-accent);margin-right:6px;"></i>C — Circulation</h3>
-      <p>Are there any signs of circulation: intense bleeding? If yes, it has to be stopped before CPR.</p>
+      <h3><i class="bi bi-droplet-fill" style="color:var(--color-accent);margin-right:6px;"></i><span data-i18n="abc_c_title">C — Circulation</span></h3>
+      <p data-i18n="abc_c_text">Are there any signs of circulation: intense bleeding? If yes, it has to be stopped before CPR.</p>
       <div class="button-group-row">
-        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CPR'))">No → Begin chest compressions</button>
-        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('AED'))">AED available</button>
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('CPR'))" data-i18n="abc_c_btn_no">No → Begin chest compressions</button>
+        <button class="custom-btn primary" onclick="displayTechnicObject(getTechnicByName('AED'))" data-i18n="abc_c_btn_aed">AED available</button>
       </div>
     </div>
   </section>
@@ -1849,8 +1829,8 @@ function navigate(page, push = true) {
   <section id="page-bpm" class="hidden container py-4">
     <div class="decision-wrap">
       <div class="halo-wrap" id="bpm-halo"><div class="halo"></div><div class="halo-ic"><i class="bi bi-activity"></i></div></div>
-      <h2>CPR Rhythm</h2>
-      <p class="text-muted">Pick a rate and follow the beat for chest compressions.</p>
+      <h2 data-i18n="bpm_title">CPR Rhythm</h2>
+      <p class="text-muted" data-i18n="bpm_subtitle">Pick a rate and follow the beat for chest compressions.</p>
     </div>
 
     <div class="tile-row mb-3">
@@ -1861,40 +1841,40 @@ function navigate(page, push = true) {
 
     <div class="gauge-card mb-3 hidden" id="bpm-counter-card">
       <div id="bpm-count">0</div>
-      <div class="text-muted" style="font-size:0.85rem;">compressions — <span id="bpm-cycle-hint">30 then 2 rescue breaths</span></div>
+      <div class="text-muted" style="font-size:0.85rem;"><span data-i18n="bpm_compressions">compressions —</span> <span id="bpm-cycle-hint" data-i18n="bpm_cycle_hint">30 then 2 rescue breaths</span></div>
     </div>
 
-    <button class="custom-btn danger mb-3" style="width:100%;" onclick="stopCPRBeep()">🛑 Stop</button>
+    <button class="custom-btn danger mb-3" style="width:100%;" onclick="stopCPRBeep()">🛑 <span data-i18n="bpm_stop">Stop</span></button>
 
     <div class="emergency-card">
-      <h3>Depth by age — rate stays 100–120/min for everyone</h3>
+      <h3 data-i18n="bpm_depth_title">Depth by age — rate stays 100–120/min for everyone</h3>
       <ul class="icon-list">
-        <li><i class="bi bi-record-fill"></i>Adult: ~5–6&nbsp;cm, two hands</li>
-        <li><i class="bi bi-record-fill"></i>Child: ~5&nbsp;cm (1/3 chest depth), one or two hands</li>
-        <li><i class="bi bi-record-fill"></i>Infant: ~4&nbsp;cm (1/3 chest depth), two fingers</li>
+        <li><i class="bi bi-record-fill"></i><span data-i18n="bpm_depth_adult">Adult: ~5–6 cm, two hands</span></li>
+        <li><i class="bi bi-record-fill"></i><span data-i18n="bpm_depth_child">Child: ~5 cm (1/3 chest depth), one or two hands</span></li>
+        <li><i class="bi bi-record-fill"></i><span data-i18n="bpm_depth_infant">Infant: ~4 cm (1/3 chest depth), two fingers</span></li>
       </ul>
     </div>
   </section>
 
   <!-- Page for signs & Symptoms-->
   <section id="page-signs" class="hidden container py-4">
-    <h2>Signs &amp; Symptoms</h2>
+    <h2 data-i18n="signs_title">Signs & Symptoms</h2>
     <div class="search-box">
       <i class="bi bi-search"></i>
-      <input id="search-bar" type="text" placeholder="Search symptoms..." oninput="filterGroups()" aria-label="Search symptoms">
+      <input id="search-bar" type="text" placeholder="Search symptoms..." data-i18n-placeholder="signs_search_ph" oninput="filterGroups()" aria-label="Search symptoms">
     </div>
-    <div class="section-label" id="selectedSymptomsTitle">Selected Symptoms</div>
+    <div class="section-label" id="selectedSymptomsTitle" data-i18n="signs_selected">Selected Symptoms</div>
     <div class="sticky-selected-symptoms">
       <div id="selected-symptoms"></div>
     </div>
     <div class="gauge-card hidden" id="emergency-gauge-card">
       <div class="lbl">
         <i class="bi bi-exclamation-triangle-fill" id="emergency-gauge-icon" style="color:var(--color-critical)"></i>
-        <span class="gauge-suggest-prefix">Suggested</span>
+        <span class="gauge-suggest-prefix" data-i18n="gauge_suggested">Suggested</span>
         <span class="gauge-suggest-name" id="emergency-suggestion"></span>
       </div>
       <div class="gauge-track"><div class="gauge-dot" id="emergency-gauge-dot" style="left:50%"></div></div>
-      <div class="gauge-foot"><span>Minor</span><span>Major</span><span>Critical</span></div>
+      <div class="gauge-foot"><span data-i18n="gauge_minor">Minor</span><span data-i18n="gauge_major">Major</span><span data-i18n="gauge_critical">Critical</span></div>
     </div>
     <div>
       <div id="group-list"></div>
@@ -1906,7 +1886,7 @@ function navigate(page, push = true) {
     <h2 id="group-title"></h2>
     <!-- Sticky container -->
     <div class="sticky-selected-symptoms">
-      <h5>Selected Symptoms</h5>
+      <h5 data-i18n="signs_selected">Selected Symptoms</h5>
       <div id="selected-symptoms-group"></div>
     </div>
     <footer class="mt-3">
@@ -1919,8 +1899,8 @@ function navigate(page, push = true) {
 
   <!-- Page pour liste Technics -->
   <section id="page-technics" class="hidden container py-4">
-    <h2>List of Technics</h2>
-    <input id="search-bar-technics" class="form-control mb-3" type="text" placeholder="Search technics..." oninput="filterTechnics()" aria-label="Search technics"/>
+    <h2 data-i18n="technics_list_title">List of Technics</h2>
+    <input id="search-bar-technics" class="form-control mb-3" type="text" placeholder="Search technics..." data-i18n-placeholder="technics_search_ph" oninput="filterTechnics()" aria-label="Search technics"/>
     <div>
       <div id="technics-list"></div>
     </div>
@@ -1928,8 +1908,8 @@ function navigate(page, push = true) {
 
   <!-- List of Emergencies -->
   <section id="page-emergencies" class="hidden container py-4">
-    <h2>List of Emergencies</h2>
-    <input id="search-bar-emergencies" class="form-control mb-3" type="text" placeholder="Search emergencies..." oninput="filterEmergencies()" aria-label="Search emergencies">
+    <h2 data-i18n="emergencies_list_title">List of Emergencies</h2>
+    <input id="search-bar-emergencies" class="form-control mb-3" type="text" placeholder="Search emergencies..." data-i18n-placeholder="emergencies_search_ph" oninput="filterEmergencies()" aria-label="Search emergencies">
     <div>
       <div id="emergency-list"></div>
     </div>
@@ -1951,218 +1931,217 @@ function navigate(page, push = true) {
     <div class="emergency-card mb-3" id="emergency-description"></div>
     <div>
       <div class="emergency-card mb-3">
-        <h3>Emergency Symptoms</h3>
+        <h3 data-i18n="emergency_symptoms">Emergency Symptoms</h3>
         <ul id="emergency-details" class="icon-list"></ul>
       </div>
       <div class="emergency-card mb-3">
-        <h3>Emergency Care</h3>
+        <h3 data-i18n="emergency_care">Emergency Care</h3>
         <ul id="emergency-care" class="icon-list"></ul>
       </div>
     </div>
     <div class="emergency-card mb-3">
-      <h3>Emergency Type</h3>
+      <h3 data-i18n="emergency_type">Emergency Type</h3>
       <div id="emergency-type">
         <span class="emergency-type minor">
-          <i class="bi bi-triangle-fill"></i> Minor
+          <i class="bi bi-triangle-fill"></i> <span data-i18n="gauge_minor">Minor</span>
         </span>
         <span class="emergency-type major">
-          <i class="bi bi-diamond-fill"></i> Major
+          <i class="bi bi-diamond-fill"></i> <span data-i18n="gauge_major">Major</span>
         </span>
         <span class="emergency-type critical">
-          <i class="bi bi-hexagon-fill"></i> Critical
+          <i class="bi bi-hexagon-fill"></i> <span data-i18n="gauge_critical">Critical</span>
         </span>
       </div>
     </div>
     <div class="emergency-card mb-3">
-      <h3>Emergency Medicaments</h3>
+      <h3 data-i18n="emergency_medicaments">Emergency Medicaments</h3>
       <p id="emergency-meds">—</p>
     </div>
     <div class="emergency-card mb-3">
-      <h3>Emergency Technics</h3>
+      <h3 data-i18n="emergency_technics">Emergency Technics</h3>
       <p id="emergency-technic">—</p>
     </div>
-    <button class="btn btn-danger" id="call-911" onclick="call911()">9-1-1</button>
   </section>
 
   <!-- Page legal -->
   <section id="page-legal" class="hidden container py-4" aria-labelledby="legal-title">
     <div class="decision-wrap" style="padding-bottom:0;">
       <div class="halo-wrap" style="width:88px;height:88px;"><div class="halo"></div><div class="halo-ic" style="width:88px;height:88px;font-size:1.9rem;"><i class="bi bi-shield-fill-check"></i></div></div>
-      <h2 id="legal-title">Legalities of First Aid</h2>
+      <h2 id="legal-title" data-i18n="legal_title">Legalities of First Aid</h2>
     </div>
 
     <div class="emergency-card mb-3">
-      <h3>As a first aider, you must</h3>
+      <h3 data-i18n="legal_must_title">As a first aider, you must</h3>
       <ul class="icon-list">
-        <li><i class="bi bi-check-circle-fill"></i>Ask for permission before providing care, whenever possible.</li>
-        <li><i class="bi bi-check-circle-fill"></i>Only provide care within the limits of your training.</li>
-        <li><i class="bi bi-check-circle-fill"></i>Continue care until a more qualified responder takes over, you become too exhausted to continue, the scene becomes unsafe, or the person no longer needs care.</li>
+        <li><i class="bi bi-check-circle-fill"></i><span data-i18n="legal_must_1">Ask for permission before providing care, whenever possible.</span></li>
+        <li><i class="bi bi-check-circle-fill"></i><span data-i18n="legal_must_2">Only provide care within the limits of your training.</span></li>
+        <li><i class="bi bi-check-circle-fill"></i><span data-i18n="legal_must_3">Continue care until a more qualified responder takes over, you become too exhausted to continue, the scene becomes unsafe, or the person no longer needs care.</span></li>
       </ul>
     </div>
 
     <div class="emergency-card">
-      <h3>Getting permission to help</h3>
-      <p class="text-muted" style="margin-bottom:0.8rem;">You must obtain the person's consent before providing care.</p>
+      <h3 data-i18n="legal_consent_title">Getting permission to help</h3>
+      <p class="text-muted" style="margin-bottom:0.8rem;" data-i18n="legal_consent_intro">You must obtain the person's consent before providing care.</p>
       <ul class="icon-list">
-        <li><i class="bi bi-check-circle-fill"></i>For an unresponsive person, consent is legally assumed (implied consent).</li>
-        <li><i class="bi bi-check-circle-fill"></i>For a young child with no guardian present, you may proceed with care.</li>
-        <li><i class="bi bi-check-circle-fill"></i>If a conscious person refuses care, call 9-1-1 / EMS.</li>
-        <li><i class="bi bi-check-circle-fill"></i>If you can't call for help yourself, secure your own safety first, then offer care.</li>
+        <li><i class="bi bi-check-circle-fill"></i><span data-i18n="legal_consent_1">For an unresponsive person, consent is legally assumed (implied consent).</span></li>
+        <li><i class="bi bi-check-circle-fill"></i><span data-i18n="legal_consent_2">For a young child with no guardian present, you may proceed with care.</span></li>
+        <li><i class="bi bi-check-circle-fill"></i><span data-i18n="legal_consent_3">If a conscious person refuses care, call 9-1-1 / EMS.</span></li>
+        <li><i class="bi bi-check-circle-fill"></i><span data-i18n="legal_consent_4">If you can't call for help yourself, secure your own safety first, then offer care.</span></li>
       </ul>
     </div>
   </section>
 
 <!--Partie SOAP -->
 <section id="page-soap" class="hidden container py-4">
-  <h2>SOAP Assessment</h2>
+  <h2 data-i18n="soap_title">SOAP Assessment</h2>
     <div class="emergency-card mb-3">
-      <div class="mb-2">
+      <div class="mb-2" data-i18n="soap_freq_note">
         Secondary Assessment should be completed every 5–10 min for Critical, and 10–60 min for Major emergencies.
       </div>
       <ul class="legal-note-list">
-        <li>Protect documentation in wilderness or remote environment. In our case, get a waterproof case for your smartphone.</li>
-        <li>Send the SOAP notes to the appropriate person. In our case, the PDF can be sent once back online.</li>
-        <li>If radioing, read the SOAP notes.</li>
-        <li>Prepare what you'll say. Be concise. Be objective.</li>
+        <li data-i18n="soap_note_waterproof">Protect documentation in wilderness or remote environment. In our case, get a waterproof case for your smartphone.</li>
+        <li data-i18n="soap_note_send">Send the SOAP notes to the appropriate person. In our case, the PDF can be sent once back online.</li>
+        <li data-i18n="soap_note_radio">If radioing, read the SOAP notes.</li>
+        <li data-i18n="soap_note_prepare">Prepare what you'll say. Be concise. Be objective.</li>
       </ul>
     </div>
   <div class="emergency-card mb-3">
-    <h3>Victim Information</h3>
+    <h3 data-i18n="soap_victim_info">Victim Information</h3>
     <div class="mb-2">
-      <label for="soap-name">Name</label>
-      <input type="text" class="form-control" id="soap-name" placeholder="Full name">
+      <label for="soap-name" data-i18n="soap_name">Name</label>
+      <input type="text" class="form-control" id="soap-name" placeholder="Full name" data-i18n-placeholder="soap_name_ph">
     </div>
     <div class="mb-2">
-      <label for="soap-age">Age</label>
-      <input type="number" class="form-control" id="soap-age" placeholder="Age">
+      <label for="soap-age" data-i18n="soap_age">Age</label>
+      <input type="number" class="form-control" id="soap-age" placeholder="Age" data-i18n-placeholder="soap_age_ph">
     </div>
     <div class="mb-2">
-      <label for="soap-gender">Gender</label>
+      <label for="soap-gender" data-i18n="soap_gender">Gender</label>
       <select class="form-control" id="soap-gender">
         <option value="">—</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
+        <option value="male" data-i18n="soap_gender_male">Male</option>
+        <option value="female" data-i18n="soap_gender_female">Female</option>
+        <option value="other" data-i18n="soap_gender_other">Other</option>
       </select>
     </div>
     <div class="mb-2">
-      <label for="soap-date">Date & Time</label>
+      <label for="soap-date" data-i18n="soap_datetime">Date & Time</label>
       <input type="datetime-local" class="form-control" id="soap-date">
     </div>
   </div>
   <form id="soap-form">
     <div class="emergency-card mb-3">
-      <h3>Subjective</h3>
-      <textarea class="form-control" name="subjective" rows="4" placeholder="What does the patient report? Symptoms, feelings..."></textarea>
+      <h3 data-i18n="soap_subjective">Subjective</h3>
+      <textarea class="form-control" name="subjective" rows="4" placeholder="What does the patient report? Symptoms, feelings..." data-i18n-placeholder="soap_subjective_ph"></textarea>
     </div>
     <div class="emergency-card mb-3">
-      <h3>Pain Assessment (OPQRST)</h3>
+      <h3 data-i18n="soap_opqrst_title">Pain Assessment (OPQRST)</h3>
       <div class="mb-2">
-        <label for="opqrst-onset">🕒 Onset - When did the pain start?</label>
-        <input class="form-control" name="opqrst_onset" id="opqrst-onset" placeholder="e.g., 10 minutes ago">
+        <label for="opqrst-onset" data-i18n="soap_opqrst_onset">🕒 Onset - When did the pain start?</label>
+        <input class="form-control" name="opqrst_onset" id="opqrst-onset" placeholder="e.g., 10 minutes ago" data-i18n-placeholder="soap_opqrst_onset_ph">
       </div>
       <div class="mb-2">
-        <label for="opqrst-provocation">🧪 Provocation - What triggers or worsens it?</label>
-        <input class="form-control" name="opqrst_provocation" id="opqrst-provocation" placeholder="e.g., movement">
+        <label for="opqrst-provocation" data-i18n="soap_opqrst_provocation">🧪 Provocation - What triggers or worsens it?</label>
+        <input class="form-control" name="opqrst_provocation" id="opqrst-provocation" placeholder="e.g., movement" data-i18n-placeholder="soap_opqrst_provocation_ph">
       </div>
       <div class="mb-2">
-        <label for="opqrst-quality">🔍 Quality - What type of pain is it?</label>
-        <input class="form-control" name="opqrst_quality" id="opqrst-quality" placeholder="e.g., burning, stabbing">
+        <label for="opqrst-quality" data-i18n="soap_opqrst_quality">🔍 Quality - What type of pain is it?</label>
+        <input class="form-control" name="opqrst_quality" id="opqrst-quality" placeholder="e.g., burning, stabbing" data-i18n-placeholder="soap_opqrst_quality_ph">
       </div>
       <div class="mb-2">
-        <label for="opqrst-region">📍 Region / Radiation - Where is it? Does it spread?</label>
-        <input class="form-control" name="opqrst_region" id="opqrst-region" placeholder="e.g., chest, radiating to left arm">
+        <label for="opqrst-region" data-i18n="soap_opqrst_region">📍 Region / Radiation - Where is it? Does it spread?</label>
+        <input class="form-control" name="opqrst_region" id="opqrst-region" placeholder="e.g., chest, radiating to left arm" data-i18n-placeholder="soap_opqrst_region_ph">
       </div>
       <div class="mb-2">
-        <label for="opqrst-severity">📊 Severity - Intensity out of 10?</label>
-        <input class="form-control" name="opqrst_severity" id="opqrst-severity" type="number" min="0" max="10" placeholder="e.g., 7/10">
+        <label for="opqrst-severity" data-i18n="soap_opqrst_severity">📊 Severity - Intensity out of 10?</label>
+        <input class="form-control" name="opqrst_severity" id="opqrst-severity" type="number" min="0" max="10" placeholder="e.g., 7/10" data-i18n-placeholder="soap_opqrst_severity_ph">
       </div>
       <div class="mb-2">
-        <label for="opqrst-time">⏱️ Time - How does it change over time?</label>
-        <input class="form-control" name="opqrst_time" id="opqrst-time" placeholder="e.g., stable, increasing">
+        <label for="opqrst-time" data-i18n="soap_opqrst_time">⏱️ Time - How does it change over time?</label>
+        <input class="form-control" name="opqrst_time" id="opqrst-time" placeholder="e.g., stable, increasing" data-i18n-placeholder="soap_opqrst_time_ph">
       </div>
     </div>
     <div class="emergency-card mb-3">
-      <h3>Objective</h3>
-      <textarea class="form-control" name="objective" rows="4" placeholder="What do you observe? Vitals, injuries..."></textarea>
+      <h3 data-i18n="soap_objective">Objective</h3>
+      <textarea class="form-control" name="objective" rows="4" placeholder="What do you observe? Vitals, injuries..." data-i18n-placeholder="soap_objective_ph"></textarea>
     </div>
     <div class="emergency-card mb-3">
-      <h3>Assessment</h3>
-      <textarea class="form-control" name="assessment" rows="4" placeholder="Your evaluation of the situation..."></textarea>
+      <h3 data-i18n="soap_assessment">Assessment</h3>
+      <textarea class="form-control" name="assessment" rows="4" placeholder="Your evaluation of the situation..." data-i18n-placeholder="soap_assessment_ph"></textarea>
     </div>
     <div class="emergency-card mb-3">
-      <h3>Plan</h3>
-      <textarea class="form-control" name="plan" rows="4" placeholder="Care provided, next steps..."></textarea>
+      <h3 data-i18n="soap_plan">Plan</h3>
+      <textarea class="form-control" name="plan" rows="4" placeholder="Care provided, next steps..." data-i18n-placeholder="soap_plan_ph"></textarea>
     </div>
     <div class="emergency-card mb-3">
-      <h3>Rescuer Signature</h3>
-      <input class="form-control" name="rescuer" placeholder="Your full name or Red Cross ID">
+      <h3 data-i18n="soap_rescuer">Rescuer Signature</h3>
+      <input class="form-control" name="rescuer" placeholder="Your full name or Red Cross ID" data-i18n-placeholder="soap_rescuer_ph">
     </div>
-    <button type="button" class="custom-btn primary" onclick="saveSOAP()">Save SOAP</button>
-    <button type="button" class="custom-btn secondary" onclick="showSOAPSummary()">Show Summary</button>
+    <button type="button" class="custom-btn primary" onclick="saveSOAP()" data-i18n="soap_btn_save">Save SOAP</button>
+    <button type="button" class="custom-btn secondary" onclick="showSOAPSummary()" data-i18n="soap_btn_summary">Show Summary</button>
   </form>
   <div id="soap-summary" class="mt-4 emergency-card d-none">
-    <h3>SOAP Summary</h3>
+    <h3 data-i18n="soap_summary_title">SOAP Summary</h3>
     <div id="soap-output"></div>
   </div>
 </section>
 
 <!-- conteneur caché pour afficher un rapport HTML -->
 <section id="soap-report-section" class="hidden container py-4">
-  <h2>Saved SOAP Note</h2>
+  <h2 data-i18n="soap_saved_title">Saved SOAP Note</h2>
   <div id="soap-report-content" class="emergency-card mb-3"></div>
   <div class="button-group-row">
-    <button class="custom-btn primary" onclick="saveSOAPasPDF(currentViewedSOAP)">Save to PDF</button>
-    <button class="custom-btn secondary" onclick="closeSOAPReport()">Close</button>
+    <button class="custom-btn primary" onclick="saveSOAPasPDF(currentViewedSOAP)" data-i18n="soap_btn_save_pdf">Save to PDF</button>
+    <button class="custom-btn secondary" onclick="closeSOAPReport()" data-i18n="btn_close">Close</button>
   </div>
 </section>
 
 <!--Voir la liste des rapports SOAP dans un container cache -->
 <section id="soap-list-section" class="hidden container py-4">
-  <h2>Saved SOAP Notes</h2>
+  <h2 data-i18n="soap_saved_list_title">Saved SOAP Notes</h2>
   <div id="soap-list" class="mb-3"></div>
-  <button class="custom-btn secondary" style="width:100%;" onclick="closeSOAPList()">Close</button>
+  <button class="custom-btn secondary" style="width:100%;" onclick="closeSOAPList()" data-i18n="btn_close">Close</button>
 </section>
 
 <!--Page affichage Kit Premier Soin-->
 <section id="page-kit" class="hidden container py-4">
   <h2><img src="icons/kit.png" alt="Kit Icon" class="icon-btn-sm">
-    72h First Aid Kit</h2>
-  <p>This checklist helps you manage and track your emergency kit contents.</p>
+    <span data-i18n="kit_title">72h First Aid Kit</span></h2>
+  <p data-i18n="kit_intro">This checklist helps you manage and track your emergency kit contents.</p>
   <div id="kit-items"></div>
-  <button onclick="saveKitQuantities()" class="custom-btn primary">💾 Save Quantities</button>
+  <button onclick="saveKitQuantities()" class="custom-btn primary">💾 <span data-i18n="kit_btn_save">Save Quantities</span></button>
 </section>
 
 <section id="page-install" class="hidden container py-4">
   <div class="decision-wrap" style="padding-bottom:0;">
     <div class="halo-wrap" style="width:88px;height:88px;"><div class="halo"></div><div class="halo-ic" style="width:88px;height:88px;font-size:1.9rem;"><i class="bi bi-download"></i></div></div>
-    <h2>Install FIRSTAIDers</h2>
-    <p class="text-muted">Works 100% offline once installed on your device.</p>
+    <h2 data-i18n="install_title">Install FIRSTAIDers</h2>
+    <p class="text-muted" data-i18n="install_subtitle">Works 100% offline once installed on your device.</p>
   </div>
 
   <div class="emergency-card mb-3">
-    <h3><i class="bi bi-apple"></i>&nbsp;On iPhone (Safari)</h3>
+    <h3><i class="bi bi-apple"></i>&nbsp;<span data-i18n="install_iphone_title">On iPhone (Safari)</span></h3>
     <ul class="icon-list">
-      <li><i class="bi bi-1-circle-fill"></i>Tap the <strong>Share</strong> button (bottom center of Safari).</li>
-      <li><i class="bi bi-2-circle-fill"></i>Choose <strong>"Add to Home Screen"</strong>.</li>
-      <li><i class="bi bi-3-circle-fill"></i>Tap <strong>"Add"</strong> in the top-right corner.</li>
+      <li><i class="bi bi-1-circle-fill"></i><span data-i18n-html="install_iphone_1">Tap the <strong>Share</strong> button (bottom center of Safari).</span></li>
+      <li><i class="bi bi-2-circle-fill"></i><span data-i18n-html="install_iphone_2">Choose <strong>"Add to Home Screen"</strong>.</span></li>
+      <li><i class="bi bi-3-circle-fill"></i><span data-i18n-html="install_iphone_3">Tap <strong>"Add"</strong> in the top-right corner.</span></li>
     </ul>
   </div>
 
   <div class="emergency-card mb-3">
-    <h3><i class="bi bi-android2"></i>&nbsp;On Android (Chrome)</h3>
+    <h3><i class="bi bi-android2"></i>&nbsp;<span data-i18n="install_android_title">On Android (Chrome)</span></h3>
     <ul class="icon-list">
-      <li><i class="bi bi-1-circle-fill"></i>Tap the <strong>three-dot menu</strong> (top-right corner).</li>
-      <li><i class="bi bi-2-circle-fill"></i>Select <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong>.</li>
-      <li><i class="bi bi-3-circle-fill"></i>Confirm by tapping <strong>"Install"</strong>.</li>
+      <li><i class="bi bi-1-circle-fill"></i><span data-i18n-html="install_android_1">Tap the <strong>three-dot menu</strong> (top-right corner).</span></li>
+      <li><i class="bi bi-2-circle-fill"></i><span data-i18n-html="install_android_2">Select <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong>.</span></li>
+      <li><i class="bi bi-3-circle-fill"></i><span data-i18n-html="install_android_3">Confirm by tapping <strong>"Install"</strong>.</span></li>
     </ul>
   </div>
 
   <div class="emergency-card">
-    <h3>Good to know</h3>
+    <h3 data-i18n="install_good_title">Good to know</h3>
     <ul class="icon-list">
-      <li><i class="bi bi-check-circle-fill"></i>Once installed, launch it like any other app — even offline.</li>
-      <li><i class="bi bi-check-circle-fill"></i>SOAP notes recorded offline are saved as PDF on your phone.</li>
+      <li><i class="bi bi-check-circle-fill"></i><span data-i18n="install_good_1">Once installed, launch it like any other app — even offline.</span></li>
+      <li><i class="bi bi-check-circle-fill"></i><span data-i18n="install_good_2">SOAP notes recorded offline are saved as PDF on your phone.</span></li>
     </ul>
   </div>
 </section>
@@ -2170,38 +2149,38 @@ function navigate(page, push = true) {
 <section id="page-tips" class="hidden container py-4">
   <div class="decision-wrap" style="padding-bottom:0;">
     <div class="halo-wrap" style="width:88px;height:88px;"><div class="halo"></div><div class="halo-ic" style="width:88px;height:88px;font-size:1.9rem;"><i class="bi bi-lightbulb-fill"></i></div></div>
-    <h2>Tips for First Aiders</h2>
-    <p class="text-muted">Practical reminders to apply on top of the technical steps.</p>
+    <h2 data-i18n="tips_title">Tips for First Aiders</h2>
+    <p class="text-muted" data-i18n="tips_subtitle">Practical reminders to apply on top of the technical steps.</p>
   </div>
 
   <div class="emergency-card mb-3">
-    <h3>How to present yourself</h3>
+    <h3 data-i18n="tips_present_title">How to present yourself</h3>
     <ul class="icon-list">
-      <li><i class="bi bi-check-circle-fill"></i>Introduce yourself and your training level before helping ("Hi, I'm trained in first aid, can I help?").</li>
-      <li><i class="bi bi-check-circle-fill"></i>Be present: stay calm and focused — your composure helps the person stay calm too.</li>
-      <li><i class="bi bi-check-circle-fill"></i>Narrate each step before you do it, so the person knows what to expect.</li>
-      <li><i class="bi bi-check-circle-fill"></i>Always ask permission before touching or treating a conscious person.</li>
+      <li><i class="bi bi-check-circle-fill"></i><span data-i18n="tips_present_1">Introduce yourself and your training level before helping ("Hi, I'm trained in first aid, can I help?").</span></li>
+      <li><i class="bi bi-check-circle-fill"></i><span data-i18n="tips_present_2">Be present: stay calm and focused — your composure helps the person stay calm too.</span></li>
+      <li><i class="bi bi-check-circle-fill"></i><span data-i18n="tips_present_3">Narrate each step before you do it, so the person knows what to expect.</span></li>
+      <li><i class="bi bi-check-circle-fill"></i><span data-i18n="tips_present_4">Always ask permission before touching or treating a conscious person.</span></li>
     </ul>
   </div>
 
   <div class="emergency-card mb-3">
-    <h3>What to avoid</h3>
+    <h3 data-i18n="tips_avoid_title">What to avoid</h3>
     <ul class="icon-list">
-      <li><i class="bi bi-x-circle-fill"></i>Never declare someone dead — that call belongs to medical/legal authorities only.</li>
-      <li><i class="bi bi-x-circle-fill"></i>Don't take photos or videos of the patient.</li>
-      <li><i class="bi bi-x-circle-fill"></i>Don't give food, drink, or medication unless you're specifically trained or instructed to.</li>
-      <li><i class="bi bi-x-circle-fill"></i>Don't move someone with a suspected spinal injury unless there's immediate danger.</li>
+      <li><i class="bi bi-x-circle-fill"></i><span data-i18n="tips_avoid_1">Never declare someone dead — that call belongs to medical/legal authorities only.</span></li>
+      <li><i class="bi bi-x-circle-fill"></i><span data-i18n="tips_avoid_2">Don't take photos or videos of the patient.</span></li>
+      <li><i class="bi bi-x-circle-fill"></i><span data-i18n="tips_avoid_3">Don't give food, drink, or medication unless you're specifically trained or instructed to.</span></li>
+      <li><i class="bi bi-x-circle-fill"></i><span data-i18n="tips_avoid_4">Don't move someone with a suspected spinal injury unless there's immediate danger.</span></li>
     </ul>
   </div>
 
   <div class="emergency-card">
-    <h3>While you wait for help</h3>
+    <h3 data-i18n="tips_wait_title">While you wait for help</h3>
     <ul class="icon-list">
-      <li><i class="bi bi-check-circle-fill"></i>Keep talking to the person, even if unresponsive — it helps you keep reassessing them.</li>
-      <li><i class="bi bi-check-circle-fill"></i>Note the time the incident/symptoms started — useful for EMS and your SOAP note.</li>
-      <li><i class="bi bi-check-circle-fill"></i>Delegate clearly: point at a specific bystander and give one task at a time ("You, call 9-1-1").</li>
-      <li><i class="bi bi-check-circle-fill"></i>Look after yourself too — stay warm, hydrated and safe. You can't help if you become a second casualty.</li>
-      <li><i class="bi bi-check-circle-fill"></i>In remote settings, plan for delayed evacuation: reassess and update your SOAP note regularly.</li>
+      <li><i class="bi bi-check-circle-fill"></i><span data-i18n="tips_wait_1">Keep talking to the person, even if unresponsive — it helps you keep reassessing them.</span></li>
+      <li><i class="bi bi-check-circle-fill"></i><span data-i18n="tips_wait_2">Note the time the incident/symptoms started — useful for EMS and your SOAP note.</span></li>
+      <li><i class="bi bi-check-circle-fill"></i><span data-i18n="tips_wait_3">Delegate clearly: point at a specific bystander and give one task at a time ("You, call 9-1-1").</span></li>
+      <li><i class="bi bi-check-circle-fill"></i><span data-i18n="tips_wait_4">Look after yourself too — stay warm, hydrated and safe. You can't help if you become a second casualty.</span></li>
+      <li><i class="bi bi-check-circle-fill"></i><span data-i18n="tips_wait_5">In remote settings, plan for delayed evacuation: reassess and update your SOAP note regularly.</span></li>
     </ul>
   </div>
 </section>
@@ -2215,48 +2194,48 @@ function navigate(page, push = true) {
 
 
 <section id="page-game" class="hidden container py-4">
-  <h2>🧩 Training Game</h2>
+  <h2 data-i18n="game_title">🧩 Training Game</h2>
   <div id="xp-panel" class="xp-panel">
     <div class="xp-panel-top">
       <span id="xp-level-name" class="xp-level-name">Éclaireur</span>
       <span id="xp-count" class="xp-count">0 XP</span>
     </div>
     <div class="xp-bar-track"><div id="xp-bar-fill" class="xp-bar-fill"></div></div>
-    <button class="xp-panel-link" type="button" onclick="navigate('explorers')">🧭 Voir les explorateurs</button>
+    <button class="xp-panel-link" type="button" onclick="navigate('explorers')" data-i18n="game_see_explorers">🧭 Voir les explorateurs</button>
   </div>
   <div id="level-up-toast" class="level-up-toast hidden"></div>
   <div id="game-menu" class="mb-3">
-    <p class="game-menu-label">Choisis un mode de jeu</p>
+    <p class="game-menu-label" data-i18n="game_choose_mode">Choisis un mode de jeu</p>
     <div id="mode-cards" class="mode-cards">
       <button type="button" class="mode-card selected" data-mode="symptoms-from-emergency">
         <span class="mode-card-icon">🩺</span>
-        <span class="mode-card-title">Which Symptoms</span>
-        <span class="mode-card-desc">Retrouve les symptômes d'une urgence donnée</span>
+        <span class="mode-card-title" data-i18n="game_mode_symptoms_title">Which Symptoms</span>
+        <span class="mode-card-desc" data-i18n="game_mode_symptoms_desc">Retrouve les symptômes d'une urgence donnée</span>
       </button>
       <button type="button" class="mode-card" data-mode="guess-emergency">
         <span class="mode-card-icon">❓</span>
-        <span class="mode-card-title">Guess Emergency</span>
-        <span class="mode-card-desc">Devine l'urgence à partir des symptômes</span>
+        <span class="mode-card-title" data-i18n="game_mode_guess_title">Guess Emergency</span>
+        <span class="mode-card-desc" data-i18n="game_mode_guess_desc">Devine l'urgence à partir des symptômes</span>
       </button>
       <button type="button" class="mode-card" data-mode="true-false">
         <span class="mode-card-icon">✅</span>
-        <span class="mode-card-title">True or False</span>
-        <span class="mode-card-desc">Ce symptôme est-il associé, oui ou non ?</span>
+        <span class="mode-card-title" data-i18n="game_mode_truefalse_title">True or False</span>
+        <span class="mode-card-desc" data-i18n="game_mode_truefalse_desc">Ce symptôme est-il associé, oui ou non ?</span>
       </button>
       <button type="button" class="mode-card" data-mode="case-study">
         <span class="mode-card-icon">📋</span>
-        <span class="mode-card-title">Case Study</span>
-        <span class="mode-card-desc">Analyse un scénario complet</span>
+        <span class="mode-card-title" data-i18n="game_mode_case_title">Case Study</span>
+        <span class="mode-card-desc" data-i18n="game_mode_case_desc">Analyse un scénario complet</span>
       </button>
       <button type="button" class="mode-card" data-mode="protocol-order">
         <span class="mode-card-icon">🧭</span>
-        <span class="mode-card-title">Emergency Steps</span>
-        <span class="mode-card-desc">Par quoi commencer, quelle étape vient après, quand remplir le SOAP</span>
+        <span class="mode-card-title" data-i18n="game_mode_protocol_title">Emergency Steps</span>
+        <span class="mode-card-desc" data-i18n="game_mode_protocol_desc">Par quoi commencer, quelle étape vient après, quand remplir le SOAP</span>
       </button>
       <button type="button" class="mode-card" data-mode="speed-challenge">
         <span class="mode-card-icon">⏱️</span>
-        <span class="mode-card-title">Chrono / Rapidité</span>
-        <span class="mode-card-desc">60 secondes, le plus de bonnes réponses possible</span>
+        <span class="mode-card-title" data-i18n="game_mode_speed_title">Chrono / Rapidité</span>
+        <span class="mode-card-desc" data-i18n="game_mode_speed_desc">60 secondes, le plus de bonnes réponses possible</span>
       </button>
     </div>
     <select id="mode-select" class="hidden" aria-hidden="true" tabindex="-1">
@@ -2268,64 +2247,64 @@ function navigate(page, push = true) {
       <option value="protocol-order">Emergency Steps</option>
       <option value="speed-challenge">Chrono / Rapidité</option>
     </select>
-    <button id="start-game-btn" class="custom-btn primary">Démarrer</button>
+    <button id="start-game-btn" class="custom-btn primary" data-i18n="game_btn_start">Démarrer</button>
   </div>
   <div id="game-content">
     <!-- Contenu dynamique du jeu ici -->
   </div>
-  <button id="quit-game-btn" class="hidden mt-3 custom-btn danger">Quitter le jeu</button>
+  <button id="quit-game-btn" class="hidden mt-3 custom-btn danger" data-i18n="game_btn_quit">Quitter le jeu</button>
 </section>
 
 <section id="page-profile" class="hidden container py-4">
   <div class="decision-wrap" style="padding-bottom:0;">
     <div class="halo-wrap" style="width:88px;height:88px;"><div class="halo"></div><div class="halo-ic" style="width:88px;height:88px;font-size:1.9rem;"><i class="bi bi-person-vcard-fill"></i></div></div>
-    <h2>My Profile</h2>
+    <h2 data-i18n="profile_title">My Profile</h2>
   </div>
   <form id="profileForm">
     <div class="emergency-card mb-3">
-      <h3>Identity</h3>
+      <h3 data-i18n="profile_identity">Identity</h3>
       <div class="mb-2">
-        <label for="firstName" class="form-label">First Name</label>
+        <label for="firstName" class="form-label" data-i18n="profile_first_name">First Name</label>
         <input type="text" id="firstName" class="form-control">
       </div>
       <div class="mb-2">
-        <label for="lastName" class="form-label">Last Name</label>
+        <label for="lastName" class="form-label" data-i18n="profile_last_name">Last Name</label>
         <input type="text" id="lastName" class="form-control">
       </div>
     </div>
     <div class="emergency-card mb-3">
-      <h3>Certification</h3>
+      <h3 data-i18n="profile_certification">Certification</h3>
       <div class="mb-2">
-        <label for="isCertified" class="form-label">Certification</label>
-        <input type="text" id="isCertified" class="form-control" placeholder="Ex: Wilderness First Aid & CPR/AED Level C">
+        <label for="isCertified" class="form-label" data-i18n="profile_certification">Certification</label>
+        <input type="text" id="isCertified" class="form-control" placeholder="Ex: Wilderness First Aid & CPR/AED Level C" data-i18n-placeholder="profile_cert_ph">
       </div>
       <div class="mb-2">
-        <label for="certNumber" class="form-label">Certificate Number</label>
+        <label for="certNumber" class="form-label" data-i18n="profile_cert_number">Certificate Number</label>
         <input type="text" id="certNumber" class="form-control">
       </div>
       <div class="mb-2">
-        <label for="issueDate" class="form-label">Issue Date</label>
+        <label for="issueDate" class="form-label" data-i18n="profile_issue_date">Issue Date</label>
         <input type="date" id="issueDate" class="form-control">
       </div>
       <div class="mb-2">
-        <label for="expiryDate" class="form-label">Expiry Date</label>
+        <label for="expiryDate" class="form-label" data-i18n="profile_expiry_date">Expiry Date</label>
         <input type="date" id="expiryDate" class="form-control">
       </div>
       <div class="mb-2">
-        <label for="issuedIn" class="form-label">Issued In</label>
+        <label for="issuedIn" class="form-label" data-i18n="profile_issued_in">Issued In</label>
         <input type="text" id="issuedIn" class="form-control">
       </div>
     </div>
-    <button type="submit" class="custom-btn primary" style="width:100%;">Save</button>
+    <button type="submit" class="custom-btn primary" style="width:100%;" data-i18n="profile_btn_save">Save</button>
   </form>
-  <p class="mt-4 text-muted small text-center">
+  <p class="mt-4 text-muted small text-center" data-i18n-html="profile_validate_note">
     To validate a certificate, go to <a href="https://myrc.redcross.ca" target="_blank">myrc.redcross.ca</a> and click on "Validate Certificate".
   </p>
 </section>
 
 <section id="page-explorers" class="hidden container py-4">
-  <h2>🧭 Explorers</h2>
-  <p class="text-muted">Découvre les figures d'exploration et de survie derrière chaque niveau du Training Game.</p>
+  <h2 data-i18n="explorers_title">🧭 Explorers</h2>
+  <p class="text-muted" data-i18n="explorers_subtitle">Découvre les figures d'exploration et de survie derrière chaque niveau du Training Game.</p>
   <div id="explorers-list"></div>
 </section>
 
@@ -2342,7 +2321,294 @@ function navigate(page, push = true) {
   // ========================================================================
   let currentLang = localStorage.getItem('fa_lang') || 'en';
 
-  const I18N = { en: {}, fr: {} };
+  const I18N = {
+    en: {
+      sos_call: "Call 9-1-1",
+      btn_yes: "Yes", btn_no: "No", btn_close: "Close",
+      gauge_suggested: "Suggested", gauge_minor: "Minor", gauge_major: "Major", gauge_critical: "Critical",
+      // Menu
+      menu_title: "Menu", menu_section_assessment: "Assessment", menu_welcome: "Welcome Screen",
+      menu_1st_assessment: "1st Assessment", menu_2nd_assessment: "2nd Assessment", menu_soap_note: "SOAP Note",
+      menu_section_reference: "Reference", menu_list_emergencies: "List of Emergencies", menu_list_technics: "List of Technics",
+      menu_legal: "Legal", menu_section_tools: "Tools", menu_cpr_bpm: "CPR BPM", menu_kit: "Kit First Aid",
+      menu_install: "Install App", menu_section_more: "More", menu_training_game: "Training Game",
+      menu_explorers: "Explorers", menu_tips: "Tips", menu_profile: "My Profile",
+      menu_section_preferences: "Preferences", menu_dark_mode: "Dark Mode",
+      // Home
+      home_subtitle: "Wilderness & Remote Field Guide",
+      home_first_title: "First Assessment", home_first_sub: "Start the ABC evaluation",
+      home_second_title: "Second Assessment (SOAP)", home_second_sub: "Signs & symptoms",
+      home_more: "More", home_view_soap: "View SOAP Notes", home_kit: "First Aid Kit",
+      home_cpr_bpm: "CPR BPM", home_training_game: "Training Game",
+      home_footer: "Built with care by Gaëtan H. —",
+      // Safe / Unsafe / Responsive / Breathing
+      safe_title: "Safe & Secure", safe_subtitle: "Your safety comes first — is the area safe and secure?",
+      unsafe_title: "Unsafe", unsafe_subtitle: "Assess the scene before doing anything else.",
+      unsafe_ask: "Ask yourself", unsafe_q1: "Is the scene safe?", unsafe_q2: "Are there any hazards?",
+      unsafe_q3: "What happened?", unsafe_q4: "How did it happen?",
+      unsafe_note: "Only proceed if the scene is safe. If it can't be secured, do not intervene — call 9-1-1 immediately.",
+      unsafe_btn_safe: "Area is Safe & Secure",
+      responsive_title: "Responsiveness", responsive_subtitle: "Check if the person is responsive.",
+      breathing_title: "Breathing", breathing_subtitle: "Check if the person is breathing.",
+      // Technic detail / Call911 / ABC
+      technic_detail_title: "Detail of the Technic", technic_steps: "Technic Steps", technic_truc: "Technic Truc",
+      technic_related_emergencies: "Related Emergencies",
+      abc_title: "ABC — Airway, Breathing, Circulation",
+      abc_a_title: "A — Airway", abc_a_text: "Verify that the airway is not obstructed (check mouth and throat).",
+      abc_a_btn_how: "How to do it?", abc_a_btn_clear: "Airway is clear",
+      abc_b_title: "B — Breathing", abc_b_text: "Is the person breathing normally?",
+      abc_b_btn_yes: "Yes → Place in recovery position", abc_b_btn_no: "No → Check circulation",
+      abc_c_title: "C — Circulation",
+      abc_c_text: "Are there any signs of circulation: intense bleeding? If yes, it has to be stopped before CPR.",
+      abc_c_btn_no: "No → Begin chest compressions", abc_c_btn_aed: "AED available",
+      // BPM
+      bpm_title: "CPR Rhythm", bpm_subtitle: "Pick a rate and follow the beat for chest compressions.",
+      bpm_compressions: "compressions —", bpm_cycle_hint: "30 then 2 rescue breaths", bpm_stop: "Stop",
+      bpm_depth_title: "Depth by age — rate stays 100–120/min for everyone",
+      bpm_depth_adult: "Adult: ~5–6 cm, two hands",
+      bpm_depth_child: "Child: ~5 cm (1/3 chest depth), one or two hands",
+      bpm_depth_infant: "Infant: ~4 cm (1/3 chest depth), two fingers",
+      // Signs / Group / Technics list / Emergencies list
+      signs_title: "Signs & Symptoms", signs_search_ph: "Search symptoms...", signs_selected: "Selected Symptoms",
+      technics_list_title: "List of Technics", technics_search_ph: "Search technics...",
+      emergencies_list_title: "List of Emergencies", emergencies_search_ph: "Search emergencies...",
+      emergency_symptoms: "Emergency Symptoms", emergency_care: "Emergency Care", emergency_type: "Emergency Type",
+      emergency_medicaments: "Emergency Medicaments", emergency_technics: "Emergency Technics",
+      // Legal
+      legal_title: "Legalities of First Aid", legal_must_title: "As a first aider, you must",
+      legal_must_1: "Ask for permission before providing care, whenever possible.",
+      legal_must_2: "Only provide care within the limits of your training.",
+      legal_must_3: "Continue care until a more qualified responder takes over, you become too exhausted to continue, the scene becomes unsafe, or the person no longer needs care.",
+      legal_consent_title: "Getting permission to help",
+      legal_consent_intro: "You must obtain the person's consent before providing care.",
+      legal_consent_1: "For an unresponsive person, consent is legally assumed (implied consent).",
+      legal_consent_2: "For a young child with no guardian present, you may proceed with care.",
+      legal_consent_3: "If a conscious person refuses care, call 9-1-1 / EMS.",
+      legal_consent_4: "If you can't call for help yourself, secure your own safety first, then offer care.",
+      // SOAP
+      soap_title: "SOAP Assessment",
+      soap_freq_note: "Secondary Assessment should be completed every 5–10 min for Critical, and 10–60 min for Major emergencies.",
+      soap_note_waterproof: "Protect documentation in wilderness or remote environment. In our case, get a waterproof case for your smartphone.",
+      soap_note_send: "Send the SOAP notes to the appropriate person. In our case, the PDF can be sent once back online.",
+      soap_note_radio: "If radioing, read the SOAP notes.",
+      soap_note_prepare: "Prepare what you'll say. Be concise. Be objective.",
+      soap_victim_info: "Victim Information", soap_name: "Name", soap_name_ph: "Full name",
+      soap_age: "Age", soap_age_ph: "Age", soap_gender: "Gender",
+      soap_gender_male: "Male", soap_gender_female: "Female", soap_gender_other: "Other",
+      soap_datetime: "Date & Time",
+      soap_subjective: "Subjective", soap_subjective_ph: "What does the patient report? Symptoms, feelings...",
+      soap_opqrst_title: "Pain Assessment (OPQRST)",
+      soap_opqrst_onset: "🕒 Onset - When did the pain start?", soap_opqrst_onset_ph: "e.g., 10 minutes ago",
+      soap_opqrst_provocation: "🧪 Provocation - What triggers or worsens it?", soap_opqrst_provocation_ph: "e.g., movement",
+      soap_opqrst_quality: "🔍 Quality - What type of pain is it?", soap_opqrst_quality_ph: "e.g., burning, stabbing",
+      soap_opqrst_region: "📍 Region / Radiation - Where is it? Does it spread?", soap_opqrst_region_ph: "e.g., chest, radiating to left arm",
+      soap_opqrst_severity: "📊 Severity - Intensity out of 10?", soap_opqrst_severity_ph: "e.g., 7/10",
+      soap_opqrst_time: "⏱️ Time - How does it change over time?", soap_opqrst_time_ph: "e.g., stable, increasing",
+      soap_objective: "Objective", soap_objective_ph: "What do you observe? Vitals, injuries...",
+      soap_assessment: "Assessment", soap_assessment_ph: "Your evaluation of the situation...",
+      soap_plan: "Plan", soap_plan_ph: "Care provided, next steps...",
+      soap_rescuer: "Rescuer Signature", soap_rescuer_ph: "Your full name or Red Cross ID",
+      soap_btn_save: "Save SOAP", soap_btn_summary: "Show Summary", soap_summary_title: "SOAP Summary",
+      soap_saved_title: "Saved SOAP Note", soap_btn_save_pdf: "Save to PDF",
+      soap_saved_list_title: "Saved SOAP Notes",
+      // Kit / Install
+      kit_title: "72h First Aid Kit",
+      kit_intro: "This checklist helps you manage and track your emergency kit contents.",
+      kit_btn_save: "Save Quantities",
+      install_title: "Install FIRSTAIDers", install_subtitle: "Works 100% offline once installed on your device.",
+      install_iphone_title: "On iPhone (Safari)",
+      install_iphone_1: "Tap the <strong>Share</strong> button (bottom center of Safari).",
+      install_iphone_2: "Choose <strong>\"Add to Home Screen\"</strong>.",
+      install_iphone_3: "Tap <strong>\"Add\"</strong> in the top-right corner.",
+      install_android_title: "On Android (Chrome)",
+      install_android_1: "Tap the <strong>three-dot menu</strong> (top-right corner).",
+      install_android_2: "Select <strong>\"Add to Home screen\"</strong> or <strong>\"Install app\"</strong>.",
+      install_android_3: "Confirm by tapping <strong>\"Install\"</strong>.",
+      install_good_title: "Good to know",
+      install_good_1: "Once installed, launch it like any other app — even offline.",
+      install_good_2: "SOAP notes recorded offline are saved as PDF on your phone.",
+      // Tips
+      tips_title: "Tips for First Aiders", tips_subtitle: "Practical reminders to apply on top of the technical steps.",
+      tips_present_title: "How to present yourself",
+      tips_present_1: "Introduce yourself and your training level before helping (\"Hi, I'm trained in first aid, can I help?\").",
+      tips_present_2: "Be present: stay calm and focused — your composure helps the person stay calm too.",
+      tips_present_3: "Narrate each step before you do it, so the person knows what to expect.",
+      tips_present_4: "Always ask permission before touching or treating a conscious person.",
+      tips_avoid_title: "What to avoid",
+      tips_avoid_1: "Never declare someone dead — that call belongs to medical/legal authorities only.",
+      tips_avoid_2: "Don't take photos or videos of the patient.",
+      tips_avoid_3: "Don't give food, drink, or medication unless you're specifically trained or instructed to.",
+      tips_avoid_4: "Don't move someone with a suspected spinal injury unless there's immediate danger.",
+      tips_wait_title: "While you wait for help",
+      tips_wait_1: "Keep talking to the person, even if unresponsive — it helps you keep reassessing them.",
+      tips_wait_2: "Note the time the incident/symptoms started — useful for EMS and your SOAP note.",
+      tips_wait_3: "Delegate clearly: point at a specific bystander and give one task at a time (\"You, call 9-1-1\").",
+      tips_wait_4: "Look after yourself too — stay warm, hydrated and safe. You can't help if you become a second casualty.",
+      tips_wait_5: "In remote settings, plan for delayed evacuation: reassess and update your SOAP note regularly.",
+      // Training Game / Explorers
+      game_title: "🧩 Training Game", game_see_explorers: "🧭 View Explorers",
+      game_choose_mode: "Choose a game mode",
+      game_mode_symptoms_title: "Which Symptoms", game_mode_symptoms_desc: "Find the symptoms of a given emergency",
+      game_mode_guess_title: "Guess Emergency", game_mode_guess_desc: "Guess the emergency from the symptoms",
+      game_mode_truefalse_title: "True or False", game_mode_truefalse_desc: "Is this symptom associated, yes or no?",
+      game_mode_case_title: "Case Study", game_mode_case_desc: "Analyze a complete scenario",
+      game_mode_protocol_title: "Emergency Steps", game_mode_protocol_desc: "What to start with, what comes next, when to fill the SOAP",
+      game_mode_speed_title: "Timed / Speed", game_mode_speed_desc: "60 seconds, get as many correct answers as possible",
+      game_btn_start: "Start", game_btn_quit: "Quit Game",
+      explorers_title: "🧭 Explorers",
+      explorers_subtitle: "Discover the exploration and survival figures behind each Training Game level.",
+      // Profile
+      profile_title: "My Profile", profile_identity: "Identity",
+      profile_first_name: "First Name", profile_last_name: "Last Name",
+      profile_certification: "Certification", profile_cert_ph: "Ex: Wilderness First Aid & CPR/AED Level C",
+      profile_cert_number: "Certificate Number", profile_issue_date: "Issue Date",
+      profile_expiry_date: "Expiry Date", profile_issued_in: "Issued In", profile_btn_save: "Save",
+      profile_validate_note: "To validate a certificate, go to <a href=\"https://myrc.redcross.ca\" target=\"_blank\">myrc.redcross.ca</a> and click on \"Validate Certificate\".",
+    },
+    fr: {
+      sos_call: "Appeler le 9-1-1",
+      btn_yes: "Oui", btn_no: "Non", btn_close: "Fermer",
+      gauge_suggested: "Suggéré", gauge_minor: "Mineure", gauge_major: "Majeure", gauge_critical: "Critique",
+      // Menu
+      menu_title: "Menu", menu_section_assessment: "Évaluation", menu_welcome: "Écran d'accueil",
+      menu_1st_assessment: "1er bilan", menu_2nd_assessment: "2e bilan", menu_soap_note: "Fiche SOAP",
+      menu_section_reference: "Référence", menu_list_emergencies: "Liste des urgences", menu_list_technics: "Liste des techniques",
+      menu_legal: "Aspects légaux", menu_section_tools: "Outils", menu_cpr_bpm: "Rythme RCR", menu_kit: "Trousse de premiers soins",
+      menu_install: "Installer l'appli", menu_section_more: "Plus", menu_training_game: "Jeu d'entraînement",
+      menu_explorers: "Explorateurs", menu_tips: "Conseils", menu_profile: "Mon profil",
+      menu_section_preferences: "Préférences", menu_dark_mode: "Mode sombre",
+      // Home
+      home_subtitle: "Guide de terrain nature & isolé",
+      home_first_title: "Premier bilan", home_first_sub: "Débuter l'évaluation ABC",
+      home_second_title: "Second bilan (SOAP)", home_second_sub: "Signes & symptômes",
+      home_more: "Plus", home_view_soap: "Voir les fiches SOAP", home_kit: "Trousse de premiers soins",
+      home_cpr_bpm: "Rythme RCR", home_training_game: "Jeu d'entraînement",
+      home_footer: "Conçu avec soin par Gaëtan H. —",
+      // Safe / Unsafe / Responsive / Breathing
+      safe_title: "Sécurité des lieux", safe_subtitle: "Ta sécurité avant tout — la zone est-elle sûre et sécurisée ?",
+      unsafe_title: "Zone non sécurisée", unsafe_subtitle: "Évalue la scène avant toute autre action.",
+      unsafe_ask: "Demande-toi", unsafe_q1: "La scène est-elle sûre ?", unsafe_q2: "Y a-t-il des dangers ?",
+      unsafe_q3: "Que s'est-il passé ?", unsafe_q4: "Comment est-ce arrivé ?",
+      unsafe_note: "N'intervenez que si la scène est sûre. Si elle ne peut pas être sécurisée, n'intervenez pas — appelez le 9-1-1 immédiatement.",
+      unsafe_btn_safe: "La zone est sûre et sécurisée",
+      responsive_title: "État de conscience", responsive_subtitle: "Vérifie si la personne réagit.",
+      breathing_title: "Respiration", breathing_subtitle: "Vérifie si la personne respire.",
+      // Technic detail / Call911 / ABC
+      technic_detail_title: "Détail de la technique", technic_steps: "Étapes de la technique", technic_truc: "Astuce",
+      technic_related_emergencies: "Urgences associées",
+      abc_title: "ABC — Voies respiratoires, Respiration, Circulation",
+      abc_a_title: "A — Voies respiratoires", abc_a_text: "Vérifiez que les voies respiratoires ne sont pas obstruées (examinez la bouche et la gorge).",
+      abc_a_btn_how: "Comment faire ?", abc_a_btn_clear: "Les voies sont dégagées",
+      abc_b_title: "B — Respiration", abc_b_text: "La personne respire-t-elle normalement ?",
+      abc_b_btn_yes: "Oui → Placer en position latérale de sécurité", abc_b_btn_no: "Non → Vérifier la circulation",
+      abc_c_title: "C — Circulation",
+      abc_c_text: "Y a-t-il des signes de circulation : saignement important ? Si oui, il doit être arrêté avant la RCR.",
+      abc_c_btn_no: "Non → Débuter les compressions thoraciques", abc_c_btn_aed: "DEA disponible",
+      // BPM
+      bpm_title: "Rythme RCR", bpm_subtitle: "Choisissez un rythme et suivez la cadence pour les compressions thoraciques.",
+      bpm_compressions: "compressions —", bpm_cycle_hint: "30 puis 2 insufflations de secours", bpm_stop: "Arrêter",
+      bpm_depth_title: "Profondeur selon l'âge — le rythme reste 100–120/min pour tous",
+      bpm_depth_adult: "Adulte : ~5–6 cm, deux mains",
+      bpm_depth_child: "Enfant : ~5 cm (1/3 de la profondeur du thorax), une ou deux mains",
+      bpm_depth_infant: "Nourrisson : ~4 cm (1/3 de la profondeur du thorax), deux doigts",
+      // Signs / Group / Technics list / Emergencies list
+      signs_title: "Signes et symptômes", signs_search_ph: "Rechercher un symptôme...", signs_selected: "Symptômes sélectionnés",
+      technics_list_title: "Liste des techniques", technics_search_ph: "Rechercher une technique...",
+      emergencies_list_title: "Liste des urgences", emergencies_search_ph: "Rechercher une urgence...",
+      emergency_symptoms: "Symptômes de l'urgence", emergency_care: "Soins d'urgence", emergency_type: "Type d'urgence",
+      emergency_medicaments: "Médicaments", emergency_technics: "Techniques associées",
+      // Legal
+      legal_title: "Aspects légaux des premiers secours", legal_must_title: "En tant que secouriste, vous devez",
+      legal_must_1: "Demander la permission avant de porter secours, chaque fois que possible.",
+      legal_must_2: "Ne prodiguer des soins que dans les limites de votre formation.",
+      legal_must_3: "Poursuivre les soins jusqu'à la prise en charge par un intervenant plus qualifié, jusqu'à épuisement, jusqu'à ce que la scène devienne dangereuse, ou que la personne n'ait plus besoin de soins.",
+      legal_consent_title: "Obtenir la permission d'aider",
+      legal_consent_intro: "Vous devez obtenir le consentement de la personne avant de prodiguer des soins.",
+      legal_consent_1: "Pour une personne inconsciente, le consentement est présumé par la loi (consentement implicite).",
+      legal_consent_2: "Pour un jeune enfant sans tuteur présent, vous pouvez procéder aux soins.",
+      legal_consent_3: "Si une personne consciente refuse les soins, appelez le 9-1-1 / les services d'urgence.",
+      legal_consent_4: "Si vous ne pouvez pas appeler de l'aide vous-même, assurez d'abord votre propre sécurité, puis offrez vos soins.",
+      // SOAP
+      soap_title: "Évaluation SOAP",
+      soap_freq_note: "Le second bilan doit être refait toutes les 5 à 10 min pour une urgence critique, et 10 à 60 min pour une urgence majeure.",
+      soap_note_waterproof: "Protégez la documentation en environnement isolé ou sauvage. Dans notre cas, procurez-vous un étui étanche pour votre téléphone.",
+      soap_note_send: "Transmettez la fiche SOAP à la personne appropriée. Dans notre cas, le PDF peut être envoyé une fois de retour en ligne.",
+      soap_note_radio: "En cas de communication radio, lisez la fiche SOAP.",
+      soap_note_prepare: "Préparez ce que vous allez dire. Soyez concis. Soyez objectif.",
+      soap_victim_info: "Informations sur la victime", soap_name: "Nom", soap_name_ph: "Nom complet",
+      soap_age: "Âge", soap_age_ph: "Âge", soap_gender: "Sexe",
+      soap_gender_male: "Homme", soap_gender_female: "Femme", soap_gender_other: "Autre",
+      soap_datetime: "Date et heure",
+      soap_subjective: "Subjectif", soap_subjective_ph: "Que rapporte le patient ? Symptômes, ressenti...",
+      soap_opqrst_title: "Évaluation de la douleur (OPQRST)",
+      soap_opqrst_onset: "🕒 Apparition - Quand la douleur a-t-elle commencé ?", soap_opqrst_onset_ph: "ex. : il y a 10 minutes",
+      soap_opqrst_provocation: "🧪 Provocation - Qu'est-ce qui la déclenche ou l'aggrave ?", soap_opqrst_provocation_ph: "ex. : mouvement",
+      soap_opqrst_quality: "🔍 Qualité - Quel type de douleur est-ce ?", soap_opqrst_quality_ph: "ex. : brûlure, coup de poignard",
+      soap_opqrst_region: "📍 Région / Irradiation - Où est-elle ? Se propage-t-elle ?", soap_opqrst_region_ph: "ex. : poitrine, irradiant vers le bras gauche",
+      soap_opqrst_severity: "📊 Sévérité - Intensité sur 10 ?", soap_opqrst_severity_ph: "ex. : 7/10",
+      soap_opqrst_time: "⏱️ Évolution - Comment change-t-elle avec le temps ?", soap_opqrst_time_ph: "ex. : stable, croissante",
+      soap_objective: "Objectif", soap_objective_ph: "Qu'observez-vous ? Signes vitaux, blessures...",
+      soap_assessment: "Évaluation", soap_assessment_ph: "Votre évaluation de la situation...",
+      soap_plan: "Plan", soap_plan_ph: "Soins prodigués, prochaines étapes...",
+      soap_rescuer: "Signature du secouriste", soap_rescuer_ph: "Votre nom complet ou n° Croix-Rouge",
+      soap_btn_save: "Enregistrer la fiche SOAP", soap_btn_summary: "Afficher le résumé", soap_summary_title: "Résumé SOAP",
+      soap_saved_title: "Fiche SOAP enregistrée", soap_btn_save_pdf: "Enregistrer en PDF",
+      soap_saved_list_title: "Fiches SOAP enregistrées",
+      // Kit / Install
+      kit_title: "Trousse de premiers soins 72h",
+      kit_intro: "Cette liste vous aide à gérer et suivre le contenu de votre trousse d'urgence.",
+      kit_btn_save: "Enregistrer les quantités",
+      install_title: "Installer FIRSTAIDers", install_subtitle: "Fonctionne 100 % hors ligne une fois installée sur votre appareil.",
+      install_iphone_title: "Sur iPhone (Safari)",
+      install_iphone_1: "Appuyez sur le bouton <strong>Partager</strong> (en bas au centre de Safari).",
+      install_iphone_2: "Choisissez <strong>« Sur l'écran d'accueil »</strong>.",
+      install_iphone_3: "Appuyez sur <strong>« Ajouter »</strong> en haut à droite.",
+      install_android_title: "Sur Android (Chrome)",
+      install_android_1: "Appuyez sur le <strong>menu à trois points</strong> (en haut à droite).",
+      install_android_2: "Sélectionnez <strong>« Ajouter à l'écran d'accueil »</strong> ou <strong>« Installer l'application »</strong>.",
+      install_android_3: "Confirmez en appuyant sur <strong>« Installer »</strong>.",
+      install_good_title: "Bon à savoir",
+      install_good_1: "Une fois installée, lancez-la comme n'importe quelle autre application — même hors ligne.",
+      install_good_2: "Les fiches SOAP enregistrées hors ligne sont sauvegardées en PDF sur votre téléphone.",
+      // Tips
+      tips_title: "Conseils pour les secouristes", tips_subtitle: "Rappels pratiques à appliquer en complément des étapes techniques.",
+      tips_present_title: "Comment se présenter",
+      tips_present_1: "Présentez-vous et indiquez votre niveau de formation avant d'aider (« Bonjour, je suis formé aux premiers secours, puis-je vous aider ? »).",
+      tips_present_2: "Soyez présent : restez calme et concentré — votre calme aide aussi la personne à rester calme.",
+      tips_present_3: "Annoncez chaque étape avant de l'exécuter, pour que la personne sache à quoi s'attendre.",
+      tips_present_4: "Demandez toujours la permission avant de toucher ou de traiter une personne consciente.",
+      tips_avoid_title: "Ce qu'il faut éviter",
+      tips_avoid_1: "Ne déclarez jamais quelqu'un décédé — cette décision revient uniquement aux autorités médicales/légales.",
+      tips_avoid_2: "Ne prenez pas de photos ou de vidéos du patient.",
+      tips_avoid_3: "Ne donnez ni nourriture, ni boisson, ni médicament, sauf si vous y êtes spécifiquement formé ou instruit.",
+      tips_avoid_4: "Ne déplacez pas une personne suspectée de blessure à la colonne, sauf danger immédiat.",
+      tips_wait_title: "En attendant les secours",
+      tips_wait_1: "Continuez à parler à la personne, même inconsciente — cela vous aide à la réévaluer continuellement.",
+      tips_wait_2: "Notez l'heure de début de l'incident/des symptômes — utile pour les secours et votre fiche SOAP.",
+      tips_wait_3: "Déléguez clairement : désignez un témoin précis et donnez une tâche à la fois (« Vous, appelez le 9-1-1 »).",
+      tips_wait_4: "Prenez soin de vous aussi — restez au chaud, hydraté et en sécurité. Vous ne pouvez pas aider si vous devenez une seconde victime.",
+      tips_wait_5: "En milieu isolé, anticipez un délai d'évacuation : réévaluez et mettez à jour votre fiche SOAP régulièrement.",
+      // Training Game / Explorers
+      game_title: "🧩 Jeu d'entraînement", game_see_explorers: "🧭 Voir les explorateurs",
+      game_choose_mode: "Choisis un mode de jeu",
+      game_mode_symptoms_title: "Quels symptômes", game_mode_symptoms_desc: "Retrouve les symptômes d'une urgence donnée",
+      game_mode_guess_title: "Devine l'urgence", game_mode_guess_desc: "Devine l'urgence à partir des symptômes",
+      game_mode_truefalse_title: "Vrai ou faux", game_mode_truefalse_desc: "Ce symptôme est-il associé, oui ou non ?",
+      game_mode_case_title: "Étude de cas", game_mode_case_desc: "Analyse un scénario complet",
+      game_mode_protocol_title: "Étapes d'urgence", game_mode_protocol_desc: "Par quoi commencer, quelle étape vient après, quand remplir le SOAP",
+      game_mode_speed_title: "Chrono / Rapidité", game_mode_speed_desc: "60 secondes, le plus de bonnes réponses possible",
+      game_btn_start: "Démarrer", game_btn_quit: "Quitter le jeu",
+      explorers_title: "🧭 Explorateurs",
+      explorers_subtitle: "Découvre les figures d'exploration et de survie derrière chaque niveau du Training Game.",
+      // Profile
+      profile_title: "Mon profil", profile_identity: "Identité",
+      profile_first_name: "Prénom", profile_last_name: "Nom de famille",
+      profile_certification: "Certification", profile_cert_ph: "Ex. : Premiers secours en milieu sauvage et RCR/DEA niveau C",
+      profile_cert_number: "Numéro de certificat", profile_issue_date: "Date d'émission",
+      profile_expiry_date: "Date d'expiration", profile_issued_in: "Émis à", profile_btn_save: "Enregistrer",
+      profile_validate_note: "Pour valider un certificat, rendez-vous sur <a href=\"https://myrc.redcross.ca\" target=\"_blank\">myrc.redcross.ca</a> et cliquez sur « Valider le certificat ».",
+    },
+  };
   const GROUPS_FR = {
     1: "Respiratoire",
     2: "Peau et articulations",
